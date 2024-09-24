@@ -37,12 +37,18 @@
                             <!-- Payer's Name -->
                             <div class="form-group mt-3">
                                 <p class="font-weight-bold">Atas Nama</p>
-                                <h5 class="text-dark">{{ $donasi->alumni->nama ?? 'Unknown' }}</h5>
+                                @if ($donasi->alumni_id !== null)
+                                    <h5 class="text-dark">{{ $donasi->alumni->nama ?? 'Unknown' }}</h5>
+                                @else
+                                    <h5 class="text-dark">{{ $donasi->nama ?? 'Unknown' }}</h5>
+                                @endif
                             </div>
                             <!-- Alumni Batch -->
                             <div class="form-group mt-3">
+                                @if ($donasi->alumni_id !== null)
                                 <p class="font-weight-bold">Angkatan</p>
-                                <h5 class="text-dark">{{ $donasi->alumni->angkatan->angkatan ?? 'Unknown' }}</h5>
+                                    <h5 class="text-dark">{{ $donasi->alumni->angkatan->angkatan ?? 'Unknown' }}</h5>
+                                @endif
                             </div>
                             <div class=" d-grid">
                                 <button class="btn btn-warning btn-md shadow" id="pay-button">Bayar Sekarang</button>

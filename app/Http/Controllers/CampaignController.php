@@ -110,7 +110,8 @@ class CampaignController extends Controller
 
         $donasi = Donasi::with('campaign')
                         ->where('status', 'success')
-                        ->orderByRaw('campaign_id = 1 DESC, id DESC')
+                        ->where('campaign_id', '!=', 1) // Exclude campaign_id = 1
+                        ->orderBy('id', 'DESC')
                         // ->whereYear('created_at', Carbon::now()->year)
                         ->get();
 
@@ -230,9 +231,7 @@ class CampaignController extends Controller
 
         // Filter berdasarkan nama
         if ($request->has('nama') && $request->nama) {
-            $query->whereHas('alumni', function ($q) use ($nama) {
-                $q->where('nama', 'LIKE', '%' . $nama . '%');
-            });
+            $query->where('nama', 'like', '%' . $request->nama . '%');
             $hasFilters = true;
         }
         if ($request->has('order_id') && $request->order_id) {

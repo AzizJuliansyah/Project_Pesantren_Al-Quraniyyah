@@ -10,46 +10,56 @@
                 <div class="brand-logo text-center">
                   <img src="{{ asset('assets/images/logo-alquraniyyah.png') }}" alt="logo" style="width: 50px;">
                 </div>
-                <h4 class="text-center">Hello! Selamat Datang!!</h4>
                 <h6 class="fw-light text-center">Donasi {{ $campaign->nama }}.</h6>
+                <p class="text-center">Sedikit uang yang anda keluarkan sangat berharga bagi kami</p>
 
                 <!-- Menampilkan pesan sukses -->
 
                 <form class="pt-3" method="POST" action="{{ route('campaignpayment.donasi') }}">
                   @csrf
                   <input type="hidden" name="campaign_id" value="{{ encrypt($campaign->id) }}">
-                  <div class="form-group">
-                    <label for="alumni_id">Nama Anda</label>
-                    <select class="js-example-basic-single w-100 @error('alumni_id') is-invalid @enderror" name="alumni_id" id="alumni_id" required>
-                        <option  disabled selected>Cari Nama Anda..</option>
-                        @foreach ($alumni as $index => $item)
-                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
-                        @endforeach
-                    </select>
-                    @error('alumni_id')
-                      <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                   </div>
-                  <div class="form-group">
-                    <label for="angkatan_id">Angkatan ke-</label>
-                    <input type="text" class="form-control form-control-sm @error('alumni_id') is-invalid @enderror" id="angkatan_id" name="angkatan_id" placeholder="angkatan" readonly required>
-                    @error('alumni_id')
-                      <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                  </div>
+                  @if ($campaign->id == 1)
+                    <div class="form-group">
+                      <label for="alumni_id">Nama Anda</label>
+                      <select class="js-example-basic-single w-100 @error('alumni_id') is-invalid @enderror" name="alumni_id" id="alumni_id" required>
+                          <option  disabled selected>Cari Nama Anda..</option>
+                          @foreach ($alumni as $index => $item)
+                          <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                          @endforeach
+                      </select>
+                      @error('alumni_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
+                    <div class="form-group">
+                      <label for="angkatan_id">Angkatan ke-</label>
+                      <input type="text" class="form-control form-control-sm @error('alumni_id') is-invalid @enderror" id="angkatan_id" name="angkatan_id" placeholder="angkatan" readonly required>
+                      @error('alumni_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
+                  @else
+                    <div class="form-group">
+                      <label for="nama">Nama</label>
+                      <input type="text" class="form-control form-control-sm @error('nama') is-invalid @enderror" id="nama" name="nama" placeholder="Nama" required>
+                      @error('nama')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                    </div>
+                  @endif
                   @if ($campaign->nominal == null)
                     <div class="form-group">
                       <label for="nominal">Jumlah Nominal</label>
                       <input type="text" class="form-control form-control-sm @error('nominal') is-invalid @enderror" id="nominal" name="nominal" placeholder="Nominal" required>
                       @error('nominal')
-                      <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                        <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
                     </div>
                   @else
                       @if(is_array(json_decode($campaign->nominal)))
                         <div class="form-group">
                           <label for="nominal">Jumlah Nominal</label>
-                          <select class="form-control text-dark @error('nominal') is-invalid @enderror" name="nominal" id="nominal"  required>
+                          <select class="form-control text-dark @error('nominal') is-invalid @enderror" name="nominal" id="nominalSelect"  required>
                             <option value="default" disabled selected>Pilih Nominal</option>
                             @foreach(json_decode($campaign->nominal) as $nominal)
                               <option value="{{ $nominal }}">Rp. {{ number_format($nominal, 0, ',', '.') }}</option>
@@ -122,26 +132,53 @@
 
 
 
-
           function validateForm() {
-              const BayarButton = document.getElementById('BayarButton');
-              const alumni_id = document.getElementById('alumni_id').value;
-              const angkatan = document.getElementById('angkatan_id').value;
-              const nominal = document.getElementById('nominal').value;
-              
-              const alumni_idValid = alumni_id !== "default";
-              
-              
-              if (nominal && angkatan && alumni_idValid) {
-                  BayarButton.disabled = false;
-              } else {
-                  BayarButton.disabled = true;
-              }
-          }
+    const BayarButton = document.getElementById('BayarButton');
+    const campaignId = {{ $campaign->id }};
+    const campaignNominal = @json($campaign->nominal);
 
-          document.getElementById('angkatan_id').addEventListener('input', validateForm);
-          document.getElementById('alumni_id').addEventListener('change', validateForm);
-          document.getElementById('nominal').addEventListener('input', validateForm);
+    let nominal;
+    if (campaignNominal === null || campaignNominal === undefined) {
+        // Use input field if no predefined nominal
+        nominal = document.getElementById('nominal').value;
+    } else {
+        // Use select if predefined nominal exists
+        const nominal_valid = document.getElementById('nominalSelect').value;
+
+        nominal = nominal_valid !== "default";
+
+    }
+
+    // Check conditions based on campaign ID
+    if (campaignId == 1) {
+        const alumni_id = document.getElementById('alumni_id').value;
+        const angkatan = document.getElementById('angkatan_id').value;
+        const alumni_idValid = alumni_id !== "default";
+
+        if (nominal && angkatan && alumni_idValid) {
+            BayarButton.disabled = false;
+        } else {
+            BayarButton.disabled = true;
+        }
+    } else {
+        const nama = document.getElementById('nama').value;
+
+        if (nominal && nama) {
+            BayarButton.disabled = false;
+        } else {
+            BayarButton.disabled = true;
+        }
+    }
+}
+
+// Add event listeners
+document.getElementById('angkatan_id')?.addEventListener('input', validateForm);
+document.getElementById('alumni_id')?.addEventListener('change', validateForm);
+document.getElementById('nominal')?.addEventListener('input', validateForm);
+document.getElementById('nominalSelect')?.addEventListener('change', validateForm);
+document.getElementById('nama')?.addEventListener('input', validateForm);
+
+
         });
       </script>
       @include('template.copyright')

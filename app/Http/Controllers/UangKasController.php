@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Donasi;
 use App\Models\Angkatan;
 use App\Models\Campaign;
@@ -13,6 +14,97 @@ class UangKasController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+
+    public function dashboard(Request $request)
+    {
+        $selectedMonth = $request->input('month', Carbon::now()->month);
+        $selectedCampaign = 1;
+        $campaign = Campaign::findOrFail($selectedCampaign);
+        $pengeluaran = Pengeluaran::all();
+
+
+        $uangkas = Donasi::with('campaign')
+                        ->where('status', 'success')
+                        ->where('campaign_id', $selectedCampaign) 
+                        ->orderBy('id', 'DESC')
+                        ->get();
+
+        $monthlyTotals = array_fill(0, 12, 0);
+        $weeklyTotals = array_fill(0, 4, 0);
+        $totalUangKas = 0;
+
+        foreach ($uangkas as $d) {
+            $month = (int) Carbon::parse($d->created_at)->format('m') - 1;
+            $monthlyTotals[$month] += floatval($d->nominal2);
+            $totalUangKas += floatval($d->nominal2);
+
+            if ($month + 1 == $selectedMonth) {
+                $week = Carbon::parse($d->created_at)->weekOfMonth - 1;
+                $weeklyTotals[$week] += floatval($d->nominal2);
+            }
+        }
+
+            $currentMonthIndex = Carbon::now()->format('m') - 1;
+            $previousMonthIndex = ($currentMonthIndex > 0) ? $currentMonthIndex - 1 : 11;
+
+            $bulanSebelumnya = $monthlyTotals[$previousMonthIndex];
+            $bulanIni = $monthlyTotals[$currentMonthIndex];
+
+            if ($bulanSebelumnya == 0) {
+                $persentaseKenaikanBulanan = ($bulanIni > 0) ? 100 : 0;
+            } else {
+                $persentaseKenaikanBulanan = (($bulanIni - $bulanSebelumnya) / $bulanSebelumnya) * 100;
+            }
+
+            $totalWeekly = array_sum($weeklyTotals);
+            $persentaseKenaikanMingguan = 0;
+
+            $mingguSekarang = $weeklyTotals[count($weeklyTotals) - 1] ?? 0;
+            $mingguSebelumnya = $weeklyTotals[count($weeklyTotals) - 2] ?? 0;
+
+            if ($mingguSebelumnya == 0 && $mingguSekarang > 0) {
+                $persentaseKenaikanMingguan = 100;
+            } elseif ($mingguSebelumnya > 0) {
+                $persentaseKenaikanMingguan = (($mingguSekarang - $mingguSebelumnya) / $mingguSebelumnya) * 100;
+            } elseif ($mingguSebelumnya < 0) {
+                $persentaseKenaikanMingguan = -abs($mingguSekarang) / abs($mingguSebelumnya) * 100;
+            }
+
+        $chartData = [
+            'chartType' => ($request->month) ? 'weekly' : 'monthly',
+            'monthlyTotals' => $monthlyTotals,
+            'weeklyTotals' => $weeklyTotals,
+            'persentaseKenaikanBulanan' => $persentaseKenaikanBulanan,
+            'persentaseKenaikanMingguan' => $persentaseKenaikanMingguan,
+            'total' => $totalUangKas,
+            'totalWeekly' => $totalWeekly,
+        ];
+
+        $pengeluaranTotalUangKas = Pengeluaran::sum('nominal');
+        $totalUangKasMasuk = $totalUangKas;
+        $saldoUangKas = $totalUangKasMasuk - $pengeluaranTotalUangKas;
+
+        $availableMonths = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+        ];
+        $selectedMonthName = $availableMonths[$selectedMonth] ?? '';
+
+        return view('admin.uangkas.dashboard', compact('campaign' ,'chartData', 'selectedMonthName', 'selectedMonth', 'selectedCampaign', 'pengeluaranTotalUangKas', 'saldoUangKas'));
+    }
+
+
     public function index(Request $request)
     {
         $campaign = Campaign::findOrFail(1);

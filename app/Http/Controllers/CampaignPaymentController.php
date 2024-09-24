@@ -39,25 +39,10 @@ class CampaignPaymentController extends Controller
 
     public function donasi(Request $request)
     {
-        $request->validate([
-            'alumni_id' => 'required|exists:alumni,id',
-            'campaign_id' => 'required',
-            'nominal' => 'required|numeric',
-        ],[
-            'alumni_id.required' => 'Data Alumni Harus Diisi!',
-            'nominal.required' => 'Nominal Harus Diisi!',
-            'nominal.numeric' => 'Nominal Harus Diisi dengan format angka!',
-        ]);
-
         try {
             $campaign_id = decrypt($request->campaign_id);
         } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
             return redirect()->back()->with('error', 'Campaign ID tidak valid.');
-        }
-
-        $alumni = Alumni::find($request->alumni_id);
-        if (!$alumni) {
-            return redirect()->back()->with('error', 'Error, Alumni tidak ditemukan.');
         }
 
         $campaign = Campaign::find($campaign_id);
@@ -65,23 +50,61 @@ class CampaignPaymentController extends Controller
             return redirect()->back()->with('error', 'Error, campaign tidak ditemukan.');
         }
 
+        // Conditional validation based on the campaign ID
+        if ($campaign_id == 1) {
+            // Validation for campaign ID 1
+            $request->validate([
+                'alumni_id' => 'required|exists:alumni,id',
+                'angkatan_id' => 'required|exists:angkatans,id',
+                'nominal' => 'required|numeric',
+            ], [
+                'alumni_id.required' => 'Data Alumni Harus Diisi!',
+                'angkatan_id.required' => 'Angkatan Harus Diisi!',
+                'nominal.required' => 'Nominal Harus Diisi!',
+                'nominal.numeric' => 'Nominal Harus Diisi dengan format angka!',
+            ]);
+
+            $alumni = Alumni::find($request->alumni_id);
+            if (!$alumni) {
+                return redirect()->back()->with('error', 'Error, Alumni tidak ditemukan.');
+            }
+        } else {
+            $request->validate([
+                'nama' => 'required|string',
+                'nominal' => 'required|numeric',
+            ], [
+                'nama.required' => 'Nama Harus Diisi!',
+                'nominal.required' => 'Nominal Harus Diisi!',
+                'nominal.numeric' => 'Nominal Harus Diisi dengan format angka!',
+            ]);
+
+            $alumni = Alumni::where('nama', $request->nama)->first();
+            if (!$alumni) {
+                $alumni = new Alumni();
+                $alumni->nama = $request->nama;
+            }
+        }
+
+        // Clean up the nominal value
         $cleanNominal = str_replace('.', '', $request->input('nominal'));
         $nominalAfter2Percent = $cleanNominal * 0.02;
         $finalNominal = $cleanNominal - $nominalAfter2Percent;
 
+        // Create order ID
         $orderId = uniqid();
 
+        // Create new donation entry
         $donasi = Donasi::create([
-            'alumni_id' => $alumni->id,
+            'alumni_id' => $alumni->id ?? null, // May be null for non-alumni campaigns
             'campaign_id' => $campaign->id,
             'nama' => $alumni->nama,
-            'angkatan_id' => $alumni->angkatan_id,
             'nominal' => $cleanNominal,
             'nominal2' => $finalNominal,
             'status' => 'pending',
             'order_id' => $orderId,
         ]);
 
+        // Midtrans payment params
         $params = [
             'transaction_details' => [
                 'order_id' => $orderId,
@@ -92,21 +115,26 @@ class CampaignPaymentController extends Controller
             ],
         ];
 
+        // Midtrans configuration
         \Midtrans\Config::$serverKey = $campaign->server_key;
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
         \Midtrans\Config::$is3ds = true;
 
+        // Generate Snap token
         $snapToken = \Midtrans\Snap::getSnapToken($params);
         $donasi->snap_token = $snapToken;
         $donasi->save();
 
+        // Encrypt donation ID
         $encryptedId = Crypt::encrypt($donasi->id);
 
-        $request->session()->put('can_access_payment', true); 
+        // Store session for payment access
+        $request->session()->put('can_access_payment', true);
 
         return redirect()->route('donasi.payment', $encryptedId);
     }
+
 
 
     public function payment($encryptedId, Request $request)

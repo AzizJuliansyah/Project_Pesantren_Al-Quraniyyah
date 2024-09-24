@@ -48,6 +48,7 @@ Route::middleware(['notauthenticated', 'admin'])->group(function () {
     Route::get('/campaign/detaildatacampaign/{campaign_id}', [CampaignController::class, 'detaildatacampaign'])->name('campaign.detaildatacampaign');
     
     Route::resource('uangkas', UangKasController::class);
+    Route::get('/dashboard/uangkas', [UangKasController::class, 'dashboard'])->name('dashboard.uangkas');
     Route::get('/pengeluaran/uangkas', [UangKasController::class, 'pengeluaran'])->name('pengeluaran.uangkas');
     Route::post('/pengeluaran/tambah', [UangKasController::class, 'tambahpengeluaran'])->name('pengeluaran.tambah');
     Route::post('/pengeluaran/edit/{id}', [UangKasController::class, 'editpengeluaran'])->name('pengeluaran.edit');

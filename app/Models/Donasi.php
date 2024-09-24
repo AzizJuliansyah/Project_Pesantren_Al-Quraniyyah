@@ -16,6 +16,7 @@ class Donasi extends Model
         'order_id',
         'campaign_id',
         'alumni_id',
+        'nama',
         'nominal',
         'nominal2',
         'status',

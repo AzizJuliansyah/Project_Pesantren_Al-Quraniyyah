@@ -115,7 +115,6 @@
                                                     <th>#</th>
                                                     <th>Order ID</th>
                                                     <th>Nama</th>
-                                                    <th>Angkatan Ke-</th>
                                                     <th>Nominal</th>
                                                     <th>Nominal Setelah di Bagi 2%</th>
                                                     <th>Status</th>
@@ -132,12 +131,7 @@
                                                               <i class="mdi mdi-content-copy" style="margin-left: 5px;"></i>
                                                           </h5>
                                                         </td>
-                                                        <td>{{ \Illuminate\Support\Str::limit($item->alumni->nama, 25, '...') }}</td>
-                                                        <td>
-                                                          <div class="d-flex justify-content-center">
-                                                            {{ $item->alumni->angkatan->angkatan }}
-                                                          </div>
-                                                        </td>
+                                                        <td>{{ \Illuminate\Support\Str::limit($item->nama, 25, '...') }}</td>
                                                         <td>Rp{{ number_format($item->nominal, 0, ',', '.') }}</td>
                                                         <td>
                                                           <div class="d-flex justify-content-center">
