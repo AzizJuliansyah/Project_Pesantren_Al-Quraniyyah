@@ -125,7 +125,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+<<<<<<< HEAD
                                                 @forelse ($alumni as $index => $item)
+=======
+                                                @foreach ($alumni as $index => $item)
+>>>>>>> a104908 (update)
                                                     <tr>
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ \Illuminate\Support\Str::limit($item->nama, 20, '...') }}</td>
@@ -251,13 +255,7 @@
 
                                                         </td>
                                                     </tr>
-                                                @empty
-                                                  <tr>
-                                                    <td colspan="9">
-                                                        <p class="d-flex justify-content-center">Tidak ada data yang ditemukan.</p>
-                                                    </td>
-                                                  </tr>
-                                                @endforelse
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>

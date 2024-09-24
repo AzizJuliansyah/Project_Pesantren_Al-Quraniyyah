@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('client_key');
             $table->integer('target')->nullable();
             $table->longText('nominal')->nullable();
-            $table->integer('publish');
+            $table->integer('publish')->default(1);
             $table->timestamps();
         });
     }
