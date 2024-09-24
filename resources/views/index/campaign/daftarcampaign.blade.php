@@ -34,7 +34,7 @@
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <a href="{{ route('campaignpayment.show', $item->slug) }}" class="btn btn-primary">View Details</a>
+                                        <a href="{{ route('campaignpayment.detail', $item->slug) }}" class="btn btn-primary">View Details</a>
                                     </div>
                                 </div>
                             </div>
