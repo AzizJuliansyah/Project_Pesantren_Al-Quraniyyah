@@ -97,11 +97,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-<<<<<<< HEAD
-                                                @forelse ($campaign as $index => $item)
-=======
                                                 @foreach ($campaign as $index => $item)
->>>>>>> a104908 (update)
                                                     <tr>
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ $item->campaign_id }}</td>

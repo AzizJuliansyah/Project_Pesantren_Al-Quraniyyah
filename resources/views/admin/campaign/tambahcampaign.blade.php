@@ -69,7 +69,7 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 ">Info</label>
                                                         <div class="col-sm-9">
-                                                            <textarea name="info" id="info" class="textarea-control" cols="50" rows="5" placeholder="Info Tentang Campaign" required></textarea>
+                                                            <textarea name="info" id="info"placeholder="Info Tentang Campaign"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -209,6 +209,31 @@
             });
         });
 
+
+        ClassicEditor
+            .create(document.querySelector('#info'), {
+                toolbar: [
+                    'heading', '|',
+                    'bold', 'italic', 'underline', 'strikethrough', 'code', '|',
+                    'link', '|',
+                    'bulletedList', 'numberedList', 'blockQuote', '|',
+                    'undo', 'redo'
+                ],
+            })
+            .then(editor => {
+
+                editor.editing.view.change(writer => {
+                    writer.setStyle(
+                        "height",
+                        "150px",
+                        editor.editing.view.document.getRoot()
+                    );
+                });
+                console.log(`Editor initialized for #jawabanText`);
+            })
+            .catch(error => {
+                console.error('There was an error initializing the editor', error);
+            });
     </script>
 </div>
 @include('template.footer')

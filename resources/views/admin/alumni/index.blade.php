@@ -125,11 +125,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-<<<<<<< HEAD
-                                                @forelse ($alumni as $index => $item)
-=======
                                                 @foreach ($alumni as $index => $item)
->>>>>>> a104908 (update)
                                                     <tr>
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>{{ \Illuminate\Support\Str::limit($item->nama, 20, '...') }}</td>

@@ -36,5 +36,9 @@
     {{-- sweetalert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
+    {{-- ckeditor --}}
+    <script src="{{ asset('assets/vendors/ckeditor-5/ckeditor.js') }}"></script>
+
   </head>
   <body>

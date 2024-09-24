@@ -56,8 +56,10 @@ Route::middleware(['notauthenticated', 'admin'])->group(function () {
 });
 
 Route::get('daftarcampaign', [CampaignPaymentController::class, 'daftarcampaign'])->name('campaignpayment.daftarcampaign');
-Route::get('/donasi/{slug}', [CampaignPaymentController::class, 'show'])->name('campaignpayment.show');
+Route::get('/donasi/show/{slug}', [CampaignPaymentController::class, 'show'])->name('campaignpayment.show');
+Route::get('/donasi/detail/{slug}', [CampaignPaymentController::class, 'detail'])->name('campaignpayment.detail');
 Route::post('donasi', [CampaignPaymentController::class, 'donasi'])->name('campaignpayment.donasi');
+
 Route::get('/donasi/payment/{donasi_id}', [CampaignPaymentController::class, 'payment'])->name('donasi.payment');
 Route::get('/payment/success/{donasi_id}', [CampaignPaymentController::class, 'payment_success'])->name('payment.success');
 Route::get('/payment/pending/{donasi_id}', [CampaignPaymentController::class, 'payment_pending'])->name('payment.pending');

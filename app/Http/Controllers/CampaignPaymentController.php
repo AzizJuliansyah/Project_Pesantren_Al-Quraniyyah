@@ -30,6 +30,13 @@ class CampaignPaymentController extends Controller
         return view('index.campaign.show', compact('campaign', 'alumni'));
     }
 
+    public function detail(string $slug)
+    {
+        $campaign = Campaign::where('slug', $slug)->first();
+        $donasi = Donasi::all();
+        return view('index.campaign.detail', compact('campaign', 'donasi'));
+    }
+
     public function donasi(Request $request)
     {
         $request->validate([
