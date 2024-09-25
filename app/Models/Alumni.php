@@ -60,6 +60,9 @@ class Alumni extends Model
         return $this->belongsTo(Status::class, 'status_id', 'id'); // 'status' is the foreign key
     }
 
-
+    public function donasi()
+    {
+        return $this->hasMany(Donasi::class);
+    }
     
 }

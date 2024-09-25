@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('tanggal_lahir');
             $table->text('alamat');
             $table->string('no_telepon');
-            $table->integer('angkatan');
+            $table->integer('angkatan_id');
             $table->string('pendidikan_terakhir');
             $table->string('status_id')->nullable();
             $table->string('usaha')->nullable();

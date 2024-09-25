@@ -18,7 +18,7 @@
                                                 <div class="form-group mb-4">
                                                     <h6 class="text-primary">Total Uang Kas Yang Masuk</h6>
                                                     <div class="d-flex align-items-center">
-                                                        <h2 class="me-2 fw-bold">Rp{{ number_format($chartData['total'], 2, ',', '.') }}</h2>
+                                                        <h2 class="me-2 fw-bold">Rp{{ number_format($saldoAwalUangKas, 2, ',', '.') }}</h2>
                                                         <h4 class="me-4 text-muted">IDR</h4>
                                                     </div>
                                                 </div>
@@ -34,7 +34,7 @@
                                                 <div class="form-group mb-4">
                                                     <h6 class="text-success">Total Saldo Uang Kas Sekarang</h6>
                                                     <div class="d-flex align-items-center">
-                                                        <h2 class="me-2 fw-bold">Rp{{ number_format($saldoUangKas, 2, ',', '.') }}</h2>
+                                                        <h2 class="me-2 fw-bold">Rp{{ number_format($saldoAkhirUangKas, 2, ',', '.') }}</h2>
                                                         <h4 class="me-4 text-muted">IDR</h4>
                                                     </div>
                                                 </div>
@@ -49,44 +49,66 @@
                                         <div class="col-12">
                                             <div class="card card-rounded">
                                                 <div class="card-body">
-                                                    <div class="d-sm-flex justify-content-between align-items-start">
+                                                    <div class="d-flex justify-content-between">
                                                         <div class="form-group">
                                                             <h3>{{ $campaign['nama'] }}</h3>
                                                         </div>
                                                         <div class="form-group">
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="form-group">
-                                                                    <a href="/uangkas" class="btn btn-primary btn-md mb-0 me-2"><i class="fa fa-eye"></i></a>
+                                                            <div class="d-flex justify-content-between">
+                                                                <div class="form-group me-2">
+                                                                    <a href="/uangkas" class="btn btn-primary btn-md "><i class="fa fa-eye"></i></a>
                                                                 </div>
-                                                                <div class="form-group">
-                                                                    <div class="dropdown">
-                                                                        <button class="btn btn-primary dropdown-toggle toggle-dark btn-md mb-0 me-0" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Filter By </button>
-                                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                                            <h6 class="dropdown-header">Filter Data By</h6>
-                                                                            <a href="/dashboard/uangkas" class="dropdown-item">Semua Bulan</a>
-                                                                            <h6 class="dropdown-header">Daftar Bulan</h6>
-                                                                            <a class="dropdown-item" href="/dashboard/uangkas?campaign_id={{ $campaign->id }}&month=1">Januari</a>
-                                                                            <a class="dropdown-item" href="/dashboard/uangkas?campaign_id={{ $campaign->id }}&month=2">Februari</a>
-                                                                            <a class="dropdown-item" href="/dashboard/uangkas?campaign_id={{ $campaign->id }}&month=3">Maret</a>
-                                                                            <a class="dropdown-item" href="/dashboard/uangkas?campaign_id={{ $campaign->id }}&month=4">April</a>
-                                                                            <a class="dropdown-item" href="/dashboard/uangkas?campaign_id={{ $campaign->id }}&month=5">Mei</a>
-                                                                            <a class="dropdown-item" href="/dashboard/uangkas?campaign_id={{ $campaign->id }}&month=6">Juni</a>
-                                                                            <a class="dropdown-item" href="/dashboard/uangkas?campaign_id={{ $campaign->id }}&month=7">Juli</a>
-                                                                            <a class="dropdown-item" href="/dashboard/uangkas?campaign_id={{ $campaign->id }}&month=8">Agustus</a>
-                                                                            <a class="dropdown-item" href="/dashboard/uangkas?campaign_id={{ $campaign->id }}&month=9">September</a>
-                                                                            <a class="dropdown-item" href="/dashboard/uangkas?campaign_id={{ $campaign->id }}&month=10">Oktober</a>
-                                                                            <a class="dropdown-item" href="/dashboard/uangkas?campaign_id={{ $campaign->id }}&month=11">November</a>
-                                                                            <a class="dropdown-item" href="/dashboard/uangkas?campaign_id={{ $campaign->id }}&month=12">Desember</a>
+                                                                <div class="form-group me-2">
+                                                                    <form action="/dashboard/uangkas?campaign_id={{ $campaign->id }}" method="get">
+                                                                        <div class="d-flex justify-content-between">
+                                                                            <div class="form-group me-2">
+                                                                                <select name="month" id="month" class="form-control">
+                                                                                    <optgroup label="Filter Data By">
+                                                                                        <option value="">Semua Bulan</option>
+                                                                                    </optgroup>
+                                                                                    <optgroup label="Bulan">
+                                                                                        <option value="1">Januari</option>
+                                                                                        <option value="2">Februari</option>
+                                                                                        <option value="3">Maret</option>
+                                                                                        <option value="4">April</option>
+                                                                                        <option value="5">Mei</option>
+                                                                                        <option value="6">Juni</option>
+                                                                                        <option value="7">Juli</option>
+                                                                                        <option value="8">Agustus</option>
+                                                                                        <option value="9">September</option>
+                                                                                        <option value="10">Oktober</option>
+                                                                                        <option value="11">November</option>
+                                                                                        <option value="12">Desember</option>
+                                                                                    </optgroup>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group me-2">
+                                                                                <div class="form-group">
+                                                                                    <input type="number" name="year" id="year" class="form-control" style="max-width: 6.5rem" min="2023" max="2100" step="1" placeholder="Tahun">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <button type="submit" class="btn btn-md btn-primary">Filter <i class="fa fa-filter"></i></button>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </form>
                                                                 </div>
                                                             </div>
+                                                            @if(request()->has('month') || request()->has('year'))
+                                                                <div class="float-end me-2">
+                                                                    <a href="{{ route('dashboard.uangkas') }}"><i class="fa fa-arrow-left me-1"></i>Kembali</a>
+                                                                </div>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        @if ($chartData['chartType'] == 'monthly')
-                                                            <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Semua Bulan</p>
-                                                            <div class="d-flex justify-content-between">
+                                                        @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
+                                                            @if ($chartData['chartType'] == 'all')
+                                                                <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Semua Bulan</p>
+                                                            @elseif ($chartData['chartType'] == 'yearly')
+                                                                <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Tahun <strong>{{ $selectedYear }}</strong></p>
+                                                            @endif
+                                                            <div class="d-flex aign-items-center">
                                                                 <div class="form-group">
                                                                     <div class="d-flex align-items-center">
                                                                         <h2 class="me-2 fw-bold">Rp{{ number_format($chartData['total'], 2, ',', '.') }}</h2>
@@ -108,9 +130,13 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        @else
-                                                            <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Bulan {{ $selectedMonthName }}</p>
-                                                            <div class="d-flex justify-content-between">
+                                                        @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
+                                                            @if ($chartData['chartType'] == 'monthInYear')
+                                                                <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Bulan <strong>{{ $selectedMonthName }}</strong> di Tahun <strong>{{ $selectedYear }}</strong></p>
+                                                            @elseif ($chartData['chartType'] == 'weekly')
+                                                                <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Bulan <strong>{{ $selectedMonthName }}</strong></p>
+                                                            @endif
+                                                            <div class="d-flex aign-items-center">
                                                                 <div class="form-group">
                                                                     <div class="d-flex align-items-center">
                                                                         <h2 class="me-2 fw-bold">Rp{{ number_format($chartData['totalWeekly'], 2, ',', '.') }}</h2>
@@ -138,9 +164,9 @@
 
                                                     <!-- Tampilkan chart bulanan atau mingguan sesuai dengan campaign yang dipilih -->
                                                     <div class="chartjs-bar-wrapper mt-3">
-                                                        @if ($chartData['chartType'] == 'monthly')
+                                                        @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
                                                             <canvas id="campaignChartMonthly"></canvas>
-                                                        @else
+                                                        @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
                                                             <canvas id="campaignChartWeekly"></canvas>
                                                         @endif
                                                     </div>
@@ -168,7 +194,7 @@
                                             const monthlyChartData = @json($chartData['monthlyTotals']);
                                             const weeklyChartData = @json($chartData['weeklyTotals']);
 
-                                            @if ($chartData['chartType'] == 'monthly')
+                                            @if ( $chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
                                                 // Chart Bulanan
                                                 const monthlyCanvas = document.getElementById('campaignChartMonthly');
                                                 new Chart(monthlyCanvas, {
@@ -195,7 +221,7 @@
                                                         }
                                                     }
                                                 });
-                                            @else
+                                            @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
                                                 // Chart Mingguan
                                                 const weeklyCanvas = document.getElementById('campaignChartWeekly');
                                                 new Chart(weeklyCanvas, {

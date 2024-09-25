@@ -12,7 +12,7 @@ class AngkatanController extends Controller
      */
     public function index()
     {
-        $data = Angkatan::orderBy('created_at', 'DESC')->get();;
+        $data = Angkatan::all();;
         return view('admin.angkatan.angkatan')->with('data', $data);
     }
 

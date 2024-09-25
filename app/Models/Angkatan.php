@@ -15,5 +15,10 @@ class Angkatan extends Model
         'info',
     ];
 
+    public function alumni()
+    {
+        return $this->hasMany(Alumni::class);
+    }
     
+
 }

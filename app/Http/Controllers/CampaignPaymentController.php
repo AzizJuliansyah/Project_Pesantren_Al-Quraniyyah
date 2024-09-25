@@ -50,12 +50,10 @@ class CampaignPaymentController extends Controller
             return redirect()->back()->with('error', 'Error, campaign tidak ditemukan.');
         }
 
-        // Conditional validation based on the campaign ID
         if ($campaign_id == 1) {
-            // Validation for campaign ID 1
             $request->validate([
                 'alumni_id' => 'required|exists:alumni,id',
-                'angkatan_id' => 'required|exists:angkatans,id',
+                'angkatan_id' => 'required|exists:angkatan,id',
                 'nominal' => 'required|numeric',
             ], [
                 'alumni_id.required' => 'Data Alumni Harus Diisi!',
