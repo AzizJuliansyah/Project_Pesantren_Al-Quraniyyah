@@ -47,7 +47,7 @@
               <div class="collapse" id="uangkas">
                 <ul class="nav flex-column sub-menu">
                   <li class="nav-item {{ request()->routeIs('dashboard.uangkas') ? 'active' : '' }}"> <a class="nav-link" href="{{ route('dashboard.uangkas') }}">Dashboard Uangkas</a></li>
-                  <li class="nav-item {{ request()->routeIs('uangkas.index') ? 'active' : '' }}"> <a class="nav-link" href="/uangkas">Data Uangkas</a></li>
+                  <li class="nav-item {{ request()->routeIs('uangkas.index', 'detail.uangkas') ? 'active' : '' }}"> <a class="nav-link" href="/uangkas">Data Uangkas</a></li>
                   <li class="nav-item {{ request()->routeIs('pengeluaran.uangkas') ? 'active' : '' }}"> <a class="nav-link" href="/pengeluaran/uangkas">Pengeluaran Uangkas</a></li>
                 </ul>
               </div>

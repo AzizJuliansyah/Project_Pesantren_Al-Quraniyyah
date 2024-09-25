@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Models\Alumni;
 use App\Models\Donasi;
 use App\Models\Angkatan;
 use App\Models\Campaign;
@@ -147,66 +148,56 @@ class UangKasController extends Controller
 
     public function detail(Request $request, $angkatan_id)
     {
+        $angkatan = Angkatan::findOrFail($angkatan_id);
 
-        $campaign = Campaign::findOrFail(1);
+        $alumni = Alumni::where('angkatan_id', $angkatan_id)->get();
 
         $query = Donasi::where('campaign_id', 1);
 
-        $angkatan = $request->input('angkatan');
+        $query->whereHas('alumni', function ($q) use ($angkatan_id) {
+            $q->where('angkatan_id', $angkatan_id);
+        });
+
         $dari = $request->input('dari');
         $hingga = $request->input('hingga');
         $nama = $request->input('nama');
         $order_id = $request->input('order_id');
-        $status = $request->input('status');
         $hasFilters = false;
 
-        // Filter berdasarkan tanggal
-        if ($request->has('dari') && $request->dari) {
-            $query->where('created_at', '>=', $dari);
+        if ($dari) {
+            $query->whereDate('created_at', '>=', $dari);
             $hasFilters = true;
         }
-        if ($request->has('hingga') && $request->hingga) {
-            $query->where('created_at', '<=', $hingga);
+        if ($hingga) {
+            $query->whereDate('created_at', '<=', $hingga);
             $hasFilters = true;
         }
-
-        // Filter berdasarkan angkatan
-        if ($request->has('angkatan') && $request->angkatan && $angkatan != 'default') {
-            $query->whereHas('alumni', function ($q) use ($angkatan) {
-                $q->where('angkatan_id', $angkatan);
-            });
-            $hasFilters = true;
-        }
-
-        // Filter berdasarkan nama
-        if ($request->has('nama') && $request->nama) {
+        if ($nama) {
             $query->whereHas('alumni', function ($q) use ($nama) {
-                $q->where('nama', 'LIKE', '%' . $nama . '%');
+                $q->where('nama', 'like', '%' . $nama . '%');
             });
             $hasFilters = true;
         }
-        if ($request->has('order_id') && $request->order_id) {
-            $query->where('order_id', 'like', '%' . $request->order_id . '%');
+        if ($order_id) {
+            $query->where('order_id', 'like', '%' . $order_id . '%');
             $hasFilters = true;
-        }
-        if ($request->has('status') && $request->status) {
-            $query->where('status', 'like', '%' . $request->status . '%');
-            $hasFilters = true;
-        } else {
-            $query->where('status', 'success');
         }
 
         $donasi = $query->get();
-        $angkatan = Angkatan::all();
+
+        foreach ($alumni as $alum) {
+            $alum->donasi = $donasi->where('alumni_id', $alum->id);
+        }
 
         return view('admin.uangkas.detail', [
             'donasi' => $donasi,
+            'alumni' => $alumni,
             'hasFilters' => $hasFilters,
-            'campaign' => $campaign,
             'angkatan' => $angkatan,
+            'angkatan_id' => $angkatan_id,
         ]);
-
     }
+
 
     public function pengeluaran()
     {

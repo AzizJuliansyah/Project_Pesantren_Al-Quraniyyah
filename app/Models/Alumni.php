@@ -62,7 +62,7 @@ class Alumni extends Model
 
     public function donasi()
     {
-        return $this->hasMany(Donasi::class);
+        return $this->hasMany(Donasi::class, 'alumni_id');
     }
     
 }

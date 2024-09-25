@@ -137,3 +137,15 @@
     border-radius: 5px;
 }
 
+.pagination-button {
+  margin: 5px;
+  padding: 5px 10px;
+  border: 1px solid #007bff;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.pagination-button.active {
+  background-color: #007bff;
+  color: white;
+}

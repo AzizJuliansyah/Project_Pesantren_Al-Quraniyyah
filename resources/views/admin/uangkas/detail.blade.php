@@ -22,34 +22,8 @@
                       @endif
                     </div>
                   </a>
-                    <form action="{{ route('uangkas.index') }}" method="get" id="filterForm" class="{{ !$hasFilters ? 'd-none' : '' }}">
+                    <form action="{{ route('detail.uangkas', $angkatan_id) }}" method="get" id="filterForm" class="{{ !$hasFilters ? 'd-none' : '' }}">
                       <div class="row">
-                        <div class="col-md-4">
-                          <div class="form-group row">
-                              <label>Pencarian Berdasarkan Nama Campaign</label>
-                              <div class="form-group">
-                                  <input type="text" class="form-control" name="nama" id="nama" value="{{ request('nama') }}" placeholder="Cari nama...">
-                              </div>
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="form-group row">
-                            <label>Angkatan Ke-</label>
-                            <div class="form-group">
-                                <select class="form-control" name="angkatan" id="angkatan">
-                                  <option value="default" disabled selected>Pilih Angkatan</option>
-                                  @foreach ($angkatan as $index => $item)
-                                    <option value="{{ $item->id }}" 
-                                        @if (request('angkatan') == $item->id) 
-                                            selected 
-                                        @endif>
-                                        {{ $item->angkatan }}
-                                    </option>
-                                  @endforeach
-                                </select>
-                            </div>
-                          </div>
-                        </div>
                         <div class="col-md-4">
                           <div class="form-group row">
                               <label>Pencarian Berdasarkan Order ID</label>
@@ -58,21 +32,16 @@
                               </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="row">
                         <div class="col-md-4">
                           <div class="form-group row">
-                            <label>Berdasarkan Status</label>
-                            <div class="form-group">
-                                <select class="form-control" name="status" id="status">
-                                  <option value="default" disabled selected>Pilih Status</option>
-                                  <option value="success" @if (request('status') == 'success')  selected  @endif>Success</option>
-                                  <option value="pending" @if (request('status') == 'pending')  selected  @endif>Pending</option>
-                                  <option value="error" @if (request('status') == 'error')  selected  @endif>Error</option>
-                                </select>
-                            </div>
+                              <label>Pencarian Berdasarkan Nama Alumni</label>
+                              <div class="form-group">
+                                  <input type="text" class="form-control" name="nama" id="nama" value="{{ request('nama') }}" placeholder="Cari nama...">
+                              </div>
                           </div>
                         </div>
+                      </div>
+                      <div class="row">
                         <div class="col-md-4">
                           <div class="form-group row">
                             <label>Tanggal donasi, Dari</label>
@@ -92,7 +61,7 @@
                       </div>
                       <button type="submit" class="btn btn-primary me-2" id="filterButton" disabled>Filter / Cari</button>
                       @if ($hasFilters)
-                        <a href="/campaign/detaildatacampaign/{{ encrypt($campaign->id) }}" class="btn btn-primary">Kembali</a>
+                        <a href="{{ route('detail.uangkas', $angkatan_id) }}" class="btn btn-primary">Kembali</a>
                       @endif
                     </form>
                 </div>
@@ -104,64 +73,89 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group">
-                                        <h4 class="card-title float-start">Daftar Nama Alumni yang bayar uang kas</h4>
+                                        <h4 class="card-title float-start">Daftar Nama-Nama di Angkata Ke - {{ $angkatan->angkatan }}</h4>
                                     </div>
                                 </div>
                                 <div class="row">
+                                  <div class="form-group mt-3">
+                                      <label><input type="checkbox" id="showPendingError"> Tampilkan transaksi pending dan error</label>
+                                  </div>
                                     <div class="table-responsive">
-                                        <table id="CampaignTable" class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Order ID</th>
-                                                    <th>Nama</th>
-                                                    <th>Angkatan Ke-</th>
-                                                    <th>Nominal</th>
-                                                    <th>Nominal Setelah di Bagi 2%</th>
-                                                    <th>Status</th>
-                                                    <th>Tanggal Donasi</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($donasi as $index => $item)
-                                                    <tr>
-                                                        <td>{{ $index + 1 }}</td>
-                                                        <td>
-                                                          <h5 class="text-dark" onclick="copyToClipboard('{{ $item->order_id }}')" style="cursor: pointer;">
-                                                              {{ $item->order_id }} 
-                                                              <i class="mdi mdi-content-copy" style="margin-left: 5px;"></i>
-                                                          </h5>
-                                                        </td>
-                                                        <td>{{ \Illuminate\Support\Str::limit($item->alumni->nama, 25, '...') }}</td>
-                                                        <td>
-                                                          <div class="d-flex justify-content-center">
-                                                            {{ $item->alumni->angkatan->angkatan }}
-                                                          </div>
-                                                        </td>
-                                                        <td>Rp{{ number_format($item->nominal, 0, ',', '.') }}</td>
-                                                        <td>
-                                                          <div class="d-flex justify-content-center">
-                                                            Rp{{ number_format($item->nominal2, 0, ',', '.') }}
-                                                          </div>
-                                                        </td>
-                                                        <td>
-                                                          @if ($item->status == 'success')
-                                                            <span class="btn btn-md btn-success">Success</span>
-                                                          @elseif ($item->status == 'pending')
-                                                            <span class="btn btn-md btn-warning">Pending</span>
-                                                          @elseif ($item->status == 'error')
-                                                            <span class="btn btn-md btn-danger">Error</span>
-                                                            @else
-                                                            <span>Unknown</span>
+                                      <table id="" class="table table-hover">
+                                          <thead>
+                                              <tr>
+                                                  <th>#</th>
+                                                  <th>Nama</th>
+                                                  <th colspan="2">Keterangan</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              @foreach ($alumni as $index => $item)
+                                                  @php
+                                                      $hasSuccess = $item->donasi->where('status', 'success')->isNotEmpty();
+                                                  @endphp
+                                                  <tr>
+                                                      <td>{{ $index + 1 }}</td>
+                                                      <td>{{ $item->nama }}</td>
+                                                      <td>
+                                                          @if ($item->donasi->isNotEmpty())
+                                                              <button type="button" class="btn btn-{{ $hasSuccess ? 'success' : 'danger' }} btn-md toggle-donasi" data-target="donasi-{{ $index }}">
+                                                                  Lihat Detail Uang Kas <i class="fa fa-chevron-down"></i>
+                                                              </button>
+                                                          @else
+                                                              <button type="button" class="btn btn-danger btn-md">Belum Bayar Uang Kas</button>
                                                           @endif
-                                                        </td>
-                                                        <td>{{ $item->created_at->format('H:i, d-F-Y') }}</td>
-                                                        
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                      </td>
+                                                      <td>
+                                                        <tr class="donasi-row d-none" id="donasi-{{ $index }}">
+                                                          <td></td>
+                                                          <td colspan="3">
+                                                              <table class="table table-striped table-bordered">
+                                                                  <thead>
+                                                                      <tr>
+                                                                          <th>#</th>
+                                                                          <th>Order ID</th>
+                                                                          <th>Nominal</th>
+                                                                          <th>Status</th>
+                                                                          <th>Tanggal Bayar Uang Kas</th>
+                                                                      </tr>
+                                                                  </thead>
+                                                                  <tbody>
+                                                                      @foreach ($item->donasi as $donasiIndex => $donasi)
+                                                                          <tr class="{{ $donasi->status == 'success' ? '' : 'd-none' }} donasi-row-status" data-status="{{ $donasi->status }}">
+                                                                              <td>{{ $donasiIndex + 1 }}</td>
+                                                                              <td>
+                                                                                  <h5 class="text-dark" onclick="copyToClipboard('{{ $donasi->order_id }}')" style="cursor: pointer;">
+                                                                                      {{ $donasi->order_id }}
+                                                                                      <i class="mdi mdi-content-copy" style="margin-left: 5px;"></i>
+                                                                                  </h5>
+                                                                              </td>
+                                                                              <td>Rp{{ number_format($donasi->nominal, 0, ',', '.') }}</td>
+                                                                              <td>
+                                                                                  @if ($donasi->status == 'success')
+                                                                                      <p class="text-success">{{ $donasi->status }}</p>
+                                                                                  @elseif ($donasi->status == 'pending')
+                                                                                      <p class="text-warning">{{ $donasi->status }}</p>
+                                                                                  @elseif ($donasi->status == 'error')
+                                                                                      <p class="text-danger">{{ $donasi->status }}</p>
+                                                                                  @else
+                                                                                      <p>Unknown</p>
+                                                                                  @endif
+                                                                              </td>
+                                                                              <td>{{ $donasi->created_at->format('H:i, d-F-Y') }}</td>
+                                                                          </tr>
+                                                                      @endforeach
+                                                                  </tbody>
+                                                              </table>
+                                                          </td>
+                                                      </tr>
+                                                      </td>
+                                                  </tr>
+                                              @endforeach
+                                          </tbody>
+                                      </table>
+                                        
+                                  </div>
                                 </div>
                             </div>
                         </div>
@@ -201,26 +195,18 @@
             });
 
             function validateForm() {
-                const angkatan = document.getElementById('angkatan').value;
-                const status = document.getElementById('status').value;
                 const dari = document.getElementById('dari').value;
                 const hingga = document.getElementById('hingga').value;
                 const nama = document.getElementById('nama').value;
                 const order_id = document.getElementById('order_id').value;
                 
-                const statusValid = status !== "default";
-                const angkatanValid = angkatan !== "default";
-
-                
-                if (nama || angkatanValid || statusValid || order_id || (dari && hingga)) {
+                if (nama || order_id || (dari && hingga)) {
                     filterButton.disabled = false;
                 } else {
                     filterButton.disabled = true;
                 }
             }
 
-            document.getElementById('status').addEventListener('change', validateForm);
-            document.getElementById('angkatan').addEventListener('change', validateForm);
             document.getElementById('dari').addEventListener('input', validateForm);
             document.getElementById('hingga').addEventListener('input', validateForm);
             document.getElementById('nama').addEventListener('input', validateForm);
@@ -248,9 +234,39 @@
                 });
             });
 
+
+            document.querySelectorAll('.toggle-donasi').forEach(function(button) {
+              button.addEventListener('click', function() {
+                  const targetId = this.getAttribute('data-target');
+                  const targetRow = document.getElementById(targetId);
+                  targetRow.classList.toggle('d-none');
+                  const icon = this.querySelector('i');
+                  icon.classList.toggle('fa-chevron-down');
+                  icon.classList.toggle('fa-chevron-up');
+              });
+            });
+
+            document.getElementById('showPendingError').addEventListener('change', function() {
+              const showPendingError = this.checked;
+
+              document.querySelectorAll('.donasi-row-status').forEach(function(row) {
+                  const status = row.getAttribute('data-status');
+                  if (status === 'success') {
+                      row.classList.remove('d-none');
+                  } else if (status === 'pending' || status === 'error') {
+                      if (showPendingError) {
+                          row.classList.remove('d-none');
+                      } else {
+                          row.classList.add('d-none');
+                      }
+                  }
+              });
+            });
             
 
         });
+
+        
 
         const Toast = Swal.mixin({
             toast: true,
@@ -278,7 +294,7 @@
     </script>
 
     <script>
-      new DataTable('#CampaignTable', {
+      new DataTable('#UangKasTable', {
         pageLength: 25,
         lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]],
       });
