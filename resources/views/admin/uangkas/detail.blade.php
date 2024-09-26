@@ -10,11 +10,141 @@
 
         <div class="main-panel">
             <div class="content-wrapper">
-              <div class="card mb-5">
+                <div class="row">
+                    <div class="col-lg-12 d-flex flex-column">
+                                      <div class="row flex-grow">
+                                          <div class="col-12">
+                                              <div class="card card-rounded shadow">
+                                                  <div class="card-body">
+                                                      <div class="d-flex justify-content-between" style="max-height: 70px">
+                                                          <div class="form-group">
+                                                              <h3>{{ $campaign['nama'] }} Angkata Ke - {{ $angkatan->angkatan }}</h3>
+                                                          </div>
+                                                          <div class="form-group">
+                                                              <div class="d-flex justify-content-between" style="max-height: 100%">
+                                                                  <div class="form-group">
+                                                                      <form action="/uangkas/detail/{{ $angkatan_id }}" method="get">
+                                                                          <div class="d-flex justify-content-between" style="max-height: 100%">
+                                                                              <div class="form-group me-2">
+                                                                                  <select name="month" id="month" class="form-control">
+                                                                                      <optgroup label="Filter Data By">
+                                                                                          <option value="">Semua Bulan</option>
+                                                                                      </optgroup>
+                                                                                      <optgroup label="Bulan">
+                                                                                          <option value="1">Januari</option>
+                                                                                          <option value="2">Februari</option>
+                                                                                          <option value="3">Maret</option>
+                                                                                          <option value="4">April</option>
+                                                                                          <option value="5">Mei</option>
+                                                                                          <option value="6">Juni</option>
+                                                                                          <option value="7">Juli</option>
+                                                                                          <option value="8">Agustus</option>
+                                                                                          <option value="9">September</option>
+                                                                                          <option value="10">Oktober</option>
+                                                                                          <option value="11">November</option>
+                                                                                          <option value="12">Desember</option>
+                                                                                      </optgroup>
+                                                                                  </select>
+                                                                              </div>
+                                                                              <div class="form-group me-2">
+                                                                                  <div class="form-group">
+                                                                                      <input type="number" name="year" id="year" class="form-control" style="max-width: 6.5rem" min="2023" max="2100" step="1" placeholder="Tahun">
+                                                                                  </div>
+                                                                              </div>
+                                                                              <div class="form-group">
+                                                                                  <button type="submit" class="btn btn-md btn-primary text-light">Filter <i class="fa fa-filter"></i></button>
+                                                                              </div>
+                                                                          </div>
+                                                                      </form>
+                                                                  </div>
+                                                              </div>
+                                                              @if(request()->has('month') || request()->has('year'))
+                                                                  <div class="float-end me-1">
+                                                                      <a href="{{ route('admin.index') }}"><i class="fa fa-arrow-left me-1"></i>Kembali</a>
+                                                                  </div>
+                                                              @endif
+                                                          </div>
+                                                      </div>
+                                                      <div class="row">
+                                                          @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
+                                                              @if ($chartData['chartType'] == 'all')
+                                                                  <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Semua Bulan</p>
+                                                              @elseif ($chartData['chartType'] == 'yearly')
+                                                                  <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Tahun <strong>{{ $selectedYear }}</strong></p>
+                                                              @endif
+                                                              <div class="d-flex aign-items-center">
+                                                                  <div class="form-group">
+                                                                      <div class="d-flex align-items-center">
+                                                                          <h2 class="me-2 fw-bold">Rp{{ number_format($chartData['total'], 2, ',', '.') }}</h2>
+                                                                          <h4 class="me-4">IDR</h4>
+                                                                      </div>
+                                                                  </div>
+                                                                  <div class="form-group">
+                                                                      <div class="row">
+                                                                          @if ($chartData['persentaseKenaikanBulanan'] > 0)
+                                                                              <h4 class="text-success">
+                                                                                  (+{{ number_format($chartData['persentaseKenaikanBulanan'], 2) }}%)
+                                                                              </h4>
+                                                                          @else
+                                                                              <h4 class="text-danger">
+                                                                                  ({{ number_format($chartData['persentaseKenaikanBulanan'], 2) }}%)
+                                                                              </h4>
+                                                                          @endif
+                                                                          <p>Dari Bulan sebelumnya</p>
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+                                                          @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
+                                                              @if ($chartData['chartType'] == 'monthInYear')
+                                                                  <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Bulan <strong>{{ $selectedMonthName }}</strong> di Tahun <strong>{{ $selectedYear }}</strong></p>
+                                                              @elseif ($chartData['chartType'] == 'weekly')
+                                                                  <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Bulan <strong>{{ $selectedMonthName }}</strong></p>
+                                                              @endif
+                                                              <div class="d-flex aign-items-center">
+                                                                  <div class="form-group">
+                                                                      <div class="d-flex align-items-center">
+                                                                          <h2 class="me-2 fw-bold">Rp{{ number_format($chartData['totalWeekly'], 2, ',', '.') }}</h2>
+                                                                          <h4 class="me-4">IDR</h4>
+                                                                      </div>
+                                                                  </div>
+                                                                  <div class="form-group">
+                                                                      <div class="row">
+                                                                          @if ($chartData['persentaseKenaikanMingguan'] > 0)
+                                                                              <h4 class="text-success">
+                                                                                  (+{{ number_format($chartData['persentaseKenaikanMingguan'], 2) }}%)
+                                                                              </h4>
+                                                                          @else
+                                                                              <h4 class="text-danger">
+                                                                                  ({{ number_format($chartData['persentaseKenaikanMingguan'], 2) }}%)
+                                                                              </h4>
+                                                                          @endif
+                                                                          <p>Dari Minggu sebelumnya</p>
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+                                                          @endif
+                                                      </div>
+
+
+                                                      <!-- Tampilkan chart bulanan atau mingguan sesuai dengan campaign yang dipilih -->
+                                                      <div class="chartjs-bar-wrapper mt-3">
+                                                          @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
+                                                              <canvas id="campaignChartMonthly"></canvas>
+                                                          @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
+                                                              <canvas id="campaignChartWeekly"></canvas>
+                                                          @endif
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                </div>
+              <div class="card mb-3 mt-5 shadow">
                 <div class="card-body">
                   <a  id="toggleFilterButton" class="text-dark normal-link">
                     <div class="d-flex align-items-center ">
-                      <h4 class="me-2">Filter Data Berdasarkan</h4>
+                      <h4 class="me-2">Filter Table Berdasarkan</h4>
                       @if ($hasFilters)
                         <i class="fa fa-chevron-up"></i>
                       @else
@@ -69,7 +199,7 @@
               
                 <div class="row">
                     <div class="col-lg-12 grid-margin stretch-card">
-                        <div class="card">
+                        <div class="card shadow">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group">
@@ -82,78 +212,79 @@
                                   </div>
                                     <div class="table-responsive">
                                       <table id="" class="table table-hover">
-                                          <thead>
-                                              <tr>
-                                                  <th>#</th>
-                                                  <th>Nama</th>
-                                                  <th colspan="2">Keterangan</th>
-                                              </tr>
-                                          </thead>
-                                          <tbody>
-                                              @foreach ($alumni as $index => $item)
-                                                  @php
-                                                      $hasSuccess = $item->donasi->where('status', 'success')->isNotEmpty();
-                                                  @endphp
-                                                  <tr>
-                                                      <td>{{ $index + 1 }}</td>
-                                                      <td>{{ $item->nama }}</td>
-                                                      <td>
-                                                          @if ($item->donasi->isNotEmpty())
-                                                              <button type="button" class="btn btn-{{ $hasSuccess ? 'success' : 'danger' }} btn-md toggle-donasi" data-target="donasi-{{ $index }}">
-                                                                  Lihat Detail Uang Kas <i class="fa fa-chevron-down"></i>
-                                                              </button>
-                                                          @else
-                                                              <button type="button" class="btn btn-danger btn-md">Belum Bayar Uang Kas</button>
-                                                          @endif
-                                                      </td>
-                                                      <td>
-                                                        <tr class="donasi-row d-none" id="donasi-{{ $index }}">
-                                                          <td></td>
-                                                          <td colspan="3">
-                                                              <table class="table table-striped table-bordered">
-                                                                  <thead>
-                                                                      <tr>
-                                                                          <th>#</th>
-                                                                          <th>Order ID</th>
-                                                                          <th>Nominal</th>
-                                                                          <th>Status</th>
-                                                                          <th>Tanggal Bayar Uang Kas</th>
-                                                                      </tr>
-                                                                  </thead>
-                                                                  <tbody>
-                                                                      @foreach ($item->donasi as $donasiIndex => $donasi)
-                                                                          <tr class="{{ $donasi->status == 'success' ? '' : 'd-none' }} donasi-row-status" data-status="{{ $donasi->status }}">
-                                                                              <td>{{ $donasiIndex + 1 }}</td>
-                                                                              <td>
-                                                                                  <h5 class="text-dark" onclick="copyToClipboard('{{ $donasi->order_id }}')" style="cursor: pointer;">
-                                                                                      {{ $donasi->order_id }}
-                                                                                      <i class="mdi mdi-content-copy" style="margin-left: 5px;"></i>
-                                                                                  </h5>
-                                                                              </td>
-                                                                              <td>Rp{{ number_format($donasi->nominal, 0, ',', '.') }}</td>
-                                                                              <td>
-                                                                                  @if ($donasi->status == 'success')
-                                                                                      <p class="text-success">{{ $donasi->status }}</p>
-                                                                                  @elseif ($donasi->status == 'pending')
-                                                                                      <p class="text-warning">{{ $donasi->status }}</p>
-                                                                                  @elseif ($donasi->status == 'error')
-                                                                                      <p class="text-danger">{{ $donasi->status }}</p>
-                                                                                  @else
-                                                                                      <p>Unknown</p>
-                                                                                  @endif
-                                                                              </td>
-                                                                              <td>{{ $donasi->created_at->format('H:i, d-F-Y') }}</td>
-                                                                          </tr>
-                                                                      @endforeach
-                                                                  </tbody>
-                                                              </table>
-                                                          </td>
-                                                      </tr>
-                                                      </td>
-                                                  </tr>
-                                              @endforeach
-                                          </tbody>
-                                      </table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Nama</th>
+            <th colspan="2">Keterangan</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($alumni as $index => $item)
+            @php
+                $hasSuccess = $item->donasi->where('status', 'success')->isNotEmpty();
+            @endphp
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $item->nama }}</td>
+                <td>
+                    @if ($item->donasi->isNotEmpty())
+                        <button type="button" class="btn btn-{{ $hasSuccess ? 'success' : 'danger' }} btn-md toggle-donasi" data-target="donasi-{{ $index }}">
+                            Lihat Detail Uang Kas <i class="fa fa-chevron-down"></i>
+                        </button>
+                    @else
+                        <button type="button" class="btn btn-danger btn-md">Belum Bayar Uang Kas</button>
+                    @endif
+                </td>
+                <td>
+                    <tr class="donasi-row d-none" id="donasi-{{ $index }}">
+                        <td></td>
+                        <td colspan="3">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Order ID</th>
+                                        <th>Nominal</th>
+                                        <th>Status</th>
+                                        <th>Tanggal Bayar Uang Kas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($item->donasi as $donasiIndex => $donasi)
+                                        <tr class="{{ $donasi->status == 'success' ? '' : 'd-none' }} donasi-row-status" data-status="{{ $donasi->status }}">
+                                            <td>{{ $donasiIndex + 1 }}</td>
+                                            <td>
+                                                <h5 class="text-dark" onclick="copyToClipboard('{{ $donasi->order_id }}')" style="cursor: pointer;">
+                                                    {{ $donasi->order_id }}
+                                                    <i class="mdi mdi-content-copy" style="margin-left: 5px;"></i>
+                                                </h5>
+                                            </td>
+                                            <td>Rp{{ number_format($donasi->nominal, 0, ',', '.') }}</td>
+                                            <td>
+                                                @if ($donasi->status == 'success')
+                                                    <p class="text-success">{{ $donasi->status }}</p>
+                                                @elseif ($donasi->status == 'pending')
+                                                    <p class="text-warning">{{ $donasi->status }}</p>
+                                                @elseif ($donasi->status == 'error')
+                                                    <p class="text-danger">{{ $donasi->status }}</p>
+                                                @else
+                                                    <p>Unknown</p>
+                                                @endif
+                                            </td>
+                                            <td>{{ $donasi->created_at->format('H:i, d-F-Y') }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
+
                                         
                                   </div>
                                 </div>
@@ -299,5 +430,71 @@
         lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]],
       });
     </script>
+
+    <script>
+        (function($) {
+          'use strict';
+          $(function() {
+            const monthlyChartData = @json($chartData['monthlyTotals']);
+            const weeklyChartData = @json($chartData['weeklyTotals']);
+
+            @if ( $chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
+              // Chart Bulanan
+              const monthlyCanvas = document.getElementById('campaignChartMonthly');
+              new Chart(monthlyCanvas, {
+                type: 'bar',
+                data: {
+                  labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+                  datasets: [{
+                    label: 'Donations per Month',
+                    data: monthlyChartData,
+                    backgroundColor: "#52CDFF",
+                    borderColor: "#52CDFF",
+                    borderWidth: 0,
+                    barPercentage: 0.35,
+                    fill: true,
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+              });
+            @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
+              // Chart Mingguan
+              const weeklyCanvas = document.getElementById('campaignChartWeekly');
+              new Chart(weeklyCanvas, {
+                type: 'bar',
+                data: {
+                  labels: ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4"],
+                  datasets: [{
+                    label: 'Donations per Week',
+                      data: weeklyChartData,
+                      backgroundColor: "#FFCD52",
+                      borderColor: "#FFCD52",
+                      borderWidth: 0,
+                      barPercentage: 0.35,
+                      fill: true,
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+              });
+            @endif
+          });
+        })(jQuery);
+      </script>
 </div>
 @include('template.footer')

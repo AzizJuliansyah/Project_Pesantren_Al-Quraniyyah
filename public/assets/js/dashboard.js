@@ -365,30 +365,30 @@
             url: "/alumni-statistics",
             method: "GET",
             success: function (response) {
-                // Ensure the response contains the expected data
                 const doughnutChartCanvas =
                     document.getElementById("doughnutChart");
 
-                // Create the doughnut chart using dynamic labels and data from the API response
+                // Helper function to generate a random color
+                function getRandomColor() {
+                    const letters = "0123456789ABCDEF";
+                    let color = "#";
+                    for (let i = 0; i < 6; i++) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color;
+                }
+
+                const randomColors = response.data.map(() => getRandomColor());
+
                 new Chart(doughnutChartCanvas, {
                     type: "doughnut",
                     data: {
-                        labels: response.labels, // Dynamic labels from the API response
+                        labels: response.labels,
                         datasets: [
                             {
-                                data: response.data, // Dynamic data from the API response
-                                backgroundColor: [
-                                    "#1F3BB3",
-                                    "#FDD0C7",
-                                    "#52CDFF",
-                                    "#81DADA",
-                                ],
-                                borderColor: [
-                                    "#1F3BB3",
-                                    "#FDD0C7",
-                                    "#52CDFF",
-                                    "#81DADA",
-                                ],
+                                data: response.data,
+                                backgroundColor: randomColors,
+                                borderColor: randomColors,
                             },
                         ],
                     },
@@ -444,6 +444,7 @@
             },
         });
     }
+
 
 
 

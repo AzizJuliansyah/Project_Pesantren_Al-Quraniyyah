@@ -20,9 +20,8 @@ class UangKasController extends Controller
 
     public function index(Request $request)
     {
-        // Mengambil semua angkatan
         $angkatan = Angkatan::with(['alumni.donasi' => function ($query) {
-            $query->where('status', 'success');
+            $query->where('status', 'success')->where('campaign_id', 1);
         }])->get();
 
         $totalUangKasPerAngkatan = $angkatan->map(function ($angkatan) {
@@ -50,8 +49,13 @@ class UangKasController extends Controller
         $campaign = Campaign::findOrFail($selectedCampaign);
 
         $uangkasQuery = Donasi::with('campaign')
-        ->where('status', 'success')
-        ->where('campaign_id', $selectedCampaign);
+                                ->where('status', 'success')
+                                ->where('campaign_id', $selectedCampaign)
+                                ->whereHas('alumni', function ($query) {
+                                    $query->where('angkatan_id', 5); // Filter untuk angkatan 1
+                                })
+                                ->get();
+
 
         if ($selectedYear) {
             $uangkasQuery->whereYear('created_at', $selectedYear);
@@ -61,7 +65,7 @@ class UangKasController extends Controller
             $uangkasQuery->whereMonth('created_at', $selectedMonth);
         }
 
-        $uangkas = $uangkasQuery->orderBy('id', 'DESC')->get();
+        $uangkas = $uangkasQuery;
 
         $monthlyTotals = array_fill(0, 12, 0);
         $weeklyTotals = array_fill(0, 4, 0);
@@ -149,54 +153,176 @@ class UangKasController extends Controller
     public function detail(Request $request, $angkatan_id)
     {
         $angkatan = Angkatan::findOrFail($angkatan_id);
-
-        $alumni = Alumni::where('angkatan_id', $angkatan_id)->get();
-
-        $query = Donasi::where('campaign_id', 1);
-
-        $query->whereHas('alumni', function ($q) use ($angkatan_id) {
-            $q->where('angkatan_id', $angkatan_id);
-        });
-
+        
         $dari = $request->input('dari');
         $hingga = $request->input('hingga');
         $nama = $request->input('nama');
         $order_id = $request->input('order_id');
         $hasFilters = false;
 
-        if ($dari) {
-            $query->whereDate('created_at', '>=', $dari);
-            $hasFilters = true;
-        }
-        if ($hingga) {
-            $query->whereDate('created_at', '<=', $hingga);
-            $hasFilters = true;
-        }
+        $query = Alumni::where('angkatan_id', $angkatan_id);
+
+
+        $selectedMonth = $request->input('month', null);
+        $selectedYear = $request->input('year', null);
+        $selectedCampaign = 1;
+        $campaign = Campaign::findOrFail($selectedCampaign);
+        $uangkasQuery = Donasi::with('campaign')
+            ->where('status', 'success')
+            ->where('campaign_id', $selectedCampaign)
+            ->whereHas('alumni', function ($query) use ($angkatan_id) {
+                $query->where('angkatan_id', $angkatan_id);
+            })
+            ->get();
+
+        
         if ($nama) {
-            $query->whereHas('alumni', function ($q) use ($nama) {
-                $q->where('nama', 'like', '%' . $nama . '%');
-            });
-            $hasFilters = true;
-        }
-        if ($order_id) {
-            $query->where('order_id', 'like', '%' . $order_id . '%');
+            $query->where('nama', 'like', '%' . $nama . '%');
             $hasFilters = true;
         }
 
-        $donasi = $query->get();
+        $alumni = $query->get();
+
+        $donasiQuery = Donasi::where('campaign_id', 1)
+            ->whereIn('alumni_id', $alumni->pluck('id'));
+
+        if ($dari) {
+            $donasiQuery->whereDate('created_at', '>=', $dari);
+            $hasFilters = true;
+        }
+        if ($hingga) {
+            $donasiQuery->whereDate('created_at', '<=', $hingga);
+            $hasFilters = true;
+        }
+        if ($order_id) {
+            $donasiQuery->where('order_id', 'like', '%' . $order_id . '%');
+            $hasFilters = true;
+        }
+
+        $donasi = $donasiQuery->get();
 
         foreach ($alumni as $alum) {
             $alum->donasi = $donasi->where('alumni_id', $alum->id);
         }
 
-        return view('admin.uangkas.detail', [
-            'donasi' => $donasi,
-            'alumni' => $alumni,
-            'hasFilters' => $hasFilters,
-            'angkatan' => $angkatan,
-            'angkatan_id' => $angkatan_id,
-        ]);
+        
+
+        // Filter by year if provided
+        if ($selectedYear) {
+            $uangkasQuery = $uangkasQuery->filter(function ($donasi) use ($selectedYear) {
+                return $donasi->created_at->year == $selectedYear; // Compare year
+            });
+        }
+
+        // Filter by month if provided
+        if ($selectedMonth) {
+            $uangkasQuery = $uangkasQuery->filter(function ($donasi) use ($selectedMonth) {
+                return $donasi->created_at->month == $selectedMonth; // Compare year
+            });
+        }
+
+        $uangkas = $uangkasQuery;
+
+        // Initialize totals
+        $monthlyTotals = array_fill(0, 12, 0);
+        $weeklyTotals = array_fill(0, 4, 0);
+        $totalUangKas = 0;
+
+        // Hitung total bulanan dan mingguan
+        foreach ($uangkas as $d) {
+            $month = (int) Carbon::parse($d->created_at)->format('m') - 1;
+            $monthlyTotals[$month] += floatval($d->nominal2);
+            $totalUangKas += floatval($d->nominal2);
+
+            // Hitung total mingguan hanya jika bulan dipilih
+            if ($month + 1 == $selectedMonth) {
+                $week = Carbon::parse($d->created_at)->weekOfMonth - 1;
+                $weeklyTotals[$week] += floatval($d->nominal2);
+            }
+        }
+
+        // Persentase kenaikan bulanan
+        $currentMonthIndex = Carbon::now()->format('m') - 1;
+        $previousMonthIndex = ($currentMonthIndex > 0) ? $currentMonthIndex - 1 : 11;
+        $bulanSebelumnya = $monthlyTotals[$previousMonthIndex];
+        $bulanIni = $monthlyTotals[$currentMonthIndex];
+        $persentaseKenaikanBulanan = $bulanSebelumnya == 0 ? ($bulanIni > 0 ? 100 : 0) : (($bulanIni - $bulanSebelumnya) / $bulanSebelumnya) * 100;
+
+        // Persentase kenaikan mingguan
+        $totalWeekly = array_sum($weeklyTotals);
+        $persentaseKenaikanMingguan = 0;
+        $mingguSekarang = $weeklyTotals[count($weeklyTotals) - 1] ?? 0;
+        $mingguSebelumnya = $weeklyTotals[count($weeklyTotals) - 2] ?? 0;
+
+        if ($mingguSebelumnya == 0 && $mingguSekarang > 0) {
+            $persentaseKenaikanMingguan = 100;
+        } elseif ($mingguSebelumnya > 0) {
+            $persentaseKenaikanMingguan = (($mingguSekarang - $mingguSebelumnya) / $mingguSebelumnya) * 100;
+        } elseif ($mingguSebelumnya < 0) {
+            $persentaseKenaikanMingguan = -abs($mingguSekarang) / abs($mingguSebelumnya) * 100;
+        }
+
+        // Determine chart type
+        $chartType = 'all'; // Default chart type
+        if ($request->year && $request->month) {
+            $chartType = 'monthInYear';
+        } elseif ($request->year) {
+            $chartType = 'yearly';
+        } elseif ($request->month) {
+            $chartType = 'weekly';
+        }
+
+        // Prepare chart data
+        $chartData = [
+            'chartType' => $chartType,
+            'monthlyTotals' => $monthlyTotals,
+            'weeklyTotals' => $weeklyTotals,
+            'persentaseKenaikanBulanan' => $persentaseKenaikanBulanan,
+            'persentaseKenaikanMingguan' => $persentaseKenaikanMingguan,
+            'total' => $totalUangKas,
+            'totalWeekly' => $totalWeekly,
+        ];
+
+        // Calculate saldo
+        $pengeluaranTotalUangKas = Pengeluaran::sum('nominal');
+        $saldoAwalUangKas = Donasi::where('campaign_id', $selectedCampaign)->sum('nominal2');
+        $saldoAkhirUangKas = $saldoAwalUangKas - $pengeluaranTotalUangKas;
+
+        // Prepare available months
+        $availableMonths = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+        ];
+        $selectedMonthName = $availableMonths[$selectedMonth] ?? '';
+
+        return view('admin.uangkas.detail', compact(
+            'campaign',
+            'chartData',
+            'selectedMonthName',
+            'selectedMonth',
+            'selectedYear',
+            'selectedCampaign',
+            'saldoAwalUangKas',
+            'pengeluaranTotalUangKas',
+            'saldoAkhirUangKas',
+            'donasi',
+            'alumni',
+            'hasFilters',
+            'angkatan',
+            'angkatan_id'
+        ));
     }
+
 
 
     public function pengeluaran()

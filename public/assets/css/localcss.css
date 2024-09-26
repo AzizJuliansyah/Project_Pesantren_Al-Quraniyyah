@@ -74,7 +74,7 @@
 }
 
 
-.hero-section {
+/* .hero-section {
         background-position: center;
         background-size: cover;
         height: 300px;
@@ -85,12 +85,10 @@
         color: white;
     }
 
-    /* Card customizations */
     .card {
         border-radius: 15px;
     }
 
-    /* Customize the overlay effect */
     .overlay {
         position: absolute;
         top: 0;
@@ -100,10 +98,9 @@
         background-color: rgba(0, 0, 0, 0.5);
     }
 
-    /* Customize button hover effect */
     .btn-success:hover {
         background-color: #218838;
-    }
+    } */
     
 .total-bayar {
     width: 100%;
