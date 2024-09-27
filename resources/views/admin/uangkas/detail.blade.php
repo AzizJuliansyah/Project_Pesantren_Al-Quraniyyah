@@ -170,22 +170,12 @@
                               </div>
                           </div>
                         </div>
-                      </div>
-                      <div class="row">
                         <div class="col-md-4">
                           <div class="form-group row">
-                            <label>Tanggal donasi, Dari</label>
-                            <div class="form-group">
-                                <input type="date" class="form-control" name="dari" id="dari" value="{{ request('dari') }}">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="form-group row">
-                            <label>Tanggal donasi, Hingga</label>
-                            <div class="form-group">
-                                <input type="date" class="form-control" name="hingga" id="hingga" value="{{ request('hingga') }}">
-                            </div>
+                              <label>Pencarian Berdasarkan Tahun Pembayaran</label>
+                              <div class="form-group">
+                                  <input type="number" class="form-control" name="tahun" id="tahun" min="2023" max="2100" value="{{ request('tahun') }}" placeholder="Tahun">
+                              </div>
                           </div>
                         </div>
                       </div>
@@ -207,83 +197,113 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                  <div class="form-group mt-3">
+                                    <div class="form-group mt-3">
                                       <label><input type="checkbox" id="showPendingError"> Tampilkan transaksi pending dan error</label>
-                                  </div>
+                                    </div>
                                     <div class="table-responsive">
-                                      <table id="" class="table table-hover">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Nama</th>
-            <th colspan="2">Keterangan</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($alumni as $index => $item)
-            @php
-                $hasSuccess = $item->donasi->where('status', 'success')->isNotEmpty();
-            @endphp
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $item->nama }}</td>
-                <td>
-                    @if ($item->donasi->isNotEmpty())
-                        <button type="button" class="btn btn-{{ $hasSuccess ? 'success' : 'danger' }} btn-md toggle-donasi" data-target="donasi-{{ $index }}">
-                            Lihat Detail Uang Kas <i class="fa fa-chevron-down"></i>
-                        </button>
-                    @else
-                        <button type="button" class="btn btn-danger btn-md">Belum Bayar Uang Kas</button>
-                    @endif
-                </td>
-                <td>
-                    <tr class="donasi-row d-none" id="donasi-{{ $index }}">
-                        <td></td>
-                        <td colspan="3">
-                            <table class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Order ID</th>
-                                        <th>Nominal</th>
-                                        <th>Status</th>
-                                        <th>Tanggal Bayar Uang Kas</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($item->donasi as $donasiIndex => $donasi)
-                                        <tr class="{{ $donasi->status == 'success' ? '' : 'd-none' }} donasi-row-status" data-status="{{ $donasi->status }}">
-                                            <td>{{ $donasiIndex + 1 }}</td>
-                                            <td>
-                                                <h5 class="text-dark" onclick="copyToClipboard('{{ $donasi->order_id }}')" style="cursor: pointer;">
-                                                    {{ $donasi->order_id }}
-                                                    <i class="mdi mdi-content-copy" style="margin-left: 5px;"></i>
-                                                </h5>
-                                            </td>
-                                            <td>Rp{{ number_format($donasi->nominal, 0, ',', '.') }}</td>
-                                            <td>
-                                                @if ($donasi->status == 'success')
-                                                    <p class="text-success">{{ $donasi->status }}</p>
-                                                @elseif ($donasi->status == 'pending')
-                                                    <p class="text-warning">{{ $donasi->status }}</p>
-                                                @elseif ($donasi->status == 'error')
-                                                    <p class="text-danger">{{ $donasi->status }}</p>
-                                                @else
-                                                    <p>Unknown</p>
-                                                @endif
-                                            </td>
-                                            <td>{{ $donasi->created_at->format('H:i, d-F-Y') }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
+                                        @if ($donasiByOrderId->isNotEmpty())
+                                            <h3>Donasi Berdasarkan Order ID</h3>
+                                            <table class="table table-hover mb-5">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Order ID</th>
+                                                        <th>Nama</th>
+                                                        <th>Nominal</th>
+                                                        <th>Tanggal Donasi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($donasiByOrderId as $index => $donasi)
+                                                        <tr>
+                                                            <td>{{ $index + 1 }}</td>
+                                                            <td>{{ $donasi->order_id }}</td>
+                                                            <td>{{ $donasi->alumni->nama }}</td>
+                                                            <td>Rp{{ number_format($donasi->nominal2, 0, ',', '.') }}</td>
+                                                            <td>{{ $donasi->created_at->format('H:i, d-F-Y') }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                            
+                                        @else
+                                        <div class="alert alert-warning" role="alert">
+                                            Tidak ada donasi yang ditemukan dengan Order ID "{{ request('order_id') }}" yang dicari.
+                                        </div>
+                                        @endif
+                                        <table id="" class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Nama</th>
+                                                    <th colspan="2">Keterangan</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($alumni as $index => $item)
+                                                    @php
+                                                        $hasSuccess = $item->donasi->where('status', 'success')->isNotEmpty();
+                                                    @endphp
+                                                    <tr>
+                                                        <td>{{ $index + 1 }}</td>
+                                                        <td>{{ $item->nama }}</td>
+                                                        <td>
+                                                            @if ($item->donasi->isNotEmpty())
+                                                                <button type="button" class="btn btn-{{ $hasSuccess ? 'success' : 'danger' }} btn-md toggle-donasi" data-target="donasi-{{ $index }}">
+                                                                    Lihat Detail Uang Kas <i class="fa fa-chevron-down"></i>
+                                                                </button>
+                                                            @else
+                                                                <button type="button" class="btn btn-danger btn-md">Belum Bayar Uang Kas</button>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <tr class="donasi-row d-none" id="donasi-{{ $index }}">
+                                                                <td></td>
+                                                                <td colspan="3">
+                                                                    <table class="table table-striped table-bordered">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>#</th>
+                                                                                <th>Order ID</th>
+                                                                                <th>Nominal</th>
+                                                                                <th>Status</th>
+                                                                                <th>Tanggal Bayar Uang Kas</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            @foreach ($item->donasi as $donasiIndex => $donasi)
+                                                                                <tr class="{{ $donasi->status == 'success' ? '' : 'd-none' }} donasi-row-status" data-status="{{ $donasi->status }}">
+                                                                                    <td>{{ $donasiIndex + 1 }}</td>
+                                                                                    <td>
+                                                                                        <h5 class="text-dark" onclick="copyToClipboard('{{ $donasi->order_id }}')" style="cursor: pointer;">
+                                                                                            {{ $donasi->order_id }}
+                                                                                            <i class="mdi mdi-content-copy" style="margin-left: 5px;"></i>
+                                                                                        </h5>
+                                                                                    </td>
+                                                                                    <td>Rp{{ number_format($donasi->nominal, 0, ',', '.') }}</td>
+                                                                                    <td>
+                                                                                        @if ($donasi->status == 'success')
+                                                                                            <p class="text-success">{{ $donasi->status }}</p>
+                                                                                        @elseif ($donasi->status == 'pending')
+                                                                                            <p class="text-warning">{{ $donasi->status }}</p>
+                                                                                        @elseif ($donasi->status == 'error')
+                                                                                            <p class="text-danger">{{ $donasi->status }}</p>
+                                                                                        @else
+                                                                                            <p>Unknown</p>
+                                                                                        @endif
+                                                                                    </td>
+                                                                                    <td>{{ $donasi->created_at->format('H:i, d-F-Y') }}</td>
+                                                                                </tr>
+                                                                            @endforeach
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
 
                                         
                                   </div>
@@ -326,20 +346,18 @@
             });
 
             function validateForm() {
-                const dari = document.getElementById('dari').value;
-                const hingga = document.getElementById('hingga').value;
+                const tahun = document.getElementById('tahun').value;
                 const nama = document.getElementById('nama').value;
                 const order_id = document.getElementById('order_id').value;
                 
-                if (nama || order_id || (dari && hingga)) {
+                if (nama || order_id || tahun) {
                     filterButton.disabled = false;
                 } else {
                     filterButton.disabled = true;
                 }
             }
 
-            document.getElementById('dari').addEventListener('input', validateForm);
-            document.getElementById('hingga').addEventListener('input', validateForm);
+            document.getElementById('tahun').addEventListener('input', validateForm);
             document.getElementById('nama').addEventListener('input', validateForm);
             document.getElementById('order_id').addEventListener('input', validateForm);
 
@@ -495,6 +513,6 @@
             @endif
           });
         })(jQuery);
-      </script>
+    </script>
 </div>
 @include('template.footer')

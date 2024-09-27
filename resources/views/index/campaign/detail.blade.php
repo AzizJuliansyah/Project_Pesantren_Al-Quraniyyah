@@ -30,7 +30,14 @@
 
                             <div class="form-group">
                                 <div class="col-12" id="toogleTargetDonasi" style="cursor: pointer">
-                                    <h5 class="text-dark">Donasi Terkumpul <i class="fa fa-chevron-down ms-2" id="toggleIcon"></i></h5>
+                                    <h5 class="text-dark">
+                                        @if ($campaign->id == 1)
+                                            Uang Kas Terkumpul
+                                        @else
+                                            Donasi Terkumpul
+                                        @endif 
+                                        <i class="fa fa-chevron-down ms-2" id="toggleIcon"></i>
+                                    </h5>
                                 </div>
                                 <div class="row d-none" id="chartDonasi">
                                     <div class="form-group">
@@ -53,7 +60,7 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="float-end" style="max-height: 60px">
-                                            <div class="form-groupfloat-end">
+                                            <div class="row">
                                                 <div class="dropdown">
                                                     <button class="btn btn-primary dropdown-toggle toggle-dark btn-md mb-0 me-0" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Filter By </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">

@@ -33,9 +33,15 @@
                                             <p>Rp{{ number_format($item->target, 0, ',', '.') }}</p>
                                         </div>
                                     </div>
-                                    <div class="card-footer">
-                                        <a href="{{ route('campaignpayment.detail', $item->slug) }}" class="btn btn-primary">Lihat <i class="fa fa-arrow-right ms-2"></i></a>
-                                    </div>
+                                    @if ($item->id == 1)
+                                        <div class="card-footer">
+                                            <a href="{{ route('campaignpayment.uangkas') }}" class="btn btn-primary">Bayar Uang Kas <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                    @else
+                                        <div class="card-footer">
+                                            <a href="{{ route('campaignpayment.detail', $item->slug) }}" class="btn btn-primary">Donasi Sekarang <i class="fa fa-arrow-right ms-2"></i></a>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             @empty

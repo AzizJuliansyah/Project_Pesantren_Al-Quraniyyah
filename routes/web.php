@@ -60,6 +60,7 @@ Route::middleware(['notauthenticated', 'admin'])->group(function () {
 Route::get('/daftarcampaign', [CampaignPaymentController::class, 'daftarcampaign'])->name('campaignpayment.daftarcampaign');
 Route::get('/donasi/show/{slug}', [CampaignPaymentController::class, 'show'])->name('campaignpayment.show');
 Route::get('/donasi/detail/{slug}', [CampaignPaymentController::class, 'detail'])->name('campaignpayment.detail');
+Route::get('/pembayaran/uangkas', [CampaignPaymentController::class, 'uangkas'])->name('campaignpayment.uangkas');
 Route::post('donasi', [CampaignPaymentController::class, 'donasi'])->name('campaignpayment.donasi');
 
 Route::get('/donasi/payment/{donasi_id}', [CampaignPaymentController::class, 'payment'])->name('donasi.payment');

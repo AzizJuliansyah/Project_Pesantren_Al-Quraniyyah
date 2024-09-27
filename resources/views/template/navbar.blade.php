@@ -1,4 +1,4 @@
-<nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row shadow">
+<nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row ">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
           @if (Auth::user())
             @if (request()->routeIs('home', 'campaignpayment.daftarcampaign', 'campaignpayment.show', 'campaignpayment.detail', 'donasi.payment', 'payment.success', 'payment.pending', 'payment.error'))

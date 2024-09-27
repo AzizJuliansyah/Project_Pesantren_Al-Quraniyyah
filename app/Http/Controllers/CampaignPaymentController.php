@@ -31,6 +31,116 @@ class CampaignPaymentController extends Controller
         return view('index.campaign.show', compact('campaign', 'alumni'));
     }
 
+    public function uangkas(Request $request)
+    {
+        $slug = "uang-kas";
+        $campaign = Campaign::where('slug', $slug)->firstOrFail();
+        $campaign_id = $campaign->id;
+
+        $totalDonasi = Donasi::where('campaign_id', $campaign_id)
+            ->where('status', 'success')
+            ->sum('nominal2');
+
+        $percentage = ($campaign->target > 0) ? ($totalDonasi / $campaign->target) * 100 : 0;
+
+        $selectedMonth = $request->input('month', null);
+
+        $donasiQuery = Donasi::with('campaign')
+            ->where('status', 'success')
+            ->where('campaign_id', $campaign_id);
+
+        if ($selectedMonth) {
+            $donasiQuery->whereMonth('created_at', $selectedMonth);
+        }
+
+        $donasi = $donasiQuery->orderBy('id', 'DESC')->get();
+
+        $monthlyTotals = array_fill(0, 12, 0);
+        $weeklyTotals = array_fill(0, 4, 0);
+        $totalDonasi = 0;
+
+        // Hitung total bulanan dan mingguan
+        foreach ($donasi as $d) {
+            $month = (int) Carbon::parse($d->created_at)->format('m') - 1;
+            $monthlyTotals[$month] += floatval($d->nominal2);
+            $totalDonasi += floatval($d->nominal2);
+
+            // Hitung total mingguan hanya jika bulan dipilih
+            if ($month + 1 == $selectedMonth) {
+                $week = Carbon::parse($d->created_at)->weekOfMonth - 1;
+                $weeklyTotals[$week] += floatval($d->nominal2);
+            }
+        }
+
+        // Persentase kenaikan bulanan
+        $currentMonthIndex = Carbon::now()->format('m') - 1;
+        $previousMonthIndex = ($currentMonthIndex > 0) ? $currentMonthIndex - 1 : 11;
+        $bulanSebelumnya = $monthlyTotals[$previousMonthIndex];
+        $bulanIni = $monthlyTotals[$currentMonthIndex];
+        $persentaseKenaikanBulanan = $bulanSebelumnya == 0 ? ($bulanIni > 0 ? 100 : 0) : (($bulanIni - $bulanSebelumnya) / $bulanSebelumnya) * 100;
+
+        // Persentase kenaikan mingguan
+        $totalWeekly = array_sum($weeklyTotals);
+        $persentaseKenaikanMingguan = 0;
+        $mingguSekarang = $weeklyTotals[count($weeklyTotals) - 1] ?? 0;
+        $mingguSebelumnya = $weeklyTotals[count($weeklyTotals) - 2] ?? 0;
+        if ($mingguSebelumnya == 0 && $mingguSekarang > 0) {
+            $persentaseKenaikanMingguan = 100;
+        } elseif ($mingguSebelumnya > 0) {
+            $persentaseKenaikanMingguan = (($mingguSekarang - $mingguSebelumnya) / $mingguSebelumnya) * 100;
+        } elseif ($mingguSebelumnya < 0) {
+            $persentaseKenaikanMingguan = -abs($mingguSekarang) / abs($mingguSebelumnya) * 100;
+        }
+
+
+        $chartType = 'monthly'; // Default chart type
+
+        if ($request->month) {
+            $chartType = 'weekly';
+        }
+
+        $chartData = [
+            'chartType' => $chartType,
+            'monthlyTotals' => $monthlyTotals,
+            'weeklyTotals' => $weeklyTotals,
+            'persentaseKenaikanBulanan' => $persentaseKenaikanBulanan,
+            'persentaseKenaikanMingguan' => $persentaseKenaikanMingguan,
+            'total' => $totalDonasi,
+            'totalWeekly' => $totalWeekly,
+        ];
+
+
+        $availableMonths = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+        ];
+        $selectedMonthName = $availableMonths[$selectedMonth] ?? '';
+
+        return view('index.campaign.detail', compact(
+            'campaign',
+            'chartData',
+            'selectedMonthName',
+            'selectedMonth',
+            'campaign_id',
+            'campaign',
+            'totalDonasi',
+            'percentage',
+            'campaign_id',
+            'slug'
+        ));
+    }
+
+
     public function detail(Request $request, string $slug)
     {
         $campaign = Campaign::where('slug', $slug)->firstOrFail();
