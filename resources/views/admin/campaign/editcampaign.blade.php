@@ -77,20 +77,21 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group row">
-                                                        <label class="col-sm-3 ">Server Key</label>
-                                                        <div class="col-sm-9">
-                                                            <input type="text" name="server_key" id="server_key" value="{{ $campaign->server_key }}" class="form-control" placeholder="Server Key Midtrans" required/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group row">
                                                         <label class="col-sm-3 ">Client Key</label>
                                                         <div class="col-sm-9">
                                                             <input type="text" name="client_key" id="client_key" value="{{ $campaign->client_key }}" class="form-control" placeholder="Client Key Midtrans" required>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-3 ">Server Key</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="text" name="server_key" id="server_key" value="{{ $campaign->server_key }}" class="form-control" placeholder="Server Key Midtrans" required/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
                                             </div>
                                             <p class="card-description"> Nominal info </p>
                                             
@@ -238,6 +239,31 @@
                 });
             });
         });
+
+        ClassicEditor
+            .create(document.querySelector('#info'), {
+                toolbar: [
+                    'heading', '|',
+                    'bold', 'italic', 'underline', 'strikethrough', 'code', '|',
+                    'link', '|',
+                    'bulletedList', 'numberedList', 'blockQuote', '|',
+                    'undo', 'redo'
+                ],
+            })
+            .then(editor => {
+
+                editor.editing.view.change(writer => {
+                    writer.setStyle(
+                        "height",
+                        "200px",
+                        editor.editing.view.document.getRoot()
+                    );
+                });
+                console.log(`Editor initialized for #jawabanText`);
+            })
+            .catch(error => {
+                console.error('There was an error initializing the editor', error);
+            });
 
     </script>
 </div>

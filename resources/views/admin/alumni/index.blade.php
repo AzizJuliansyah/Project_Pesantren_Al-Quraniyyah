@@ -10,7 +10,7 @@
 
         <div class="main-panel">
             <div class="content-wrapper">
-              <div class="card mb-5">
+              <div class="card mb-5 shadow">
                 <div class="card-body">
                   <a  id="toggleFilterButton" class="text-dark normal-link">
                     <div class="d-flex align-items-center ">
@@ -101,7 +101,7 @@
               
                 <div class="row">
                     <div class="col-lg-12 grid-margin stretch-card">
-                        <div class="card">
+                        <div class="card shadow">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group">

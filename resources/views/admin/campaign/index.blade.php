@@ -10,7 +10,7 @@
 
         <div class="main-panel">
             <div class="content-wrapper">
-              <div class="card mb-5">
+              <div class="card mb-5 shadow">
                 <div class="card-body">
                   <a  id="toggleFilterButton" class="text-dark normal-link">
                     <div class="d-flex align-items-center ">
@@ -74,7 +74,7 @@
               
                 <div class="row">
                     <div class="col-lg-12 grid-margin stretch-card">
-                        <div class="card">
+                        <div class="card shadow">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="form-group">
@@ -124,7 +124,7 @@
                                                             </a>
                                                             <!-- Modal -->
                                                             <div class="modal fade" id="detailcampaign{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="detailcampaignTitle" aria-hidden="true">
-                                                              <div class="modal-dialog modal-dialog-centered" role="document">
+                                                              <div class="modal-dialog  modal-dialog-centered" role="document">
                                                                 <div class="modal-content">
                                                                   <div class="modal-header">
                                                                     <h5 class="modal-title" id="exampleModalLongTitle">Detail Data Campaign {{ $item->nama }}</h5>
@@ -157,13 +157,7 @@
                                                                         <tr>
                                                                           <td colspan="3">
                                                                             <p>Info Campaign:</p>
-                                                                            <span class="alamat-text">{{ $item->info }}</span>
-                                                                          </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                          <td colspan="3">
-                                                                            <p>Server Key:</p>
-                                                                            <span class="alamat-text">{{ $item->server_key }}</span>
+                                                                            <span class="alamat-text">{!! $item->info !!}</span>
                                                                           </td>
                                                                         </tr>
                                                                         <tr>
@@ -172,6 +166,13 @@
                                                                             <span class="alamat-text">{{ $item->client_key }}</span>
                                                                           </td>
                                                                         </tr>
+                                                                        <tr>
+                                                                          <td colspan="3">
+                                                                            <p>Server Key:</p>
+                                                                            <span class="alamat-text">{{ $item->server_key }}</span>
+                                                                          </td>
+                                                                        </tr>
+                                                                        
                                                                       </tbody>
                                                                     </table>
                                                                     <table class="table table-bordered">

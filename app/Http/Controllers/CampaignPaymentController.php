@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Midtrans\Snap;
 use App\Models\Alumni;
 use App\Models\Donasi;
@@ -15,8 +16,8 @@ class CampaignPaymentController extends Controller
     public function daftarcampaign()
     {
         $campaign = Campaign::where('publish', 1)
-                            ->orderByRaw('id = 1 DESC, id DESC')
-                            ->get();
+            ->orderByRaw('id = 1 DESC, id DESC')
+            ->get();
 
         return view('index.campaign.daftarcampaign', compact('campaign'));
     }
@@ -30,12 +31,116 @@ class CampaignPaymentController extends Controller
         return view('index.campaign.show', compact('campaign', 'alumni'));
     }
 
-    public function detail(string $slug)
+    public function detail(Request $request, string $slug)
     {
-        $campaign = Campaign::where('slug', $slug)->first();
-        $donasi = Donasi::all();
-        return view('index.campaign.detail', compact('campaign', 'donasi'));
+        $campaign = Campaign::where('slug', $slug)->firstOrFail();
+        $campaign_id = $campaign->id;
+
+        $totalDonasi = Donasi::where('campaign_id', $campaign_id)
+            ->where('status', 'success')
+            ->sum('nominal2');
+
+        $percentage = ($campaign->target > 0) ? ($totalDonasi / $campaign->target) * 100 : 0;
+
+        $selectedMonth = $request->input('month', null);
+
+        $donasiQuery = Donasi::with('campaign')
+            ->where('status', 'success')
+            ->where('campaign_id', $campaign_id);
+
+        if ($selectedMonth) {
+            $donasiQuery->whereMonth('created_at', $selectedMonth);
+        }
+
+        $donasi = $donasiQuery->orderBy('id', 'DESC')->get();
+
+        $monthlyTotals = array_fill(0, 12, 0);
+        $weeklyTotals = array_fill(0, 4, 0);
+        $totalDonasi = 0;
+
+        // Hitung total bulanan dan mingguan
+        foreach ($donasi as $d) {
+            $month = (int) Carbon::parse($d->created_at)->format('m') - 1;
+            $monthlyTotals[$month] += floatval($d->nominal2);
+            $totalDonasi += floatval($d->nominal2);
+
+            // Hitung total mingguan hanya jika bulan dipilih
+            if ($month + 1 == $selectedMonth) {
+                $week = Carbon::parse($d->created_at)->weekOfMonth - 1;
+                $weeklyTotals[$week] += floatval($d->nominal2);
+            }
+        }
+
+        // Persentase kenaikan bulanan
+        $currentMonthIndex = Carbon::now()->format('m') - 1;
+        $previousMonthIndex = ($currentMonthIndex > 0) ? $currentMonthIndex - 1 : 11;
+        $bulanSebelumnya = $monthlyTotals[$previousMonthIndex];
+        $bulanIni = $monthlyTotals[$currentMonthIndex];
+        $persentaseKenaikanBulanan = $bulanSebelumnya == 0 ? ($bulanIni > 0 ? 100 : 0) : (($bulanIni - $bulanSebelumnya) / $bulanSebelumnya) * 100;
+
+        // Persentase kenaikan mingguan
+        $totalWeekly = array_sum($weeklyTotals);
+        $persentaseKenaikanMingguan = 0;
+        $mingguSekarang = $weeklyTotals[count($weeklyTotals) - 1] ?? 0;
+        $mingguSebelumnya = $weeklyTotals[count($weeklyTotals) - 2] ?? 0;
+        if ($mingguSebelumnya == 0 && $mingguSekarang > 0) {
+            $persentaseKenaikanMingguan = 100;
+        } elseif ($mingguSebelumnya > 0) {
+            $persentaseKenaikanMingguan = (($mingguSekarang - $mingguSebelumnya) / $mingguSebelumnya) * 100;
+        } elseif ($mingguSebelumnya < 0) {
+            $persentaseKenaikanMingguan = -abs($mingguSekarang) / abs($mingguSebelumnya) * 100;
+        }
+
+
+        $chartType = 'monthly'; // Default chart type
+
+        if ($request->month) {
+            $chartType = 'weekly';
+        }
+
+        $chartData = [
+            'chartType' => $chartType,
+            'monthlyTotals' => $monthlyTotals,
+            'weeklyTotals' => $weeklyTotals,
+            'persentaseKenaikanBulanan' => $persentaseKenaikanBulanan,
+            'persentaseKenaikanMingguan' => $persentaseKenaikanMingguan,
+            'total' => $totalDonasi,
+            'totalWeekly' => $totalWeekly,
+        ];
+
+
+        $availableMonths = [
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+        ];
+        $selectedMonthName = $availableMonths[$selectedMonth] ?? '';
+
+        return view('index.campaign.detail', compact(
+            'campaign',
+            'chartData',
+            'selectedMonthName',
+            'selectedMonth',
+            'campaign_id',
+            'campaign',
+            'totalDonasi',
+            'percentage',
+            'campaign_id',
+            'slug'
+        ));
     }
+
+
+
 
     public function donasi(Request $request)
     {
@@ -83,17 +188,14 @@ class CampaignPaymentController extends Controller
             }
         }
 
-        // Clean up the nominal value
         $cleanNominal = str_replace('.', '', $request->input('nominal'));
         $nominalAfter2Percent = $cleanNominal * 0.02;
         $finalNominal = $cleanNominal - $nominalAfter2Percent;
 
-        // Create order ID
         $orderId = uniqid();
 
-        // Create new donation entry
         $donasi = Donasi::create([
-            'alumni_id' => $alumni->id ?? null, // May be null for non-alumni campaigns
+            'alumni_id' => $alumni->id ?? null,
             'campaign_id' => $campaign->id,
             'nama' => $alumni->nama,
             'nominal' => $cleanNominal,
@@ -102,7 +204,6 @@ class CampaignPaymentController extends Controller
             'order_id' => $orderId,
         ]);
 
-        // Midtrans payment params
         $params = [
             'transaction_details' => [
                 'order_id' => $orderId,
@@ -113,21 +214,17 @@ class CampaignPaymentController extends Controller
             ],
         ];
 
-        // Midtrans configuration
         \Midtrans\Config::$serverKey = $campaign->server_key;
         \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
         \Midtrans\Config::$is3ds = true;
 
-        // Generate Snap token
         $snapToken = \Midtrans\Snap::getSnapToken($params);
         $donasi->snap_token = $snapToken;
         $donasi->save();
 
-        // Encrypt donation ID
         $encryptedId = Crypt::encrypt($donasi->id);
 
-        // Store session for payment access
         $request->session()->put('can_access_payment', true);
 
         return redirect()->route('donasi.payment', $encryptedId);
@@ -146,7 +243,7 @@ class CampaignPaymentController extends Controller
             $donasi = Donasi::findOrFail($decryptedId);
 
             $campaign = Campaign::findOrFail($donasi->campaign_id);
-            
+
             return view('index.campaign.payment', compact('donasi', 'campaign'));
         } catch (DecryptException $e) {
             return redirect('/')->with('error', 'Unauthorized access to payment page.');
@@ -169,7 +266,7 @@ class CampaignPaymentController extends Controller
 
             try {
                 $status = \Midtrans\Transaction::status($donasi->order_id);
-                
+
                 if ($status) {
                     if ($status->transaction_status == 'settlement' || $status->transaction_status == 'capture') {
                         $donasi->status = 'success';
@@ -189,7 +286,6 @@ class CampaignPaymentController extends Controller
                 $request->session()->forget('can_access_payment');
                 return redirect('/')->with('error', 'Gagal mendapatkan status transaksi. Silakan coba lagi.');
             }
-
         } catch (DecryptException $e) {
             $request->session()->forget('can_access_payment');
             return redirect('/')->with('error', 'Transaksi telah selesai.');
@@ -212,7 +308,7 @@ class CampaignPaymentController extends Controller
 
             try {
                 $status = \Midtrans\Transaction::status($donasi->order_id);
-                
+
                 if ($status) {
                     if ($status->transaction_status == 'pending') {
                         $donasi->status = 'pending';
@@ -232,7 +328,6 @@ class CampaignPaymentController extends Controller
                 $request->session()->forget('can_access_payment');
                 return redirect('/')->with('error', 'Gagal mendapatkan status transaksi. Silakan coba lagi.');
             }
-
         } catch (DecryptException $e) {
             $request->session()->forget('can_access_payment');
             return redirect('/')->with('error', 'Transaksi telah selesai.');
@@ -255,7 +350,7 @@ class CampaignPaymentController extends Controller
 
             try {
                 $status = \Midtrans\Transaction::status($donasi->order_id);
-                
+
                 if ($status) {
                     if ($status->transaction_status == 'deny' || $status->transaction_status == 'expire' || $status->transaction_status == 'cancel') {
                         $donasi->status = 'error';
@@ -275,13 +370,9 @@ class CampaignPaymentController extends Controller
                 $request->session()->forget('can_access_payment');
                 return redirect('/')->with('error', 'Gagal mendapatkan status transaksi. Silakan coba lagi.');
             }
-
         } catch (DecryptException $e) {
             $request->session()->forget('can_access_payment');
             return redirect('/')->with('error', 'Transaksi telah selesai.');
         }
     }
-
-
-
 }

@@ -1,11 +1,15 @@
-<nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row">
+<nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex align-items-top flex-row shadow">
         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start">
           @if (Auth::user())
-          <div class="me-3">
-            <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-bs-toggle="minimize">
-              <span class="icon-menu"></span>
-            </button>
-          </div>
+            @if (request()->routeIs('home', 'campaignpayment.daftarcampaign', 'campaignpayment.show', 'campaignpayment.detail', 'donasi.payment', 'payment.success', 'payment.pending', 'payment.error'))
+                
+            @else
+              <div class="me-3">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-bs-toggle="minimize">
+                  <span class="icon-menu"></span>
+                </button>
+              </div>
+            @endif
           @endif
           <div>
             <a class="navbar-brand brand-logo" href="/login">
@@ -18,6 +22,20 @@
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-top">
           <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              @if (Auth::user())
+                @if (request()->routeIs('campaignpayment.daftarcampaign', 'campaignpayment.show', 'campaignpayment.detail', 'donasi.payment', 'payment.success', 'payment.pending', 'payment.error'))
+                  <a href="/admin" class="btn btn-sm btn-inverse-info me-3">Dashboard</a>
+                  <a href="/" class="btn btn-sm btn-inverse-info">Home</a>
+                @elseif (request()->routeIs('home'))
+                  <a href="/admin" class="btn btn-sm btn-inverse-info me-3">Dashboard</a>
+                  <a href="/daftarcampaign" class="btn btn-sm btn-inverse-info">Daftar Campaign</a>
+                @else
+                  <a href="/" class="btn btn-sm btn-inverse-info me-3">Home</a>
+                  <a href="/daftarcampaign" class="btn btn-sm btn-inverse-info">Daftar Campaign</a>
+                @endif
+              @endif
+            </li>
             <li class="nav-item">
               @if (Auth::user())
               <h5 class="d-none d-md-block d-lg-block mt-2">Welcome Back, <span class="text-black fw-bold">{{ Auth::user()->name }}</span></h5>

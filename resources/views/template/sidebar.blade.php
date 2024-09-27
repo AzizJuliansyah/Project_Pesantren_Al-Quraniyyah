@@ -1,4 +1,4 @@
-<nav class="sidebar sidebar-offcanvas shadow" id="sidebar">
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
           <ul class="nav">
             <li class="nav-item {{ request()->routeIs('admin.index') ? 'active' : '' }}">
               <a class="nav-link" href="/admin">
@@ -46,17 +46,17 @@
               </a>
               <div class="collapse" id="uangkas">
                 <ul class="nav flex-column sub-menu">
-                  <li class="nav-item {{ request()->routeIs('dashboard.uangkas') ? 'active' : '' }}"> <a class="nav-link" href="{{ route('dashboard.uangkas') }}">Dashboard Uangkas</a></li>
+                  {{-- <li class="nav-item {{ request()->routeIs('dashboard.uangkas') ? 'active' : '' }}"> <a class="nav-link" href="{{ route('dashboard.uangkas') }}">Dashboard Uangkas</a></li> --}}
                   <li class="nav-item {{ request()->routeIs('uangkas.index', 'detail.uangkas') ? 'active' : '' }}"> <a class="nav-link" href="/uangkas">Data Uangkas</a></li>
                   <li class="nav-item {{ request()->routeIs('pengeluaran.uangkas') ? 'active' : '' }}"> <a class="nav-link" href="/pengeluaran/uangkas">Pengeluaran Uangkas</a></li>
                 </ul>
               </div>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
               <a class="nav-link" href="docs/documentation.html">
                 <i class="menu-icon mdi mdi-file-document"></i>
                 <span class="menu-title">Documentation</span>
               </a>
-            </li>
+            </li> --}}
           </ul>
         </nav>

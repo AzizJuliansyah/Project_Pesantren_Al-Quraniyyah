@@ -14,7 +14,7 @@
                                 <div class="col-lg-6 d-flex flex-column mt-3">
                                     <div class="row flex-grow">
                                         <div class="col-12">
-                                            <div class="card card-rounded">
+                                            <div class="card card-rounded shadow">
                                                 <div class="card-body">
                                                     
                                                     <div class="d-sm-flex justify-content-between align-items-start">

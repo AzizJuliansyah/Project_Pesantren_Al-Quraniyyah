@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Angkatan;
 use Carbon\Carbon;
 use App\Models\Donasi;
+use App\Models\Angkatan;
 use App\Models\Campaign;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 
@@ -334,18 +335,32 @@ class CampaignController extends Controller
      */
     public function destroy($id)
     {
-        $campaign = Campaign::findOrFail($id);
+        DB::beginTransaction();
 
-        if ($id == 1) {
-            return redirect()->route('campaign.index')->with('error', 'Unagkas Tidak Bisa di Hapus!');
+        try {
+            $campaign = Campaign::findOrFail($id);
+
+            if ($id == 1) {
+                return redirect()->route('campaign.index')->with('error', 'Uangkas Tidak Bisa di Hapus!');
+            }
+
+            if ($campaign->foto && Storage::disk('public')->exists($campaign->foto)) {
+                Storage::disk('public')->delete($campaign->foto);
+            }
+
+            Donasi::where('campaign_id', $campaign->id)->delete();
+
+            $campaign->delete();
+
+            DB::commit();
+
+            return redirect()->route('campaign.index')->with('success', 'Campaign dan donasi terkait berhasil dihapus!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->route('campaign.index')->with('error', 'Gagal menghapus campaign, donasi tidak dihapus.');
         }
-
-        if ($campaign->foto && Storage::disk('public')->exists($campaign->foto)) {
-            Storage::disk('public')->delete($campaign->foto);
-        }
-
-        $campaign->delete();
-
-        return redirect()->route('campaign.index')->with('success', 'Campaign deleted successfully!');
     }
+
+
 }

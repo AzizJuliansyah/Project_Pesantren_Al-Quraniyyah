@@ -77,7 +77,7 @@
 
 
                   <div class="mt-3 d-grid gap-2">
-                    <button type="submit" id="BayarButton" class="btn btn-primary btn-lg btn-block auth-form-btn" disabled>Bayar</button>
+                    <button type="submit" id="BayarButton" class="btn btn-primary btn-lg btn-block auth-form-btn" disabled>Lanjutkan</button>
                   </div>
                 </form>
                 <p class="text-description text-center"><a href="/daftarcampaign">Kembali Ke Halaman Daftar Campaign</a></p>

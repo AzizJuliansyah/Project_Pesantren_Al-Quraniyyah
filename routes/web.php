@@ -12,7 +12,7 @@ use App\Http\Controllers\CampaignPaymentController;
 
 Route::get('/', function () {
     return view('index.index');
-});
+})->name('home');
 
 Route::middleware(['authenticated'])->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
@@ -57,7 +57,7 @@ Route::middleware(['notauthenticated', 'admin'])->group(function () {
 
 });
 
-Route::get('daftarcampaign', [CampaignPaymentController::class, 'daftarcampaign'])->name('campaignpayment.daftarcampaign');
+Route::get('/daftarcampaign', [CampaignPaymentController::class, 'daftarcampaign'])->name('campaignpayment.daftarcampaign');
 Route::get('/donasi/show/{slug}', [CampaignPaymentController::class, 'show'])->name('campaignpayment.show');
 Route::get('/donasi/detail/{slug}', [CampaignPaymentController::class, 'detail'])->name('campaignpayment.detail');
 Route::post('donasi', [CampaignPaymentController::class, 'donasi'])->name('campaignpayment.donasi');
