@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Alumni;
 use App\Models\Donasi;
 use App\Models\Status;
+use App\Models\Angkatan;
 use App\Models\Campaign;
 use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
@@ -20,7 +21,6 @@ class AdminController extends Controller
         $totalAlumni = Alumni::count();
         
         $status = Status::withCount('alumni')->get();
-
 
         $selectedMonth = $request->input('month', null);
         $selectedYear = $request->input('year', null);
@@ -137,6 +137,14 @@ class AdminController extends Controller
     }
 
 
+
+
+    public function getAlumniData()
+    {
+        $alumniPerAngkatan = Angkatan::withCount('alumni')->get();
+
+        return response()->json($alumniPerAngkatan);
+    }
 
 
 

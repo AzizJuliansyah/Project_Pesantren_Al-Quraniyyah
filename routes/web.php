@@ -59,8 +59,11 @@ Route::middleware(['notauthenticated', 'admin'])->group(function () {
 
 Route::get('/daftarcampaign', [CampaignPaymentController::class, 'daftarcampaign'])->name('campaignpayment.daftarcampaign');
 Route::get('/donasi/show/{slug}', [CampaignPaymentController::class, 'show'])->name('campaignpayment.show');
+
+Route::get('/pembayaran/uangkas', [UangKasController::class, 'pembayaranuangkas'])->name('pembayaran.uangkas');
+Route::get('/pembayaran/uangkas/angkatan/{angkatan_id}', [UangKasController::class, 'detailuangkas'])->name('pembayaran.uangkas.angkatan');
+
 Route::get('/donasi/detail/{slug}', [CampaignPaymentController::class, 'detail'])->name('campaignpayment.detail');
-Route::get('/pembayaran/uangkas', [CampaignPaymentController::class, 'uangkas'])->name('campaignpayment.uangkas');
 Route::post('donasi', [CampaignPaymentController::class, 'donasi'])->name('campaignpayment.donasi');
 
 Route::get('/donasi/payment/{donasi_id}', [CampaignPaymentController::class, 'payment'])->name('donasi.payment');
@@ -77,6 +80,7 @@ Route::get('/payment/error/{donasi_id}', [CampaignPaymentController::class, 'pay
 
 Route::get('/get-alumni-names', [AdminController::class, 'getNames']);
 Route::get('/get-alumni-details/{id}', [AdminController::class, 'getDetails']);
+Route::get('/get-alumni-data', [AdminController::class, 'getAlumniData']);
 
 
 

@@ -101,93 +101,91 @@
                             </div>
                         </div>
                         <div class="col-lg-8 d-flex flex-column">
-    <div class="row flex-grow">
-        <div class="col-12">
-            <div class="card card-rounded shadow">
-                <div class="card-body" style="overflow-x: auto;">
-                    <div class="d-flex justify-content-between" style="max-height: 60px; white-space: nowrap;">
-                        <div class="form-group">
-                            <h3>{{ $campaign['nama'] }}</h3>
+                            <div class="row flex-grow">
+                                <div class="col-12">
+                                    <div class="card card-rounded shadow">
+                                        <div class="card-body" style="overflow-x: auto;">
+                                            <div class="d-flex justify-content-between" style="max-height: 60px; white-space: nowrap;">
+                                                <div class="form-group">
+                                                    <h3>{{ $campaign['nama'] }}</h3>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
+                                                    @if ($chartData['chartType'] == 'all')
+                                                        <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Semua Bulan</p>
+                                                    @elseif ($chartData['chartType'] == 'yearly')
+                                                        <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Tahun <strong>{{ $selectedYear }}</strong></p>
+                                                    @endif
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="form-group">
+                                                            <div class="d-flex align-items-center">
+                                                                <h2 class="me-2 fw-bold">Rp{{ number_format($chartData['total'], 2, ',', '.') }}</h2>
+                                                                <h4 class="me-4">IDR</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                @if ($chartData['persentaseKenaikanBulanan'] > 0)
+                                                                    <h4 class="text-success">
+                                                                        (+{{ number_format($chartData['persentaseKenaikanBulanan'], 2) }}%)
+                                                                    </h4>
+                                                                @else
+                                                                    <h4 class="text-danger">
+                                                                        ({{ number_format($chartData['persentaseKenaikanBulanan'], 2) }}%)
+                                                                    </h4>
+                                                                @endif
+                                                                <p>Dari Bulan sebelumnya</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
+                                                    @if ($chartData['chartType'] == 'monthInYear')
+                                                        <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Bulan <strong>{{ $selectedMonthName }}</strong> di Tahun <strong>{{ $selectedYear }}</strong></p>
+                                                    @elseif ($chartData['chartType'] == 'weekly')
+                                                        <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Bulan <strong>{{ $selectedMonthName }}</strong></p>
+                                                    @endif
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="form-group">
+                                                            <div class="d-flex align-items-center">
+                                                                <h2 class="me-2 fw-bold">Rp{{ number_format($chartData['totalWeekly'], 2, ',', '.') }}</h2>
+                                                                <h4 class="me-4">IDR</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                @if ($chartData['persentaseKenaikanMingguan'] > 0)
+                                                                    <h4 class="text-success">
+                                                                        (+{{ number_format($chartData['persentaseKenaikanMingguan'], 2) }}%)
+                                                                    </h4>
+                                                                @else
+                                                                    <h4 class="text-danger">
+                                                                        ({{ number_format($chartData['persentaseKenaikanMingguan'], 2) }}%)
+                                                                    </h4>
+                                                                @endif
+                                                                <p>Dari Minggu sebelumnya</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </div>
+
+                                            <!-- Tampilkan chart bulanan atau mingguan sesuai dengan campaign yang dipilih -->
+                                            <div class="chartjs-bar-wrapper mt-3">
+                                                @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
+                                                    <canvas id="campaignChartMonthly"></canvas>
+                                                @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
+                                                    <canvas id="campaignChartWeekly"></canvas>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
-                            @if ($chartData['chartType'] == 'all')
-                                <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Semua Bulan</p>
-                            @elseif ($chartData['chartType'] == 'yearly')
-                                <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Tahun <strong>{{ $selectedYear }}</strong></p>
-                            @endif
-                            <div class="d-flex align-items-center">
-                                <div class="form-group">
-                                    <div class="d-flex align-items-center">
-                                        <h2 class="me-2 fw-bold">Rp{{ number_format($chartData['total'], 2, ',', '.') }}</h2>
-                                        <h4 class="me-4">IDR</h4>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        @if ($chartData['persentaseKenaikanBulanan'] > 0)
-                                            <h4 class="text-success">
-                                                (+{{ number_format($chartData['persentaseKenaikanBulanan'], 2) }}%)
-                                            </h4>
-                                        @else
-                                            <h4 class="text-danger">
-                                                ({{ number_format($chartData['persentaseKenaikanBulanan'], 2) }}%)
-                                            </h4>
-                                        @endif
-                                        <p>Dari Bulan sebelumnya</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
-                            @if ($chartData['chartType'] == 'monthInYear')
-                                <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Bulan <strong>{{ $selectedMonthName }}</strong> di Tahun <strong>{{ $selectedYear }}</strong></p>
-                            @elseif ($chartData['chartType'] == 'weekly')
-                                <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Bulan <strong>{{ $selectedMonthName }}</strong></p>
-                            @endif
-                            <div class="d-flex align-items-center">
-                                <div class="form-group">
-                                    <div class="d-flex align-items-center">
-                                        <h2 class="me-2 fw-bold">Rp{{ number_format($chartData['totalWeekly'], 2, ',', '.') }}</h2>
-                                        <h4 class="me-4">IDR</h4>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        @if ($chartData['persentaseKenaikanMingguan'] > 0)
-                                            <h4 class="text-success">
-                                                (+{{ number_format($chartData['persentaseKenaikanMingguan'], 2) }}%)
-                                            </h4>
-                                        @else
-                                            <h4 class="text-danger">
-                                                ({{ number_format($chartData['persentaseKenaikanMingguan'], 2) }}%)
-                                            </h4>
-                                        @endif
-                                        <p>Dari Minggu sebelumnya</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-
-                    <!-- Tampilkan chart bulanan atau mingguan sesuai dengan campaign yang dipilih -->
-                    <div class="chartjs-bar-wrapper mt-3">
-                        @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
-                            <canvas id="campaignChartMonthly"></canvas>
-                        @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
-                            <canvas id="campaignChartWeekly"></canvas>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
                     </div>
                 </div>
                 <div class="row mt-2">
-                    
                     <div class="col-lg-12" id="totalUangKasPerAngkatan">
                         <div class="row d-flex">
                             @foreach ($totalUangKasPerAngkatan  as $indexx => $item)
@@ -231,73 +229,73 @@
         }
     </script>
     <script>
-    (function($) {
-      'use strict';
-        $(function() {
-            const monthlyChartData = @json($chartData['monthlyTotals']);
-            const weeklyChartData = @json($chartData['weeklyTotals']);
+        (function($) {
+        'use strict';
+            $(function() {
+                const monthlyChartData = @json($chartData['monthlyTotals']);
+                const weeklyChartData = @json($chartData['weeklyTotals']);
 
-            // Cek ukuran layar
-            const isSmallScreen = window.innerWidth < 768; // Misalnya, untuk layar di bawah 768px
+                // Cek ukuran layar
+                const isSmallScreen = window.innerWidth < 768; // Misalnya, untuk layar di bawah 768px
 
-            @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
-            // Chart Bulanan
-            const monthlyCanvas = document.getElementById('campaignChartMonthly');
-            new Chart(monthlyCanvas, {
-                type: 'bar',
-                data: {
-                  labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
-                  datasets: [{
-                      label: 'Donations per Month',
-                      data: monthlyChartData,
-                      backgroundColor: "#52CDFF",
-                      borderColor: "#52CDFF",
-                      borderWidth: 0,
-                      barPercentage: 0.35,
-                      fill: true,
-                  }]
-                },
-                options: {
-                  responsive: !isSmallScreen, // Non-responsif di layar kecil
-                  maintainAspectRatio: isSmallScreen, // Hanya pertahankan aspect ratio di layar kecil
-                  scales: {
-                    y: {
-                      beginAtZero: true
+                @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
+                // Chart Bulanan
+                const monthlyCanvas = document.getElementById('campaignChartMonthly');
+                new Chart(monthlyCanvas, {
+                    type: 'bar',
+                    data: {
+                    labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+                    datasets: [{
+                        label: 'Donations per Month',
+                        data: monthlyChartData,
+                        backgroundColor: "#52CDFF",
+                        borderColor: "#52CDFF",
+                        borderWidth: 0,
+                        barPercentage: 0.35,
+                        fill: true,
+                    }]
+                    },
+                    options: {
+                    responsive: !isSmallScreen, // Non-responsif di layar kecil
+                    maintainAspectRatio: isSmallScreen, // Hanya pertahankan aspect ratio di layar kecil
+                    scales: {
+                        y: {
+                        beginAtZero: true
+                        }
                     }
-                  }
-                }
-            });
-            @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
-            // Chart Mingguan
-            const weeklyCanvas = document.getElementById('campaignChartWeekly');
-            new Chart(weeklyCanvas, {
-                type: 'bar',
-                data: {
-                  labels: ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4"],
-                  datasets: [{
-                      label: 'Donations per Week',
-                      data: weeklyChartData,
-                      backgroundColor: "#FFCD52",
-                      borderColor: "#FFCD52",
-                      borderWidth: 0,
-                      barPercentage: 0.35,
-                      fill: true,
-                  }]
-                },
-                options: {
-                  responsive: !isSmallScreen, // Non-responsif di layar kecil
-                  maintainAspectRatio: isSmallScreen, // Pertahankan rasio aspek di layar kecil
-                  scales: {
-                    y: {
-                      beginAtZero: true
                     }
-                  }
-                }
+                });
+                @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
+                // Chart Mingguan
+                const weeklyCanvas = document.getElementById('campaignChartWeekly');
+                new Chart(weeklyCanvas, {
+                    type: 'bar',
+                    data: {
+                    labels: ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4"],
+                    datasets: [{
+                        label: 'Donations per Week',
+                        data: weeklyChartData,
+                        backgroundColor: "#FFCD52",
+                        borderColor: "#FFCD52",
+                        borderWidth: 0,
+                        barPercentage: 0.35,
+                        fill: true,
+                    }]
+                    },
+                    options: {
+                    responsive: !isSmallScreen, // Non-responsif di layar kecil
+                    maintainAspectRatio: isSmallScreen, // Pertahankan rasio aspek di layar kecil
+                    scales: {
+                        y: {
+                        beginAtZero: true
+                        }
+                    }
+                    }
+                });
+                @endif
             });
-            @endif
-        });
-    })(jQuery);
-</script>
+        })(jQuery);
+    </script>
 
 </div>
 @include('template.footer')

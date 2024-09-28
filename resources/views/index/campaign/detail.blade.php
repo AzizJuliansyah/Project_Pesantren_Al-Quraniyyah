@@ -86,14 +86,14 @@
                                         <div class="row">
                                             @if ($chartData['chartType'] == 'monthly')
                                                 <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Semua Bulan</p>
-                                                <div class="d-flex aign-items-center">
-                                                    <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-sm-12">
                                                         <div class="d-flex align-items-center">
                                                             <h2 class="me-2 fw-bold">Rp{{ number_format($chartData['total'], 2, ',', '.') }}</h2>
                                                             <h4 class="me-4">IDR</h4>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">
+                                                    <div class="col-lg-6 col-sm-12">
                                                         <div class="row">
                                                             @if ($chartData['persentaseKenaikanBulanan'] > 0)
                                                                 <h4 class="text-success">
@@ -110,14 +110,14 @@
                                                 </div>
                                             @elseif ($chartData['chartType'] == 'weekly')
                                                 <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk Bulan <strong>{{ $selectedMonthName }}</strong></p>
-                                                <div class="d-flex aign-items-center">
-                                                    <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-sm-12">
                                                         <div class="d-flex align-items-center">
                                                             <h2 class="me-2 fw-bold">Rp{{ number_format($chartData['totalWeekly'], 2, ',', '.') }}</h2>
                                                             <h4 class="me-4">IDR</h4>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">
+                                                    <div class="col-lg-6 col-sm-12">
                                                         <div class="row">
                                                             @if ($chartData['persentaseKenaikanMingguan'] > 0)
                                                                 <h4 class="text-success">
