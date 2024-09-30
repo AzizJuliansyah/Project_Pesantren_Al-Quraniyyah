@@ -8,11 +8,8 @@
                 <div class="row mt-2">
                     <div class="col-lg-3">
                         <div class="sticky-copywriting">
-                            <h2>Bantu Wujudkan Perubahan Melalui Donasi Anda!</h2>
-                            <p>Selamat datang di halaman campaign donasi kami, 
-                                di mana setiap kontribusi Anda dapat menginspirasi perubahan nyata. 
-                                Bersama kita bisa membantu banyak orang dan komunitas yang membutuhkan dukungan. 
-                                Pilih campaign yang paling menggugah hati Anda dan mari kita mulai bergerak bersama untuk membuat dunia menjadi tempat yang lebih baik.</p>
+                            <h2>{{ $heading->item }}</h2>
+                            <p>{{ $subheading->item }}</p>
                         </div>
                     </div>
                     <div class="col-lg-9">

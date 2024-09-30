@@ -11,8 +11,10 @@ use App\Models\Angkatan;
 use App\Models\Campaign;
 use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
+use App\Models\Administrator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -137,46 +139,89 @@ class AdminController extends Controller
     }
 
 
-
-
-    public function getAlumniData()
+    public function administrator()
     {
-        $alumniPerAngkatan = Angkatan::withCount('alumni')->get();
+        $data = Administrator::all();
+        return view('admin.administrator', compact('data'));
 
-        return response()->json($alumniPerAngkatan);
     }
 
-
-
-    public function getAlumniStatistics()
+    public function administrator_store(Request $request)
     {
-        $statistics = Status::withCount('alumni')->get();
-
-        $labels = $statistics->pluck('status');
-        $data = $statistics->pluck('alumni_count');
-
-        return response()->json([
-            'labels' => $labels,
-            'data' => $data
+        // Validate the input
+        $validatedData = $request->validate([
+            'info' => 'nullable|string',
+            'item' => 'required',
         ]);
+
+        $data = [
+            'info' => $validatedData['info'],
+        ];
+
+        if ($request->hasFile('item')) {
+            $item = $request->file('item');
+            $itemPath = $item->store('item', 'public');
+            $data['item'] = $itemPath;
+        } else {
+            $data['item'] = $validatedData['item'];
+        }
+
+        Administrator::create($data);
+
+        return redirect()->back()->with('success', 'Item created successfully.');
     }
 
-    public function getNames()
+    public function administrator_edit(Request $request, $item_id)
     {
-        $nama = Alumni::pluck('nama');
-        return response()->json($nama);
-    }
+        // Check if the item_id should be text or a photo
+        $isText = $this->isTextItem($item_id); // A function to determine if the item is text or photo
 
-
-    public function getDetails($id)
-    {
-        $alumni = Alumni::with('angkatan')->find($id);
-
-        return response()->json([
-            'angkatan_id' => $alumni->angkatan_id,
-            'angkatan' => $alumni->angkatan->angkatan,
+        // Conditionally validate based on the type of item
+        $validatedData = $request->validate([
+            'item' => $isText ? 'required|string' : 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        // Prepare data for update
+        $data = [];
+
+        // Handle text or photo input based on the item_id
+        if ($isText) {
+            // If item is text, save the text value
+            $data['item'] = $validatedData['item'];
+        } else {
+            // If item is a photo and a file was uploaded
+            if ($request->hasFile('item')) {
+                $item = Administrator::where('item_id', $item_id)->first();
+                if ($item->item && Storage::disk('public')->exists($item->item)) {
+                    Storage::disk('public')->delete($item->item);
+                }
+
+                $foto = $request->file('item');
+                $fotoPath = $foto->store('item', 'public'); // Store the file in 'public/foto' directory
+                $data['item'] = $fotoPath; // Store the photo path in the database
+            }
+        }
+
+        // Update the Administrator record
+        Administrator::where('item_id', $item_id)->update($data);
+
+        return redirect()->back()->with('success', 'Item updated successfully.');
     }
+
+    /**
+     * Determines if the item should be treated as text or a photo based on item_id.
+     */
+    private function isTextItem($item_id)
+    {
+        // You can define logic to determine if an item is text-based
+        // Example: return true if text-based, false if photo-based
+        // Replace this with your actual condition to decide whether it's text or photo
+        $textItemIds = [2, 3]; // Example: IDs that should be treated as text
+        return in_array($item_id, $textItemIds);
+    }
+
+
+    
 
 
     public function profile()
@@ -229,6 +274,46 @@ class AdminController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Password berhasil diubah.');
+    }
+
+
+
+
+    public function getAlumniData()
+    {
+        $alumniPerAngkatan = Angkatan::withCount('alumni')->get();
+
+        return response()->json($alumniPerAngkatan);
+    }
+
+    public function getAlumniStatistics()
+    {
+        $statistics = Status::withCount('alumni')->get();
+
+        $labels = $statistics->pluck('status');
+        $data = $statistics->pluck('alumni_count');
+
+        return response()->json([
+            'labels' => $labels,
+            'data' => $data
+        ]);
+    }
+
+    public function getNames()
+    {
+        $nama = Alumni::pluck('nama');
+        return response()->json($nama);
+    }
+
+
+    public function getDetails($id)
+    {
+        $alumni = Alumni::with('angkatan')->find($id);
+
+        return response()->json([
+            'angkatan_id' => $alumni->angkatan_id,
+            'angkatan' => $alumni->angkatan->angkatan,
+        ]);
     }
 
 }

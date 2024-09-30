@@ -12,12 +12,26 @@
             @endif
           @endif
           <div>
-            <a class="navbar-brand brand-logo" href="/login">
-              <img src="{{ asset('assets/images/logo-alquraniyyah.png') }}" alt="logo" />
-            </a>
-            <a class="navbar-brand brand-logo-mini ms-2 mb-2" href="/login">
-              <img src="{{ asset('assets/images/logo-alquraniyyah.png') }}" alt="logo" />
-            </a>
+            @php
+                $item = \App\Models\Administrator::where('item_id', 1)->first();
+            @endphp
+
+            @if($item->item)
+              @if(Storage::exists('public/' . $item->item))
+                <a class="navbar-brand brand-logo" href="/login">
+                  <img src="{{ asset('storage/' . $item->item) }}" alt="logo" />
+                </a>
+                <a class="navbar-brand brand-logo-mini ms-2 mb-2" href="/login">
+                  <img src="{{ asset('storage/' . $item->item) }}" alt="logo" />
+                </a>
+              @else
+                {{ $item->item }}
+              @endif
+            @else
+                <p>No image available</p>
+            @endif
+            
+            
           </div>
         </div>
         <div class="navbar-menu-wrapper d-flex align-items-top">

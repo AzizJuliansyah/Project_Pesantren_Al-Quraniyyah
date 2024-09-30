@@ -23,14 +23,17 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['notauthenticated', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.index');
+    Route::get('/administrator', [AdminController::class, 'administrator'])->name('administrator');
+    Route::post('/administrator/store', [AdminController::class, 'administrator_store'])->name('administrator.store');
+    Route::post('/administrator/edit/{id}', [AdminController::class, 'administrator_edit'])->name('administrator.edit');
     Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
+
     Route::post('/profile/updateprofile/{id}', [AdminController::class, 'updateprofile'])
         ->name('admin.updateprofile')
         ->middleware('blockgetonpost');;
     Route::post('/profile/updatepassword/{id}', [AdminController::class, 'updatepassword'])
         ->name('admin.updatepassword')
         ->middleware('blockgetonpost');;
-    Route::get('/alumni-statistics', [AdminController::class, 'getAlumniStatistics']);
 
 
     Route::resource('alumni', AlumniController::class);
@@ -81,6 +84,7 @@ Route::get('/payment/error/{donasi_id}', [CampaignPaymentController::class, 'pay
 Route::get('/get-alumni-names', [AdminController::class, 'getNames']);
 Route::get('/get-alumni-details/{id}', [AdminController::class, 'getDetails']);
 Route::get('/get-alumni-data', [AdminController::class, 'getAlumniData']);
+Route::get('/alumni-statistics', [AdminController::class, 'getAlumniStatistics']);
 
 
 

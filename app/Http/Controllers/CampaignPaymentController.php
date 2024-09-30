@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Administrator;
 use Carbon\Carbon;
 use Midtrans\Snap;
 use App\Models\Alumni;
@@ -19,7 +20,10 @@ class CampaignPaymentController extends Controller
             ->orderByRaw('id = 1 DESC, id DESC')
             ->get();
 
-        return view('index.campaign.daftarcampaign', compact('campaign'));
+        $heading = Administrator::where('item_id', 2)->first();
+        $subheading = Administrator::where('item_id', 3)->first();
+
+        return view('index.campaign.daftarcampaign', compact('campaign', 'heading', 'subheading'));
     }
 
 

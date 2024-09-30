@@ -7,6 +7,13 @@
               </a>
             </li>
             <li class="nav-item nav-category">Admin</li>
+            <li class="nav-item {{ request()->routeIs('administrator') ? 'active' : '' }}">
+              <a class="nav-link" href="/administrator">
+                <i class="menu-icon mdi mdi-application-cog-outline"></i>
+                <span class="menu-title">Administrator</span>
+              </a>
+            </li>
+            <li class="divider"></li>
             
             <li class="nav-item {{ request()->routeIs('alumni', 'alumni.create', 'alumni.editalumni', 'angkatan', 'status') ? 'active' : '' }}">
               <a class="nav-link" data-bs-toggle="collapse" href="#alumni" aria-expanded="false" aria-controls="alumni">
