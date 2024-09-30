@@ -270,6 +270,9 @@
                                                 <h4 class="card-title float-start">Daftar Nama-Nama di Angkata Ke - {{ $angkatan->angkatan }}</h4>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            {{ $alumni->links() }}
+                                        </div>
                                         <table id="" class="table table-hover table-striped table-bordered">
                                             <thead>
                                                 <tr>
@@ -351,7 +354,9 @@
                                                 @endforelse
                                             </tbody>
                                         </table>
-
+                                        <div class="row">
+                                            {{ $alumni->links() }}
+                                        </div>
                                             
                                     </div>
                                 </div>

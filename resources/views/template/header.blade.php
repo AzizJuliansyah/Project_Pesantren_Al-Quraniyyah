@@ -28,6 +28,12 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/localcss.css') }}">
+
+    @if (request()->routeIs('home'))
+      <link rel="stylesheet" href="{{ asset('assets/assets_landingpage/css/templatemo-chain-app-dev.css') }}">
+      <link rel="stylesheet" href="{{ asset('assets/assets_landingpage/css/animated.css') }}">
+      <link rel="stylesheet" href="{{ asset('assets/assets_landingpage/css/owl.css') }}">
+    @endif
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
 
@@ -35,7 +41,6 @@
 
     {{-- sweetalert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 
     {{-- ckeditor --}}
     <script src="{{ asset('assets/vendors/ckeditor-5/ckeditor.js') }}"></script>

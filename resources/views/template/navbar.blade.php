@@ -25,10 +25,14 @@
                   <img src="{{ asset('storage/' . $item->item) }}" alt="logo" />
                 </a>
               @else
-                {{ $item->item }}
+                <a href="/login">
+                  {{ $item->item }}
+                </a>
               @endif
             @else
+              <a href="/login">
                 <p>No image available</p>
+              </a>
             @endif
             
             
@@ -39,14 +43,14 @@
             <li class="nav-item">
               @if (Auth::user())
                 @if (request()->routeIs('campaignpayment.daftarcampaign', 'campaignpayment.show', 'campaignpayment.detail', 'donasi.payment', 'payment.success', 'payment.pending', 'payment.error', 'pembayaran.uangkas'))
-                  <a href="/admin" class="btn btn-sm btn-inverse-info me-3">Dashboard</a>
-                  <a href="/" class="btn btn-sm btn-inverse-info">Home</a>
+                  <a href="/admin" class="btn btn-sm btn-inverse-info me-3 {{ request()->routeIs('home') ? 'text-white' : '' }}" >Dashboard</a>
+                  <a href="/" class="btn btn-sm btn-inverse-info {{ request()->routeIs('home') ? 'text-white' : '' }}" >Home</a>
                 @elseif (request()->routeIs('home'))
-                  <a href="/admin" class="btn btn-sm btn-inverse-info me-3">Dashboard</a>
-                  <a href="/daftarcampaign" class="btn btn-sm btn-inverse-info">Daftar Campaign</a>
+                  <a href="/admin" class="btn btn-sm btn-inverse-info me-3 {{ request()->routeIs('home') ? 'text-white' : '' }}" >Dashboard</a>
+                  <a href="/daftarcampaign" class="btn btn-sm btn-inverse-info {{ request()->routeIs('home') ? 'text-white' : '' }}" >Daftar Campaign</a>
                 @else
-                  <a href="/" class="btn btn-sm btn-inverse-info me-3">Home</a>
-                  <a href="/daftarcampaign" class="btn btn-sm btn-inverse-info">Daftar Campaign</a>
+                  <a href="/" class="btn btn-sm btn-inverse-info me-3 {{ request()->routeIs('home') ? 'text-white' : '' }}" >Home</a>
+                  <a href="/daftarcampaign" class="btn btn-sm btn-inverse-info {{ request()->routeIs('home') ? 'text-white' : '' }}" >Daftar Campaign</a>
                 @endif
               @endif
             </li>

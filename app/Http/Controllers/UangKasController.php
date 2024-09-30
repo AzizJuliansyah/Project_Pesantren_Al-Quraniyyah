@@ -296,7 +296,7 @@ class UangKasController extends Controller
             $hasFilters = true;
         }
 
-        $alumni = $query->get();
+        $alumni = $query->paginate(25);
 
         $donasiQuery = Donasi::where('campaign_id', 1)
         ->whereIn('alumni_id', $alumni->pluck('id'));
@@ -612,7 +612,7 @@ class UangKasController extends Controller
             $hasFilters = true;
         }
 
-        $alumni = $query->get();
+        $alumni = $query->paginate(25);
 
         $donasiQuery = Donasi::where('campaign_id', 1)
         ->whereIn('alumni_id', $alumni->pluck('id'));

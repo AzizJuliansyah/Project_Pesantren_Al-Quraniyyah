@@ -32,9 +32,13 @@
     <script src="{{ asset('assets/js/jquery.cookie.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 
-    
-
-    
+    @if (request()->routeIs('home'))
+      <script src="{{ asset('assets/assets_landingpage/js/owl-carousel.js') }}"></script>
+      <script src="{{ asset('assets/assets_landingpage/js/animation.js') }}"></script>
+      <script src="{{ asset('assets/assets_landingpage/js/imagesloaded.js') }}"></script>
+      <script src="{{ asset('assets/assets_landingpage/js/popup.js') }}"></script>
+      <script src="{{ asset('assets/assets_landingpage/js/custom.js') }}"></script>
+    @endif
     <!-- endinject -->
     <!-- Custom js for this page-->
     <!-- End custom js for this page-->

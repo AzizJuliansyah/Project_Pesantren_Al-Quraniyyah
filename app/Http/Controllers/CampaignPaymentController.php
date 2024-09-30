@@ -303,8 +303,9 @@ class CampaignPaymentController extends Controller
         }
 
         $cleanNominal = str_replace('.', '', $request->input('nominal'));
-        $nominalAfter2Percent = $cleanNominal * 0.02;
-        $finalNominal = $cleanNominal - $nominalAfter2Percent;
+        $nominal = $cleanNominal + $campaign->campaign_id;
+        $nominalAfter2Percent = $nominal * 0.02;
+        $finalNominal = $nominal - $nominalAfter2Percent;
 
         $orderId = uniqid();
 
@@ -312,7 +313,7 @@ class CampaignPaymentController extends Controller
             'alumni_id' => $alumni->id ?? null,
             'campaign_id' => $campaign->id,
             'nama' => $alumni->nama,
-            'nominal' => $cleanNominal,
+            'nominal' => $nominal,
             'nominal2' => $finalNominal,
             'status' => 'pending',
             'order_id' => $orderId,
@@ -321,7 +322,7 @@ class CampaignPaymentController extends Controller
         $params = [
             'transaction_details' => [
                 'order_id' => $orderId,
-                'gross_amount' => $cleanNominal,
+                'gross_amount' => $nominal,
             ],
             'customer_details' => [
                 'first_name' => $alumni->nama,
