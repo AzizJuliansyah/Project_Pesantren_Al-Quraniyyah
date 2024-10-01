@@ -32,20 +32,20 @@
                                                                         <button class="btn btn-primary dropdown-toggle toggle-dark btn-md mb-0 me-0" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Filter By </button>
                                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
                                                                             <h6 class="dropdown-header">Filter Data By</h6>
-                                                                            <a href="/campaign/data" class="dropdown-item">Semua Bulan</a>
+                                                                            <a href="/pembukuan" class="dropdown-item">Semua Bulan</a>
                                                                             <h6 class="dropdown-header">Daftar Bulan</h6>
-                                                                            <a class="dropdown-item" href="/campaign/data?campaign_id={{ $campaign_id }}&month=1">Januari</a>
-                                                                            <a class="dropdown-item" href="/campaign/data?campaign_id={{ $campaign_id }}&month=2">Februari</a>
-                                                                            <a class="dropdown-item" href="/campaign/data?campaign_id={{ $campaign_id }}&month=3">Maret</a>
-                                                                            <a class="dropdown-item" href="/campaign/data?campaign_id={{ $campaign_id }}&month=4">April</a>
-                                                                            <a class="dropdown-item" href="/campaign/data?campaign_id={{ $campaign_id }}&month=5">Mei</a>
-                                                                            <a class="dropdown-item" href="/campaign/data?campaign_id={{ $campaign_id }}&month=6">Juni</a>
-                                                                            <a class="dropdown-item" href="/campaign/data?campaign_id={{ $campaign_id }}&month=7">Juli</a>
-                                                                            <a class="dropdown-item" href="/campaign/data?campaign_id={{ $campaign_id }}&month=8">Agustus</a>
-                                                                            <a class="dropdown-item" href="/campaign/data?campaign_id={{ $campaign_id }}&month=9">September</a>
-                                                                            <a class="dropdown-item" href="/campaign/data?campaign_id={{ $campaign_id }}&month=10">Oktober</a>
-                                                                            <a class="dropdown-item" href="/campaign/data?campaign_id={{ $campaign_id }}&month=11">November</a>
-                                                                            <a class="dropdown-item" href="/campaign/data?campaign_id={{ $campaign_id }}&month=12">Desember</a>
+                                                                            <a class="dropdown-item" href="/pembukuan?campaign_id={{ $campaign_id }}&month=1">Januari</a>
+                                                                            <a class="dropdown-item" href="/pembukuan?campaign_id={{ $campaign_id }}&month=2">Februari</a>
+                                                                            <a class="dropdown-item" href="/pembukuan?campaign_id={{ $campaign_id }}&month=3">Maret</a>
+                                                                            <a class="dropdown-item" href="/pembukuan?campaign_id={{ $campaign_id }}&month=4">April</a>
+                                                                            <a class="dropdown-item" href="/pembukuan?campaign_id={{ $campaign_id }}&month=5">Mei</a>
+                                                                            <a class="dropdown-item" href="/pembukuan?campaign_id={{ $campaign_id }}&month=6">Juni</a>
+                                                                            <a class="dropdown-item" href="/pembukuan?campaign_id={{ $campaign_id }}&month=7">Juli</a>
+                                                                            <a class="dropdown-item" href="/pembukuan?campaign_id={{ $campaign_id }}&month=8">Agustus</a>
+                                                                            <a class="dropdown-item" href="/pembukuan?campaign_id={{ $campaign_id }}&month=9">September</a>
+                                                                            <a class="dropdown-item" href="/pembukuan?campaign_id={{ $campaign_id }}&month=10">Oktober</a>
+                                                                            <a class="dropdown-item" href="/pembukuan?campaign_id={{ $campaign_id }}&month=11">November</a>
+                                                                            <a class="dropdown-item" href="/pembukuan?campaign_id={{ $campaign_id }}&month=12">Desember</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>

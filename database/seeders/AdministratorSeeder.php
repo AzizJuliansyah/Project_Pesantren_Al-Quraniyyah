@@ -18,7 +18,7 @@ class AdministratorSeeder extends Seeder
             [
                 'item_id' => '1',
                 'item' => 'Edit ini dengan logo Al-Quraniyyah',
-                'info' => 'Logo Peasntren Al-Quraniyyah',
+                'info' => 'Logo Pesantren Al-Quraniyyah',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],

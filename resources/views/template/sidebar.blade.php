@@ -8,57 +8,73 @@
             </li>
             <li class="nav-item nav-category">Admin</li>
             <li class="nav-item {{ request()->routeIs('administrator') ? 'active' : '' }}">
-              <a class="nav-link" href="/administrator">
+              <a class="nav-link" href="/settings">
                 <i class="menu-icon mdi mdi-application-cog-outline"></i>
                 <span class="menu-title">Administrator</span>
               </a>
             </li>
             <li class="divider"></li>
-            
-            <li class="nav-item {{ request()->routeIs('alumni', 'alumni.create', 'alumni.editalumni', 'angkatan', 'status') ? 'active' : '' }}">
-              <a class="nav-link" data-bs-toggle="collapse" href="#alumni" aria-expanded="false" aria-controls="alumni">
+
+            {{-- !! --}}
+            <li class="nav-item nav-category">Pendataan Alumni</li>
+            <li class="nav-item {{ request()->routeIs('angkatan') ? 'active' : '' }}">
+              <a class="nav-link" href="/angkatan">
+                <i class="menu-icon mdi mdi-numeric"></i>
+                <span class="menu-title">Angkatan</span>
+              </a>
+            </li>
+            <li class="nav-item {{ request()->routeIs('status') ? 'active' : '' }}">
+              <a class="nav-link" href="/status">
+                <i class="menu-icon mdi mdi-list-status"></i>
+                <span class="menu-title">Status</span>
+              </a>
+            </li>
+            <li class="nav-item {{ request()->routeIs('alumni', 'alumni.create', 'alumni.editalumni') ? 'active' : '' }}">
+              <a class="nav-link" href="/alumni">
                 <i class="menu-icon mdi mdi-account-school-outline"></i>
                 <span class="menu-title">Alumni</span>
-                <i class="menu-arrow"></i>
               </a>
-              <div class="collapse" id="alumni">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item {{ request()->routeIs('angkatan') ? 'active' : '' }}"> <a class="nav-link" href="/angkatan">Data Angkatan</a></li>
-                  <li class="nav-item {{ request()->routeIs('status') ? 'active' : '' }}"> <a class="nav-link" href="/status">Data Status</a></li>
-                  <li class="nav-item {{ request()->routeIs('alumni') ? 'active' : '' }}"> <a class="nav-link" href="/alumni">Data Alumni</a></li>
-                </ul>
-              </div>
             </li>
-
-            <li class="nav-item {{ request()->routeIs('campaign', 'campaign.create','campaign.editcampaign') ? 'active' : '' }}">
-              <a class="nav-link" data-bs-toggle="collapse" href="#campaign" aria-expanded="false" aria-controls="campaign">
-                <i class="menu-icon mdi mdi-monitor-dashboard"></i>
-                <span class="menu-title">Campaign</span>
-                <i class="menu-arrow"></i>
-              </a>
-              <div class="collapse" id="campaign">
-                <ul class="nav flex-column sub-menu">
-                  <li class="nav-item {{ request()->routeIs('campaign.index', 'campaign.create', 'campaign.editcampaign') ? 'active' : '' }}"> <a class="nav-link {{ request()->routeIs('campaign.index', 'campaign.create', 'campaign.editcampaign') ? 'active' : '' }}" href="/campaign">Daftar Campaign</a></li>
-                  <li class="nav-item {{ request()->routeIs('campaign.show') ? 'active' : '' }}"> <a class="nav-link" href="/campaign/data">Data Campaign</a></li>
-                </ul>
-              </div>
-            </li>
+            {{-- !! --}}
+            
 
 
-            <li class="nav-item {{ request()->routeIs('uangkas') ? 'active' : '' }}">
-              <a class="nav-link" data-bs-toggle="collapse" href="#uangkas" aria-expanded="false" aria-controls="uangkas">
-                <i class="menu-icon mdi mdi-cash-multiple"></i>
-                <span class="menu-title">Uang Kas</span>
-                <i class="menu-arrow"></i>
+            {{-- !! --}}
+            <li class="nav-item nav-category">Pendataan Campaign</li>
+            <li class="nav-item {{ request()->routeIs('campaign.index', 'campaign.create', 'campaign.editcampaign') ? 'active' : '' }}">
+              <a class="nav-link" href="/campaign">
+                <i class="menu-icon mdi mdi-bullhorn-variant-outline"></i>
+                <span class="menu-title">Daftar Campaign</span>
               </a>
-              <div class="collapse" id="uangkas">
-                <ul class="nav flex-column sub-menu">
-                  {{-- <li class="nav-item {{ request()->routeIs('dashboard.uangkas') ? 'active' : '' }}"> <a class="nav-link" href="{{ route('dashboard.uangkas') }}">Dashboard Uangkas</a></li> --}}
-                  <li class="nav-item {{ request()->routeIs('uangkas.index', 'detail.uangkas') ? 'active' : '' }}"> <a class="nav-link" href="/uangkas">Data Uangkas</a></li>
-                  <li class="nav-item {{ request()->routeIs('pengeluaran.uangkas') ? 'active' : '' }}"> <a class="nav-link" href="/pengeluaran/uangkas">Pengeluaran Uangkas</a></li>
-                </ul>
-              </div>
             </li>
+            <li class="nav-item {{ request()->routeIs('campaign.data') ? 'active' : '' }}">
+              <a class="nav-link" href="/pembukuan">
+                <i class="menu-icon mdi mdi-notebook-edit-outline"></i>
+                <span class="menu-title">Pembukuan Campaign</span>
+              </a>
+            </li>
+            {{-- !! --}}
+            
+
+            
+            {{-- !! --}}
+            <li class="nav-item nav-category">Pendataan Uang Kas</li>
+            <li class="nav-item {{ request()->routeIs('uangkas.index', 'detail.uangkas') ? 'active' : '' }}">
+              <a class="nav-link" href="/uangkas">
+                <i class="menu-icon mdi mdi-book-edit-outline"></i>
+                <span class="menu-title">Pembukuan Uangkas</span>
+              </a>
+            </li>
+            <li class="nav-item {{ request()->routeIs('pengeluaran.uangkas') ? 'active' : '' }}">
+              <a class="nav-link" href="/pengeluaran">
+                <i class="menu-icon mdi mdi-notebook-minus"></i>
+                <span class="menu-title">Pengeluaran Uangkas</span>
+              </a>
+            </li>
+            {{-- !! --}}
+
+
+
             {{-- <li class="nav-item">
               <a class="nav-link" href="docs/documentation.html">
                 <i class="menu-icon mdi mdi-file-document"></i>

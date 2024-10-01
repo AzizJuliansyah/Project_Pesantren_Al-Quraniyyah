@@ -23,7 +23,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['notauthenticated', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.index');
-    Route::get('/administrator', [AdminController::class, 'administrator'])->name('administrator');
+    Route::get('/settings', [AdminController::class, 'administrator'])->name('administrator');
     Route::post('/administrator/store', [AdminController::class, 'administrator_store'])->name('administrator.store');
     Route::post('/administrator/edit/{id}', [AdminController::class, 'administrator_edit'])->name('administrator.edit');
     Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
@@ -44,16 +44,16 @@ Route::middleware(['notauthenticated', 'admin'])->group(function () {
     Route::resource('status', StatusController::class);
     
     
-    Route::resource('campaign', CampaignController::class);
+    Route::resource('/campaign', CampaignController::class);
     Route::get('/campaign/editcampaign/{slug}', [CampaignController::class, 'edit'])->name('campaign.editcampaign');
     Route::post('/update-publish-status-campaign/{id}', [CampaignController::class, 'updatePublishStatus']);
-    Route::get('/campaign/data', [CampaignController::class, 'show'])->name('campaign.data');
+    Route::get('/pembukuan', [CampaignController::class, 'show'])->name('campaign.data');
     Route::get('/campaign/detaildatacampaign/{campaign_id}', [CampaignController::class, 'detaildatacampaign'])->name('campaign.detaildatacampaign');
     
     Route::resource('uangkas', UangKasController::class);
     Route::get('/dashboard/uangkas', [UangKasController::class, 'dashboard'])->name('dashboard.uangkas');
     Route::get('/uangkas/detail/{angkatan_id}', [UangKasController::class, 'detail'])->name('detail.uangkas');
-    Route::get('/pengeluaran/uangkas', [UangKasController::class, 'pengeluaran'])->name('pengeluaran.uangkas');
+    Route::get('/pengeluaran', [UangKasController::class, 'pengeluaran'])->name('pengeluaran.uangkas');
     Route::post('/pengeluaran/tambah', [UangKasController::class, 'tambahpengeluaran'])->name('pengeluaran.tambah');
     Route::post('/pengeluaran/edit/{id}', [UangKasController::class, 'editpengeluaran'])->name('pengeluaran.edit');
     Route::post('/pengeluaran/hapus/{id}', [UangKasController::class, 'hapuspengeluaran'])->name('pengeluaran.hapus');

@@ -224,18 +224,6 @@
                           <div>
                         </div>
                       </div>
-                      <div class="row mt-3">
-                        <div class="col-sm-12">
-                          <div class="statistics-details d-flex align-items-center justify-content-between">
-                            <div class="">
-                              <p class="statistics-title">Total Alumni</p>
-                              <h3 class="rate-percentage">{{ $totalAlumni }}</h3>
-                            </div>
-                          <div>
-                        </div>
-                      </div>
-
-
 
                       <div class="row mt-3">
                         <div class="col-lg-8 d-flex flex-column">
