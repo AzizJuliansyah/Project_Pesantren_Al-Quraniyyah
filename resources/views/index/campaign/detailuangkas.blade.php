@@ -236,7 +236,7 @@
         });
     </script>
 
-<script>
+    <script>
         function hasMonthInUrl() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.has('month');

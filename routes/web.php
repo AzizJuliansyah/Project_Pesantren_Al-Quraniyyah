@@ -10,10 +10,11 @@ use App\Http\Controllers\AngkatanController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\CampaignPaymentController;
 
-Route::get('/', function () {
-    return view('index.index');
-})->name('home');
 
+Route::get('/', [AuthController::class, 'home'])->name('home');
+Route::fallback(function () {
+    return redirect()->route('home')->with('error', 'Halaman tidak ditemukan.');
+});
 Route::middleware(['authenticated'])->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
     Route::post('/login', [AuthController::class, 'login'])->name('login.submit');

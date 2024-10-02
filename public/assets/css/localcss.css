@@ -183,3 +183,52 @@
     margin: 20px 0;
     width: 100%;
 }
+
+
+.outlined-text {
+    color: white;
+    text-shadow:
+        -2px -2px 4px rgba(0, 0, 0, 0.7),
+        2px -2px 4px rgba(0, 0, 0, 0.7),
+        -2px 2px 4px rgba(0, 0, 0, 0.7),
+        2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+
+.bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Membuat gambar memenuhi area tanpa distorsi */
+    z-index: 1;
+    /* Memastikan gambar berada di belakang konten */
+    opacity: 0.6;
+    /* Menambahkan efek transparansi */
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+    text-align: center;
+    z-index: 2;
+    /* Konten berada di atas gambar */
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 1);
+    /* Warna hitam dengan 50% transparansi */
+    z-index: 0;
+    /* Memastikan overlay berada di atas gambar tapi di bawah konten */
+}

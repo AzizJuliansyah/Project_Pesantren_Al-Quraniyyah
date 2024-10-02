@@ -1042,11 +1042,11 @@ Services Style
   margin-bottom: 20px;
 }
 
-.service-item:hover h4,
+/* .service-item:hover h4,
 .service-item:hover p,
 .service-item:hover .text-button a {
   color: #fff;
-}
+} */
 
 .first-service .icon {
   background-image: url(../images/service-icon-01.png);
@@ -1081,12 +1081,12 @@ Services Style
   background-image: url(../images/service-icon-hover-04.png);
 }
 
-.service-item:hover {
+/* .service-item:hover {
   background-image: url(../images/service-bg.jpg);
   background-position: right top;
   background-repeat: no-repeat;
   background-size: cover;
-}
+} */
 
 
 

@@ -625,7 +625,6 @@ class UangKasController extends Controller
 
         $donasiByOrderId = collect();
 
-        // Jika pencarian berdasarkan order_id
         if ($order_id) {
             $donasiByOrderId = $donasiQuery->where('order_id', 'like', '%' . $order_id . '%')->get();
             $hasFilters = true;
@@ -635,25 +634,19 @@ class UangKasController extends Controller
             $alum->donasi = $donasi->where('alumni_id', $alum->id);
         }
 
-
-
-        // Filter by year if provided
         if ($selectedYear) {
             $uangkasQuery = $uangkasQuery->filter(function ($donasi) use ($selectedYear) {
-                return $donasi->created_at->year == $selectedYear; // Compare year
+                return $donasi->created_at->year == $selectedYear;
             });
         }
-
-        // Filter by month if provided
         if ($selectedMonth) {
             $uangkasQuery = $uangkasQuery->filter(function ($donasi) use ($selectedMonth) {
-                return $donasi->created_at->month == $selectedMonth; // Compare year
+                return $donasi->created_at->month == $selectedMonth; 
             });
         }
 
         $uangkas = $uangkasQuery;
 
-        // Initialize totals
         $monthlyTotals = array_fill(0, 12, 0);
         $weeklyTotals = array_fill(0, 4, 0);
         $totalUangKas = 0;
@@ -692,8 +685,7 @@ class UangKasController extends Controller
             $persentaseKenaikanMingguan = -abs($mingguSekarang) / abs($mingguSebelumnya) * 100;
         }
 
-        // Determine chart type
-        $chartType = 'all'; // Default chart type
+        $chartType = 'all';
         if ($request->year && $request->month) {
             $chartType = 'monthInYear';
         } elseif ($request->year) {
@@ -702,7 +694,6 @@ class UangKasController extends Controller
             $chartType = 'weekly';
         }
 
-        // Prepare chart data
         $chartData = [
             'chartType' => $chartType,
             'monthlyTotals' => $monthlyTotals,
@@ -713,12 +704,10 @@ class UangKasController extends Controller
             'totalWeekly' => $totalWeekly,
         ];
 
-        // Calculate saldo
         $pengeluaranTotalUangKas = Pengeluaran::sum('nominal');
         $saldoAwalUangKas = Donasi::where('campaign_id', $selectedCampaign)->sum('nominal2');
         $saldoAkhirUangKas = $saldoAwalUangKas - $pengeluaranTotalUangKas;
 
-        // Prepare available months
         $availableMonths = [
             1 => 'Januari',
             2 => 'Februari',

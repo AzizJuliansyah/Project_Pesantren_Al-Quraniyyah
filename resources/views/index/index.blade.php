@@ -2,582 +2,711 @@
 @include('template.navbar')
 @include('komponen.pesan')
 <div class="container-scroller">
-    <div class="container-fluid page-body-wrapper full-page-wrapper">
-        <div class="content-wrapper d-flex align-items-center auth px-0">
-            <div class="row w-100 mx-0">
-                <div class="col-lg-12 mx-auto">
+  <div class="container-fluid page-body-wrapper full-page-wrapper">
+    <div class="content-wrapper d-flex align-items-center auth px-0">
+      <div class="row w-100 mx-0">
+        <div class="col-lg-12 mx-auto">
+                  <img src="assets/assets_landingpage/images/tes.jpg" alt="Landing Page Background" class="bg-image">
+                  <div class="overlay"></div>
+          <div class="content">
+            <div>
+              <h1>Welcome to My Landing Page</h1>
+              <p>This is a full-page background example for a landing page.</p>
+              <a href="#features" class="btn btn-primary btn-lg">Learn More</a>
+            </div>
+          </div>
                     
-  <!-- ***** Preloader Start ***** -->
-  <div id="js-preloader" class="js-preloader">
-    <div class="preloader-inner">
-      <span class="dot"></span>
-      <div class="dots">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-    </div>
-  </div>
-  <!-- ***** Preloader End ***** -->
-
-  <!-- ***** Header Area End ***** -->
-  
-
-  <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="row">
-            <div class="col-lg-6 align-self-center">
-              <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
-                <div class="row">
-                  <div class="col-lg-12">
-                    <h2>Selamat Datan di Al-Quraniyyah</h2>
-                    <p>Pondok Pesantren Al-Qur'aniyyah adalah sebuah yayasan yang berbadan hukum yang mencetak santri agar menjadi generasi Qur'ani yang berakhlak mulia, berilmu, dan beramal. Selain menanamkan nilai-nilai keagamaan yang kuat, pesantren ini juga membekali santri dengan keterampilan hidup dan wawasan yang luas, sehingga mampu menghadapi tantangan zaman dengan tetap berpegang teguh pada prinsip-prinsip Islam.</p>
-                  </div>
-                  <div class="col-lg-12">
-                    <div class="white-button first-button scroll-to-section">
-                      <a href="#contact">Free Quote <i class="fab fa-apple"></i></a>
-                    </div>
-                    <div class="white-button scroll-to-section">
-                      <a href="#contact">Free Quote <i class="fab fa-google-play"></i></a>
+                  <!-- ***** Preloader Start ***** -->
+                  <div id="js-preloader" class="js-preloader">
+                    <div class="preloader-inner">
+                      <span class="dot"></span>
+                      <div class="dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
-                <img src="assets/images/slider-dec.png" alt="">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                  <!-- ***** Preloader End ***** -->
 
-  <div id="services" class="services section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-          <div class="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
-            <h4>Amazing <em>Services &amp; Features</em> for you</h4>
-            <img src="assets/images/heading-line-dec.png" alt="">
-            <p>If you need the greatest collection of HTML templates for your business, please visit <a rel="nofollow" href="https://www.toocss.com/" target="_blank">TooCSS</a> Blog. If you need to have a contact form PHP script, go to <a href="https://templatemo.com/contact" target="_parent">our contact page</a> for more information.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-3">
-          <div class="service-item first-service">
-            <div class="icon"></div>
-            <h4>App Maintenance</h4>
-            <p>You are not allowed to redistribute this template ZIP file on any other website.</p>
-            <div class="text-button">
-              <a href="#">Read More <i class="fa fa-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="service-item second-service">
-            <div class="icon"></div>
-            <h4>Rocket Speed of App</h4>
-            <p>You are allowed to use the Chain App Dev HTML template. Feel free to modify or edit this layout.</p>
-            <div class="text-button">
-              <a href="#">Read More <i class="fa fa-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="service-item third-service">
-            <div class="icon"></div>
-            <h4>Multi Workflow Idea</h4>
-            <p>If this template is beneficial for your work, please support us <a rel="nofollow" href="https://paypal.me/templatemo" target="_blank">a little via PayPal</a>. Thank you.</p>
-            <div class="text-button">
-              <a href="#">Read More <i class="fa fa-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="service-item fourth-service">
-            <div class="icon"></div>
-            <h4>24/7 Help &amp; Support</h4>
-            <p>Lorem ipsum dolor consectetur adipiscing elit sedder williamsburg photo booth quinoa and fashion axe.</p>
-            <div class="text-button">
-              <a href="#">Read More <i class="fa fa-arrow-right"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                  <!-- ***** Header Area End ***** -->
+                  
 
-  <div id="about" class="about-us section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6 align-self-center">
-          <div class="section-heading">
-            <h4>About <em>What We Do</em> &amp; Who We Are</h4>
-            <img src="assets/images/heading-line-dec.png" alt="">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor incididunt ut labore et dolore magna.</p>
-          </div>
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="box-item">
-                <h4><a href="#">Maintance Problems</a></h4>
-                <p>Lorem Ipsum Text</p>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="box-item">
-                <h4><a href="#">24/7 Support &amp; Help</a></h4>
-                <p>Lorem Ipsum Text</p>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="box-item">
-                <h4><a href="#">Fixing Issues About</a></h4>
-                <p>Lorem Ipsum Text</p>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="box-item">
-                <h4><a href="#">Co. Development</a></h4>
-                <p>Lorem Ipsum Text</p>
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor idunte ut labore et dolore adipiscing  magna.</p>
-              <div class="gradient-button">
-                <a href="#">Start 14-Day Free Trial</a>
-              </div>
-              <span>*No Credit Card Required</span>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6">
-          <div class="right-image">
-            <img src="assets/images/about-right-dec.png" alt="">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                  {{-- <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-lg-12">
+                          <div class="row">
+                            <div class="col-lg-6 align-self-center">
+                              <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
+                                <div class="row">
+                                  <div class="col-lg-12">
+                                    <h2>Selamat Datan di Al-Quraniyyah</h2>
+                                    <p>Pondok Pesantren Al-Qur'aniyyah adalah sebuah yayasan yang berbadan hukum yang mencetak santri agar menjadi generasi Qur'ani yang berakhlak mulia, berilmu, dan beramal. Selain menanamkan nilai-nilai keagamaan yang kuat, pesantren ini juga membekali santri dengan keterampilan hidup dan wawasan yang luas, sehingga mampu menghadapi tantangan zaman dengan tetap berpegang teguh pada prinsip-prinsip Islam.</p>
+                                  </div>
+                                  <div class="col-lg-12">
+                                    <div class="white-button first-button scroll-to-section">
+                                      <a href="#contact">Free Quote <i class="fab fa-apple"></i></a>
+                                    </div>
+                                    <div class="white-button scroll-to-section">
+                                      <a href="#contact">Free Quote <i class="fab fa-google-play"></i></a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="right-image wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.5s">
+                                <img src="assets/images/slider-dec.png" alt="">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div> --}}
 
-  <div id="clients" class="the-clients">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-          <div class="section-heading">
-            <h4>Check What <em>The Clients Say</em> About Our App Dev</h4>
-            <img src="assets/images/heading-line-dec.png" alt="">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor incididunt ut labore et dolore magna.</p>
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <div class="naccs">
-            <div class="grid">
-              <div class="row">
-                <div class="col-lg-7 align-self-center">
-                  <div class="menu">
-                    <div class="first-thumb active">
-                      <div class="thumb">
-                        <div class="row">
-                          <div class="col-lg-4 col-sm-4 col-12">
-                            <h4>David Martino Co</h4>
-                            <span class="date">30 November 2021</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
-                            <span class="category">Financial Apps</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 col-12">
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <span class="rating">4.8</span>
+                  <div id="services" class="services section">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-lg-8 offset-lg-2">
+                          <div class="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
+                            <h4>Detail Uangkas <em>Keseluruhan</em> &amp; Perangkatan</h4>
+                            <img src="assets/assets_landingpage/images/heading-line-dec.png" alt="">
+                            <p>Detail Total Uang Kas Yang Sudah di Dapat.</p>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div>
-                      <div class="thumb">
-                        <div class="row">
-                          <div class="col-lg-4 col-sm-4 col-12">
-                            <h4>Jake Harris Nyo</h4>
-                            <span class="date">29 November 2021</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
-                            <span class="category">Digital Business</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 col-12">
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <span class="rating">4.5</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="thumb">
-                        <div class="row">
-                          <div class="col-lg-4 col-sm-4 col-12">
-                            <h4>May Catherina</h4>
-                            <span class="date">27 November 2021</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
-                            <span class="category">Business &amp; Economics</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 col-12">
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <span class="rating">4.7</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="thumb">
-                        <div class="row">
-                          <div class="col-lg-4 col-sm-4 col-12">
-                            <h4>Random User</h4>
-                            <span class="date">24 November 2021</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
-                            <span class="category">New App Ecosystem</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 col-12">
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <span class="rating">3.9</span>
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-lg-8 mb-3">
+                          <div class="card shadow">
+                              <div class="card-body">
+                                  <div class="col-12" id="toogleTargetDonasi" style="cursor: pointer">
+                                      <div class="d-flex align-items-center">
+                                          <p class="card-description">Filter Data By Tahun, Default adalah untuk <strong>semua tahun</strong></p>
+                                          <i class="fa fa-chevron-down ms-2 mb-3" id="toggleIcon"></i>
+                                      </div>
+                                  </div>
+                                  <div class="form-group d-none" id="chartDonasi">
+                                      <div class="" style="max-height: 100%">
+                                          <div class="form-group">
+                                              <form action="/" method="get">
+                                                  <div class="row">
+                                                      <div class="col-lg-4 col-sm-12 mb-3">
+                                                          <select name="month" id="month" class="form-control text-dark">
+                                                              <optgroup label="Filter Data By">
+                                                                  <option value="" selected>Semua Bulan</option>
+                                                              </optgroup>
+                                                              <optgroup label="Bulan">
+                                                                  <option value="1" @if(request('month')  == 1) selected @endif>Januari</option>
+                                                                  <option value="2" @if(request('month')  == 2) selected @endif>Februari</option>
+                                                                  <option value="3" @if(request('month')  == 3) selected @endif>Maret</option>
+                                                                  <option value="4" @if(request('month')  == 4) selected @endif>April</option>
+                                                                  <option value="5" @if(request('month')  == 5) selected @endif>Mei</option>
+                                                                  <option value="6" @if(request('month')  == 6) selected @endif>Juni</option>
+                                                                  <option value="7" @if(request('month')  == 7) selected @endif>Juli</option>
+                                                                  <option value="8" @if(request('month')  == 8) selected @endif>Agustus</option>
+                                                                  <option value="9" @if(request('month')  == 9) selected @endif>September</option>
+                                                                  <option value="10" @if(request('month')  == 10) selected @endif>Oktober</option>
+                                                                  <option value="11" @if(request('month')  == 11) selected @endif>November</option>
+                                                                  <option value="12" @if(request('month')  == 12) selected @endif>Desember</option>
+                                                              </optgroup>
+                                                          </select>
+                                                      </div>
+                                                      <div class="col-lg-4 col-sm-12">
+                                                          <div class="form-group">
+                                                              <input type="number" name="year" id="year" value="{{ request('year') }}" class="form-control" min="2023" max="2100" step="1" placeholder="Tahun">
+                                                          </div>
+                                                      </div>
+                                                      <div class="col-lg-4 col-sm-12">
+                                                          <button type="submit" class="btn btn-md btn-primary text-light">Filter <i class="fa fa-filter"></i></button>
+                                                      </div>
+                                                  </div>
+                                              </form>
+                                          </div>
+                                      </div>
+                                        @if(request()->has('month') || request()->has('year'))
+                                          <div class="float-end me-3">
+                                              <a href="/"><i class="fa fa-arrow-left me-1"></i>Kembali</a>
+                                          </div>
+                                        @endif      
+                                  </div>
+                              </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div class="last-thumb">
-                      <div class="thumb">
-                        <div class="row">
-                          <div class="col-lg-4 col-sm-4 col-12">
-                            <h4>Mark Amber Do</h4>
-                            <span class="date">21 November 2021</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
-                            <span class="category">Web Development</span>
-                          </div>
-                          <div class="col-lg-4 col-sm-4 col-12">
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <i class="fa fa-star"></i>
-                              <span class="rating">4.3</span>
+                        <div class="col-lg-12">
+                          <div class="service-item">
+                            <div class="col-12">
+                              <div class="row">
+                                  <div class="col-md-4 d-flex flex-column">
+                                      <div class="row flex-grow">
+                                          <div class="col-12">
+                                              <div class="">
+                                                  <div class="">
+                                                      <div class="form-group mb-4">
+                                                          <h6 class="text-primary text-start mb-2">Total Uang Kas Yang Masuk</h6>
+                                                          <div class="d-flex align-items-center">
+                                                              <h4 class="me-2 fw-bold">Rp{{ number_format($saldoAwalUangKas, 2, ',', '.') }}</h4>
+                                                              <h6 class="me-4 text-muted mb-2">IDR</h6>
+                                                          </div>
+                                                      </div>
+                                                                        
+                                                      <div class="form-group mb-4">
+                                                          <h6 class="text-danger text-start mb-2">Total Pengeluaran Uang Kas</h6>
+                                                          <div class="d-flex align-items-center">
+                                                              <h4 class="me-2 fw-bold">Rp{{ number_format($pengeluaranTotalUangKas, 2, ',', '.') }}</h4>
+                                                              <h6 class="me-4 text-muted mb-2">IDR</h6>
+                                                          </div>
+                                                      </div>
+                                                                        
+                                                      <div class="form-group mb-4">
+                                                          <h6 class="text-success text-start mb-2">Total Saldo Uang Kas Sekarang</h6>
+                                                          <div class="d-flex align-items-center">
+                                                              <h4 class="me-2 fw-bold">Rp{{ number_format($saldoAkhirUangKas, 2, ',', '.') }}</h4>
+                                                              <h6 class="me-4 text-muted mb-2">IDR</h6>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="form-group mt-3">
+                                              <a href="/daftarcampaign" class="btn btn-info btn-lg text-white d-flex align-items-center"><i class="fa fa-arrow-left me-1"></i> Lihat Daftar Campaign</a>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-lg-8 d-flex flex-column">
+                                      <div class="row flex-grow">
+                                          <div class="col-12">
+                                              <div class="">
+                                                  <div class="" style="overflow-x: auto;">
+                                                      <div class="d-flex justify-content-between" style="max-height: 60px; white-space: nowrap;">
+                                                          <div class="form-group">
+                                                              <h3>Visual chart dari {{ $campaign['nama'] }}</h3>
+                                                          </div>
+                                                      </div>
+                                                      <div class="row">
+                                                        @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
+                                                            @if ($chartData['chartType'] == 'all')
+                                                                  <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk <strong>Semua Bulan</strong></p>
+                                                            @elseif ($chartData['chartType'] == 'yearly')
+                                                                  <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk <strong>Tahun {{ $selectedYear }}</strong></p>
+                                                            @endif
+                                                              <div class="d-flex align-items-center">
+                                                                  <div class="form-group">
+                                                                      <div class="d-flex align-items-center">
+                                                                          <h2 class="me-2 fw-bold mb-3">Rp{{ number_format($chartData['total'], 2, ',', '.') }}</h2>
+                                                                          <h4 class="me-4">IDR</h4>
+                                                                      </div>
+                                                                  </div>
+                                                                  <div class="form-group">
+                                                                      <div class="row">
+                                                                        @if ($chartData['persentaseKenaikanBulanan'] > 0)
+                                                                              <h4 class="text-success">
+                                                                                            (+{{ number_format($chartData['persentaseKenaikanBulanan'], 2) }}%)
+                                                                              </h4>
+                                                                        @else
+                                                                              <h4 class="text-danger">
+                                                                                            ({{ number_format($chartData['persentaseKenaikanBulanan'], 2) }}%)
+                                                                              </h4>
+                                                                        @endif
+                                                                          <p>Dari Bulan sebelumnya</p>
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+                                                        @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
+                                                            @if ($chartData['chartType'] == 'monthInYear')
+                                                                  <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk <strong>Bulan {{ $selectedMonthName }}</strong> di <strong>Tahun {{ $selectedYear }}</strong></p>
+                                                            @elseif ($chartData['chartType'] == 'weekly')
+                                                                  <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk <strong>Bulan {{ $selectedMonthName }}</strong></p>
+                                                            @endif
+                                                              <div class="d-flex align-items-center">
+                                                                  <div class="form-group">
+                                                                      <div class="d-flex align-items-center">
+                                                                          <h2 class="me-2 fw-bold mb-3">Rp{{ number_format($chartData['totalWeekly'], 2, ',', '.') }}</h2>
+                                                                          <h4 class="me-4">IDR</h4>
+                                                                      </div>
+                                                                  </div>
+                                                                  <div class="form-group">
+                                                                      <div class="row">
+                                                                        @if ($chartData['persentaseKenaikanMingguan'] > 0)
+                                                                              <h4 class="text-success">
+                                                                                            (+{{ number_format($chartData['persentaseKenaikanMingguan'], 2) }}%)
+                                                                              </h4>
+                                                                        @else
+                                                                              <h4 class="text-danger">
+                                                                                            ({{ number_format($chartData['persentaseKenaikanMingguan'], 2) }}%)
+                                                                              </h4>
+                                                                        @endif
+                                                                          <p>Dari Minggu sebelumnya</p>
+                                                                      </div>
+                                                                  </div>
+                                                              </div>
+                                                        @endif
+                                                      </div>
+
+                                                      <!-- Tampilkan chart bulanan atau mingguan sesuai dengan campaign yang dipilih -->
+                                                      <div class="chartjs-bar-wrapper mt-3">
+                                                        @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
+                                                              <canvas id="campaignChartMonthly"></canvas>
+                                                        @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
+                                                              <canvas id="campaignChartWeekly"></canvas>
+                                                        @endif
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                            </div>
+                            <div class="row mt-2">
+                              <div class="col-lg-12" id="totalUangKasPerAngkatan">
+                                  <div class="d-flex align-items-center" style="overflow-x: auto;">
+                                    @foreach ($totalUangKasPerAngkatan  as $indexx => $item)
+                                      <div class="col-lg-4 col-md-6 col-sm-12 mt-3 mb-3  me-3" style="  white-space: nowrap;">
+                                          <div class="card card-rounded table-darkBGImg">
+                                              <div class="card-body">
+                                                  <div class="col-sm-12">
+                                                      <h3 class="text-white upgrade-info mb-0"><span class="fw-bold">Angkatan Ke-</span>{{ $item['angkatan'] }}</h3>
+                                                      <h5 class="outlined-text upgrade-info mb-0 mt-2"><span class="fw-bold outlined-text">Rp </span>{{ number_format($item['totalUangKas'], 2, ',', '.') }}</h5>
+                                                      <div class="gradient-button mt-3">
+                                                        <a href="{{ route('pembayaran.uangkas.angkatan', $item['angkatan_id']) }}">Detail <i class="fa fa-arrow-right ms-1"></i></a>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                    @endforeach
+                                  </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div> 
-                <div class="col-lg-5">
-                  <ul class="nacc">
-                    <li class="active">
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="client-content">
-                                <img src="assets/images/quote.png" alt="">
-                                <p>“Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
-                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
-                              </div>
-                              <div class="down-content">
-                                <img src="assets/images/client-image.jpg" alt="">
-                                <div class="right-content">
-                                  <h4>David Martino</h4>
-                                  <span>CEO of David Company</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="client-content">
-                                <img src="assets/images/quote.png" alt="">
-                                <p>“CTO, Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
-                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
-                              </div>
-                              <div class="down-content">
-                                <img src="assets/images/client-image.jpg" alt="">
-                                <div class="right-content">
-                                  <h4>Jake H. Nyo</h4>
-                                  <span>CTO of Digital Company</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="client-content">
-                                <img src="assets/images/quote.png" alt="">
-                                <p>“May, Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
-                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
-                              </div>
-                              <div class="down-content">
-                                <img src="assets/images/client-image.jpg" alt="">
-                                <div class="right-content">
-                                  <h4>May C.</h4>
-                                  <span>Founder of Catherina Co.</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="client-content">
-                                <img src="assets/images/quote.png" alt="">
-                                <p>“Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
-                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
-                              </div>
-                              <div class="down-content">
-                                <img src="assets/images/client-image.jpg" alt="">
-                                <div class="right-content">
-                                  <h4>Random Staff</h4>
-                                  <span>Manager, Digital Company</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div>
-                        <div class="thumb">
-                          <div class="row">
-                            <div class="col-lg-12">
-                              <div class="client-content">
-                                <img src="assets/images/quote.png" alt="">
-                                <p>“Mark, Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
-                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
-                              </div>
-                              <div class="down-content">
-                                <img src="assets/images/client-image.jpg" alt="">
-                                <div class="right-content">
-                                  <h4>Mark Am</h4>
-                                  <span>CTO, Amber Do Company</span>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>          
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div id="pricing" class="pricing-tables">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-          <div class="section-heading">
-            <h4>We Have The Best Pre-Order <em>Prices</em> You Can Get</h4>
-            <img src="assets/images/heading-line-dec.png" alt="">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor incididunt ut labore et dolore magna.</p>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="pricing-item-regular">
-            <span class="price">$12</span>
-            <h4>Standard Plan App</h4>
-            <div class="icon">
-              <img src="assets/images/pricing-table-01.png" alt="">
-            </div>
-            <ul>
-              <li>Lorem Ipsum Dolores</li>
-              <li>20 TB of Storage</li>
-              <li class="non-function">Life-time Support</li>
-              <li class="non-function">Premium Add-Ons</li>
-              <li class="non-function">Fastest Network</li>
-              <li class="non-function">More Options</li>
-            </ul>
-            <div class="border-button">
-              <a href="#">Purchase This Plan Now</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="pricing-item-pro">
-            <span class="price">$25</span>
-            <h4>Business Plan App</h4>
-            <div class="icon">
-              <img src="assets/images/pricing-table-01.png" alt="">
-            </div>
-            <ul>
-              <li>Lorem Ipsum Dolores</li>
-              <li>50 TB of Storage</li>
-              <li>Life-time Support</li>
-              <li>Premium Add-Ons</li>
-              <li class="non-function">Fastest Network</li>
-              <li class="non-function">More Options</li>
-            </ul>
-            <div class="border-button">
-              <a href="#">Purchase This Plan Now</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="pricing-item-regular">
-            <span class="price">$66</span>
-            <h4>Premium Plan App</h4>
-            <div class="icon">
-              <img src="assets/images/pricing-table-01.png" alt="">
-            </div>
-            <ul>
-              <li>Lorem Ipsum Dolores</li>
-              <li>120 TB of Storage</li>
-              <li>Life-time Support</li>
-              <li>Premium Add-Ons</li>
-              <li>Fastest Network</li>
-              <li>More Options</li>
-            </ul>
-            <div class="border-button">
-              <a href="#">Purchase This Plan Now</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> 
+                  <div id="about" class="about-us section">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-lg-6 align-self-center">
+                          <div class="section-heading">
+                            <h4>About <em>What We Do</em> &amp; Who We Are</h4>
+                            <img src="assets/images/heading-line-dec.png" alt="">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor incididunt ut labore et dolore magna.</p>
+                          </div>
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <div class="box-item">
+                                <h4><a href="#">Maintance Problems</a></h4>
+                                <p>Lorem Ipsum Text</p>
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="box-item">
+                                <h4><a href="#">24/7 Support &amp; Help</a></h4>
+                                <p>Lorem Ipsum Text</p>
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="box-item">
+                                <h4><a href="#">Fixing Issues About</a></h4>
+                                <p>Lorem Ipsum Text</p>
+                              </div>
+                            </div>
+                            <div class="col-lg-6">
+                              <div class="box-item">
+                                <h4><a href="#">Co. Development</a></h4>
+                                <p>Lorem Ipsum Text</p>
+                              </div>
+                            </div>
+                            <div class="col-lg-12">
+                              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor idunte ut labore et dolore adipiscing  magna.</p>
+                              <div class="gradient-button">
+                                <a href="#">Start 14-Day Free Trial</a>
+                              </div>
+                              <span>*No Credit Card Required</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-lg-6">
+                          <div class="right-image">
+                            <img src="assets/images/about-right-dec.png" alt="">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-  <footer id="newsletter">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-          <div class="section-heading">
-            <h4>Join our mailing list to receive the news &amp; latest trends</h4>
-          </div>
-        </div>
-        <div class="col-lg-6 offset-lg-3">
-          <form id="search" action="#" method="GET">
-            <div class="row">
-              <div class="col-lg-6 col-sm-6">
-                <fieldset>
-                  <input type="address" name="address" class="email" placeholder="Email Address..." autocomplete="on" required>
-                </fieldset>
-              </div>
-              <div class="col-lg-6 col-sm-6">
-                <fieldset>
-                  <button type="submit" class="main-button">Subscribe Now <i class="fa fa-angle-right"></i></button>
-                </fieldset>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-3">
-          <div class="footer-widget">
-            <h4>Contact Us</h4>
-            <p>Rio de Janeiro - RJ, 22795-008, Brazil</p>
-            <p><a href="#">010-020-0340</a></p>
-            <p><a href="#">info@company.co</a></p>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="footer-widget">
-            <h4>About Us</h4>
-            <ul>
-              <li><a href="#">Home</a></li>
-              <li><a href="#">Services</a></li>
-              <li><a href="#">About</a></li>
-              <li><a href="#">Testimonials</a></li>
-              <li><a href="#">Pricing</a></li>
-            </ul>
-            <ul>
-              <li><a href="#">About</a></li>
-              <li><a href="#">Testimonials</a></li>
-              <li><a href="#">Pricing</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="footer-widget">
-            <h4>Useful Links</h4>
-            <ul>
-              <li><a href="#">Free Apps</a></li>
-              <li><a href="#">App Engine</a></li>
-              <li><a href="#">Programming</a></li>
-              <li><a href="#">Development</a></li>
-              <li><a href="#">App News</a></li>
-            </ul>
-            <ul>
-              <li><a href="#">App Dev Team</a></li>
-              <li><a href="#">Digital Web</a></li>
-              <li><a href="#">Normal Apps</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <div class="footer-widget">
-            <h4>About Our Company</h4>
-            <div class="logo">
-              <img src="assets/images/white-logo.png" alt="">
-            </div>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <div class="copyright-text">
-            <p>Copyright © 2022 Chain App Dev Company. All Rights Reserved. 
-          <br>Design: <a href="https://templatemo.com/" target="_blank" title="css templates">TemplateMo</a></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
+                  <div id="clients" class="the-clients">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-lg-8 offset-lg-2">
+                          <div class="section-heading">
+                            <h4>Check What <em>The Clients Say</em> About Our App Dev</h4>
+                            <img src="assets/images/heading-line-dec.png" alt="">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor incididunt ut labore et dolore magna.</p>
+                          </div>
+                        </div>
+                        <div class="col-lg-12">
+                          <div class="naccs">
+                            <div class="grid">
+                              <div class="row">
+                                <div class="col-lg-7 align-self-center">
+                                  <div class="menu">
+                                    <div class="first-thumb active">
+                                      <div class="thumb">
+                                        <div class="row">
+                                          <div class="col-lg-4 col-sm-4 col-12">
+                                            <h4>David Martino Co</h4>
+                                            <span class="date">30 November 2021</span>
+                                          </div>
+                                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
+                                            <span class="category">Financial Apps</span>
+                                          </div>
+                                          <div class="col-lg-4 col-sm-4 col-12">
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <span class="rating">4.8</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div class="thumb">
+                                        <div class="row">
+                                          <div class="col-lg-4 col-sm-4 col-12">
+                                            <h4>Jake Harris Nyo</h4>
+                                            <span class="date">29 November 2021</span>
+                                          </div>
+                                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
+                                            <span class="category">Digital Business</span>
+                                          </div>
+                                          <div class="col-lg-4 col-sm-4 col-12">
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <span class="rating">4.5</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div class="thumb">
+                                        <div class="row">
+                                          <div class="col-lg-4 col-sm-4 col-12">
+                                            <h4>May Catherina</h4>
+                                            <span class="date">27 November 2021</span>
+                                          </div>
+                                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
+                                            <span class="category">Business &amp; Economics</span>
+                                          </div>
+                                          <div class="col-lg-4 col-sm-4 col-12">
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <span class="rating">4.7</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div class="thumb">
+                                        <div class="row">
+                                          <div class="col-lg-4 col-sm-4 col-12">
+                                            <h4>Random User</h4>
+                                            <span class="date">24 November 2021</span>
+                                          </div>
+                                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
+                                            <span class="category">New App Ecosystem</span>
+                                          </div>
+                                          <div class="col-lg-4 col-sm-4 col-12">
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <span class="rating">3.9</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="last-thumb">
+                                      <div class="thumb">
+                                        <div class="row">
+                                          <div class="col-lg-4 col-sm-4 col-12">
+                                            <h4>Mark Amber Do</h4>
+                                            <span class="date">21 November 2021</span>
+                                          </div>
+                                          <div class="col-lg-4 col-sm-4 d-none d-sm-block">
+                                            <span class="category">Web Development</span>
+                                          </div>
+                                          <div class="col-lg-4 col-sm-4 col-12">
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <i class="fa fa-star"></i>
+                                              <span class="rating">4.3</span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div> 
+                                <div class="col-lg-5">
+                                  <ul class="nacc">
+                                    <li class="active">
+                                      <div>
+                                        <div class="thumb">
+                                          <div class="row">
+                                            <div class="col-lg-12">
+                                              <div class="client-content">
+                                                <img src="assets/images/quote.png" alt="">
+                                                <p>“Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
+                                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
+                                              </div>
+                                              <div class="down-content">
+                                                <img src="assets/images/client-image.jpg" alt="">
+                                                <div class="right-content">
+                                                  <h4>David Martino</h4>
+                                                  <span>CEO of David Company</span>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div>
+                                        <div class="thumb">
+                                          <div class="row">
+                                            <div class="col-lg-12">
+                                              <div class="client-content">
+                                                <img src="assets/images/quote.png" alt="">
+                                                <p>“CTO, Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
+                                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
+                                              </div>
+                                              <div class="down-content">
+                                                <img src="assets/images/client-image.jpg" alt="">
+                                                <div class="right-content">
+                                                  <h4>Jake H. Nyo</h4>
+                                                  <span>CTO of Digital Company</span>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div>
+                                        <div class="thumb">
+                                          <div class="row">
+                                            <div class="col-lg-12">
+                                              <div class="client-content">
+                                                <img src="assets/images/quote.png" alt="">
+                                                <p>“May, Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
+                                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
+                                              </div>
+                                              <div class="down-content">
+                                                <img src="assets/images/client-image.jpg" alt="">
+                                                <div class="right-content">
+                                                  <h4>May C.</h4>
+                                                  <span>Founder of Catherina Co.</span>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div>
+                                        <div class="thumb">
+                                          <div class="row">
+                                            <div class="col-lg-12">
+                                              <div class="client-content">
+                                                <img src="assets/images/quote.png" alt="">
+                                                <p>“Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
+                                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
+                                              </div>
+                                              <div class="down-content">
+                                                <img src="assets/images/client-image.jpg" alt="">
+                                                <div class="right-content">
+                                                  <h4>Random Staff</h4>
+                                                  <span>Manager, Digital Company</span>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div>
+                                        <div class="thumb">
+                                          <div class="row">
+                                            <div class="col-lg-12">
+                                              <div class="client-content">
+                                                <img src="assets/images/quote.png" alt="">
+                                                <p>“Mark, Lorem ipsum dolor sit amet, consectetur adpiscing elit, sed do eismod tempor idunte ut labore et dolore magna aliqua darwin kengan
+                                                  lorem ipsum dolor sit amet, consectetur picing elit massive big blasta.”</p>
+                                              </div>
+                                              <div class="down-content">
+                                                <img src="assets/images/client-image.jpg" alt="">
+                                                <div class="right-content">
+                                                  <h4>Mark Am</h4>
+                                                  <span>CTO, Amber Do Company</span>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>          
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="pricing" class="pricing-tables">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-lg-8 offset-lg-2">
+                          <div class="section-heading">
+                            <h4>Donasi - Donasi Yang di Dapatkan Per <em>Campaign</em></h4>
+                            <img src="assets/images/heading-line-dec.png" alt="">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eismod tempor incididunt ut labore et dolore magna.</p>
+                          </div>
+                        </div>
+                        <div class="d-flex align-items-center" style="overflow-x: auto;">
+                          @foreach ($totalDonasiPerCampaign as $index => $item)
+                            <div class="col-lg-4 me-3" style="white-space: nowrap;">
+                              <div class="pricing-item-pro">
+                                <span class="price outlined-text">Rp {{ number_format($item->total_nominal, 0, ',', '.') }}</span>
+                                <h4>{{ $item->campaign->nama }}</h4>
+                                <div class="icon">
+                                  <img src="assets/images/pricing-table-01.png" alt="">
+                                </div>
+                                <div class="border-button">
+                                  <a href="#">Purchase This Plan Now</a>
+                                </div>
+                              </div>
+                            </div>
+                          @endforeach
+                        </div>
+                      </div>
+                    </div>
+                  </div> 
                 </div>
             </div>
         </div>
         <!-- main-panel ends -->
     </div>
-    @include('template.copyright')
+    <script>
+        function hasMonthInUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.has('month');
+        }
+
+        document.getElementById('toogleTargetDonasi').addEventListener('click', function() {
+            var chartDonasi = document.getElementById('chartDonasi');
+            var toggleIcon = document.getElementById('toggleIcon');
+            chartDonasi.classList.toggle('d-none');
+            toggleIcon.classList.toggle('rotate-icon');
+        });
+
+        if (hasMonthInUrl()) {
+            document.getElementById('chartDonasi').classList.remove('d-none');
+            document.getElementById('toggleIcon').classList.add('rotate-icon');
+        }
+    </script>
+    <script>
+        (function($) {
+        'use strict';
+            $(function() {
+                const monthlyChartData = @json($chartData['monthlyTotals']);
+                const weeklyChartData = @json($chartData['weeklyTotals']);
+
+                // Cek ukuran layar
+                const isSmallScreen = window.innerWidth < 768; // Misalnya, untuk layar di bawah 768px
+
+                @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
+                // Chart Bulanan
+                const monthlyCanvas = document.getElementById('campaignChartMonthly');
+                new Chart(monthlyCanvas, {
+                    type: 'bar',
+                    data: {
+                    labels: ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"],
+                    datasets: [{
+                        label: 'Donations per Month',
+                        data: monthlyChartData,
+                        backgroundColor: "#52CDFF",
+                        borderColor: "#52CDFF",
+                        borderWidth: 0,
+                        barPercentage: 0.35,
+                        fill: true,
+                    }]
+                    },
+                    options: {
+                    responsive: !isSmallScreen, // Non-responsif di layar kecil
+                    maintainAspectRatio: isSmallScreen, // Hanya pertahankan aspect ratio di layar kecil
+                    scales: {
+                        y: {
+                        beginAtZero: true
+                        }
+                    }
+                    }
+                });
+                @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
+                // Chart Mingguan
+                const weeklyCanvas = document.getElementById('campaignChartWeekly');
+                new Chart(weeklyCanvas, {
+                    type: 'bar',
+                    data: {
+                    labels: ["Minggu 1", "Minggu 2", "Minggu 3", "Minggu 4"],
+                    datasets: [{
+                        label: 'Donations per Week',
+                        data: weeklyChartData,
+                        backgroundColor: "#FFCD52",
+                        borderColor: "#FFCD52",
+                        borderWidth: 0,
+                        barPercentage: 0.35,
+                        fill: true,
+                    }]
+                    },
+                    options: {
+                    responsive: !isSmallScreen, // Non-responsif di layar kecil
+                    maintainAspectRatio: isSmallScreen, // Pertahankan rasio aspek di layar kecil
+                    scales: {
+                        y: {
+                        beginAtZero: true
+                        }
+                    }
+                    }
+                });
+                @endif
+            });
+        })(jQuery);
+    </script>
     <!-- page-body-wrapper ends -->
 </div>
+    @include('template.copyright')
+
 @include('template.footer')
