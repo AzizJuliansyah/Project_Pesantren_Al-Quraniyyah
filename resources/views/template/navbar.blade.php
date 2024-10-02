@@ -41,18 +41,20 @@
         <div class="navbar-menu-wrapper d-flex align-items-top">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              @if (Auth::user())
-                @if (request()->routeIs('campaignpayment.daftarcampaign', 'campaignpayment.show', 'campaignpayment.detail', 'donasi.payment', 'payment.success', 'payment.pending', 'payment.error', 'pembayaran.uangkas'))
-                  <a href="/admin" class="btn btn-sm btn-inverse-info me-3 {{ request()->routeIs('home') ? 'text-white' : '' }}" >Dashboard</a>
-                  <a href="/" class="btn btn-sm btn-inverse-info {{ request()->routeIs('home') ? 'text-white' : '' }}" >Home</a>
-                @elseif (request()->routeIs('home'))
-                  <a href="/admin" class="btn btn-sm btn-inverse-info me-3 {{ request()->routeIs('home') ? 'text-white' : '' }}" >Dashboard</a>
-                  <a href="/daftarcampaign" class="btn btn-sm btn-inverse-info {{ request()->routeIs('home') ? 'text-white' : '' }}" >Daftar Campaign</a>
-                @else
-                  <a href="/" class="btn btn-sm btn-inverse-info me-3 {{ request()->routeIs('home') ? 'text-white' : '' }}" >Home</a>
-                  <a href="/daftarcampaign" class="btn btn-sm btn-inverse-info {{ request()->routeIs('home') ? 'text-white' : '' }}" >Daftar Campaign</a>
+              <div class="d-flex align-items-center">
+                @if (Auth::user())
+                  @if (request()->routeIs('campaignpayment.daftarcampaign', 'campaignpayment.show', 'campaignpayment.detail', 'donasi.payment', 'payment.success', 'payment.pending', 'payment.error', 'pembayaran.uangkas'))
+                    <a href="/admin" class="btn btn-sm btn-inverse-info me-3 {{ request()->routeIs('home') ? 'text-white' : '' }}" >Dashboard</a>
+                    <a href="/" class="btn btn-sm btn-inverse-info d-none d-lg-block d-md-block {{ request()->routeIs('home') ? 'text-white' : '' }}" >Home</a>
+                  @elseif (request()->routeIs('home'))
+                    <a href="/admin" class="btn btn-sm btn-inverse-info me-3 {{ request()->routeIs('home') ? 'text-white' : '' }}" >Dashboard</a>
+                    <a href="/daftarcampaign" class="btn btn-sm btn-inverse-info d-none d-lg-block d-md-block {{ request()->routeIs('home') ? 'text-white' : '' }}" >Daftar Campaign</a>
+                  @else
+                    <a href="/" class="btn btn-sm btn-inverse-info me-3 {{ request()->routeIs('home') ? 'text-white' : '' }}" >Home</a>
+                    <a href="/daftarcampaign" class="btn btn-sm btn-inverse-info d-none d-lg-block d-md-block {{ request()->routeIs('home') ? 'text-white' : '' }}" >Daftar Campaign</a>
+                  @endif
                 @endif
-              @endif
+              </div>
             </li>
               <li class="nav-item">
                 @if (Auth::user())

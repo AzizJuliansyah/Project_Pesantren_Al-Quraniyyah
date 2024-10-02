@@ -8,6 +8,7 @@ use App\Models\Angkatan;
 use App\Models\Campaign;
 use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
+use App\Models\Administrator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -151,6 +152,9 @@ class AuthController extends Controller
         ];
         $selectedMonthName = $availableMonths[$selectedMonth] ?? '';
 
+        $background1 = Administrator::where('item_id', 4)->first();
+        $text1 = Administrator::where('item_id', 5)->first();
+
         return view('index.index', compact(
             'totalUangKasPerAngkatan',
             'totalDonasiPerCampaign',
@@ -163,6 +167,8 @@ class AuthController extends Controller
             'saldoAwalUangKas',
             'pengeluaranTotalUangKas',
             'saldoAkhirUangKas',
+            'background1',
+            'text1',
         ));
     }
 

@@ -36,6 +36,20 @@ class AdministratorSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+            [
+                'item_id' => '4',
+                'item' => 'Edit ini dengan background landscape',
+                'info' => 'Background Untuk di Halaman Landing Page',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
+            [
+                'item_id' => '5',
+                'item' => 'Pesantren Al-Quraniyyah adalah pesantren yang berkomitmen untuk mencetak generasi berakhlak mulia dengan landasan ilmu Al-Quran. Selain fokus pada pendidikan agama yang mendalam, pesantren ini juga aktif dalam berbagai kegiatan sosial, termasuk pengelolaan dana infaq, sedekah, dan kampanye donasi untuk mendukung kesejahteraan santri serta pengembangan fasilitas pesantren.',
+                'info' => 'Text Untuk di Halaman Landing Page',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
         ]);
     }
 }

@@ -74,7 +74,7 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>
                                                         
-                                                        @if ($item->item_id == 1)
+                                                        @if (in_array($item->item_id, [1, 4]))
                                                             @if(Storage::exists('public/' . $item->item))
                                                                 <img src="{{ asset('storage/' . $item->item) }}" alt="{{ $item->info }}" class="img-fluid" width="800">
                                                             @else
@@ -106,7 +106,7 @@
                                                                             @csrf
                                                                             <div class="mb-3">
                                                                                 <label for="item" class="form-label">item</label>
-                                                                                @if ($item->item_id == 1)
+                                                                                @if (in_array($item->item_id, [1, 4]))
                                                                                     @if(Storage::exists('public/' . $item->item))
                                                                                         <div class="form-group">
                                                                                             <img src="{{ asset('storage/' . $item->item) }}" alt="{{ $item->info }}" class="img-fluid" width="800">

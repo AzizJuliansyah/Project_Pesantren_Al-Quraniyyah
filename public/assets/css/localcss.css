@@ -188,11 +188,18 @@
 .outlined-text {
     color: white;
     text-shadow:
-        -2px -2px 4px rgba(0, 0, 0, 0.7),
-        2px -2px 4px rgba(0, 0, 0, 0.7),
-        -2px 2px 4px rgba(0, 0, 0, 0.7),
-        2px 2px 4px rgba(0, 0, 0, 0.7);
+        -2px -2px 4px rgba(0, 0, 0, 0.2),
+        2px -2px 4px rgba(0, 0, 0, 0.2),
+        -2px 2px 4px rgba(0, 0, 0, 0.2),
+        2px 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+.outlined-text-white {
+    color: transparent;
+    -webkit-text-stroke: 1px white;
+    text-stroke: 1px white;
+}
+
 
 
 .bg-image {
@@ -202,24 +209,43 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Membuat gambar memenuhi area tanpa distorsi */
     z-index: 1;
-    /* Memastikan gambar berada di belakang konten */
     opacity: 0.6;
     /* Menambahkan efek transparansi */
 }
 
 .content {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    margin-top: 160px;
     color: white;
     text-align: center;
     z-index: 2;
     /* Konten berada di atas gambar */
     position: relative;
 }
+
+
+
+@media (max-width: 768px) {
+    .content h1 {
+        font-size: 10vw; /* Teks h1 lebih kecil di layar yang lebih kecil */
+    }
+    
+    .content h3 {
+        font-size: 5vw; /* Teks h3 lebih kecil di layar yang lebih kecil */
+    }
+}
+
+@media (max-width: 480px) {
+    .content h1 {
+        font-size: 11vw;
+    }
+    
+    .content h3 {
+        font-size: 6vw;
+    }
+}
+
 
 .overlay {
     position: absolute;

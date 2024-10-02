@@ -173,23 +173,17 @@ class AdminController extends Controller
 
     public function administrator_edit(Request $request, $item_id)
     {
-        // Check if the item_id should be text or a photo
-        $isText = $this->isTextItem($item_id); // A function to determine if the item is text or photo
-
-        // Conditionally validate based on the type of item
+        $isText = $this->isTextItem($item_id);
+        
         $validatedData = $request->validate([
             'item' => $isText ? 'required|string' : 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Prepare data for update
         $data = [];
 
-        // Handle text or photo input based on the item_id
         if ($isText) {
-            // If item is text, save the text value
             $data['item'] = $validatedData['item'];
         } else {
-            // If item is a photo and a file was uploaded
             if ($request->hasFile('item')) {
                 $item = Administrator::where('item_id', $item_id)->first();
                 if ($item->item && Storage::disk('public')->exists($item->item)) {
@@ -197,12 +191,11 @@ class AdminController extends Controller
                 }
 
                 $foto = $request->file('item');
-                $fotoPath = $foto->store('item', 'public'); // Store the file in 'public/foto' directory
-                $data['item'] = $fotoPath; // Store the photo path in the database
+                $fotoPath = $foto->store('item', 'public');
+                $data['item'] = $fotoPath;
             }
         }
 
-        // Update the Administrator record
         Administrator::where('item_id', $item_id)->update($data);
 
         return redirect()->back()->with('success', 'Item updated successfully.');
@@ -213,10 +206,7 @@ class AdminController extends Controller
      */
     private function isTextItem($item_id)
     {
-        // You can define logic to determine if an item is text-based
-        // Example: return true if text-based, false if photo-based
-        // Replace this with your actual condition to decide whether it's text or photo
-        $textItemIds = [2, 3]; // Example: IDs that should be treated as text
+        $textItemIds = [2, 3, 5]; // Example: IDs that should be treated as text
         return in_array($item_id, $textItemIds);
     }
 

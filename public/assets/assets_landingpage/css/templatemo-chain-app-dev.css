@@ -1153,7 +1153,7 @@ About Us
   z-index: 1;
 }
 
-.about-us:after {
+/* .about-us:after {
   background-image: url(../images/about-bg.jpg);
   width: 777px;
   height: 1132px;
@@ -1164,7 +1164,7 @@ About Us
   top: 50%;
   transform: translateY(-50%);
   z-index: 0;
-}
+} */
 
 
 
