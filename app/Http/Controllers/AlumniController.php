@@ -54,15 +54,15 @@ class AlumniController extends Controller
 
         $alumni = $query->get();
 
-        if ($alumni->isEmpty()) {
-            return view('admin.alumni.index', [
-                'angkatan' => $angkatan,
-                'status' => $status,
-                'alumni' => $alumni,
-                'hasFilters' => $hasFilters,
-                'noData' => true,
-            ]);
-        }
+        // if ($alumni->isEmpty()) {
+        //     return view('admin.alumni.index', [
+        //         'angkatan' => $angkatan,
+        //         'status' => $status,
+        //         'alumni' => $alumni,
+        //         'hasFilters' => $hasFilters,
+        //         'noData' => true,
+        //     ]);
+        // }
         return view('admin.alumni.index', [
             'angkatan' => $angkatan,
             'status' => $status,

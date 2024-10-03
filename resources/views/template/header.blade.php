@@ -35,7 +35,14 @@
       <link rel="stylesheet" href="{{ asset('assets/assets_landingpage/css/owl.css') }}">
     @endif
     <!-- endinject -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+    @php
+      $item = \App\Models\Administrator::where('item_id', 1)->first();
+    @endphp
+    @if($item->item)
+      @if(Storage::exists('public/' . $item->item))
+        <link rel="shortcut icon" href="{{ asset('storage/' . $item->item) }}" />
+      @endif
+    @endif
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 

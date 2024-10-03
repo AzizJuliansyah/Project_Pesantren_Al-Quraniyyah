@@ -47,8 +47,12 @@
                     <a href="/admin" class="btn btn-sm btn-inverse-info me-3 {{ request()->routeIs('home') ? 'text-white' : '' }}" >Dashboard</a>
                     <a href="/" class="btn btn-sm btn-inverse-info d-none d-lg-block d-md-block {{ request()->routeIs('home') ? 'text-white' : '' }}" >Home</a>
                   @elseif (request()->routeIs('home'))
-                    <a href="/admin" class="btn btn-sm btn-inverse-info me-3 {{ request()->routeIs('home') ? 'text-white' : '' }}" >Dashboard</a>
-                    <a href="/daftarcampaign" class="btn btn-sm btn-inverse-info d-none d-lg-block d-md-block {{ request()->routeIs('home') ? 'text-white' : '' }}" >Daftar Campaign</a>
+                    <div class="gradient-button me-3 ">
+                      <a href="/admin" class="{{ request()->routeIs('home') ? 'text-white' : '' }}" >Dashboard</a>
+                    </div>
+                    <div class="gradient-button d-none d-lg-block d-md-block">
+                      <a href="/daftarcampaign" class=" {{ request()->routeIs('home') ? 'text-white' : '' }}" >Daftar Campaign</a>
+                    </div>
                   @else
                     <a href="/" class="btn btn-sm btn-inverse-info me-3 {{ request()->routeIs('home') ? 'text-white' : '' }}" >Home</a>
                     <a href="/daftarcampaign" class="btn btn-sm btn-inverse-info d-none d-lg-block d-md-block {{ request()->routeIs('home') ? 'text-white' : '' }}" >Daftar Campaign</a>

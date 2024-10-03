@@ -12,9 +12,9 @@ use App\Http\Controllers\CampaignPaymentController;
 
 
 Route::get('/', [AuthController::class, 'home'])->name('home');
-Route::fallback(function () {
-    return redirect()->route('home')->with('error', 'Halaman tidak ditemukan.');
-});
+// Route::fallback(function () {
+//     return redirect()->route('home')->with('error', 'Halaman tidak ditemukan.');
+// });
 Route::middleware(['authenticated'])->group(function () {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
     Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
@@ -69,6 +69,8 @@ Route::get('/pembayaran/uangkas/angkatan/{angkatan_id}', [UangKasController::cla
 
 Route::get('/donasi/detail/{slug}', [CampaignPaymentController::class, 'detail'])->name('campaignpayment.detail');
 Route::post('donasi', [CampaignPaymentController::class, 'donasi'])->name('campaignpayment.donasi');
+
+Route::get('/payment', [CampaignPaymentController::class, 'updateDonationStatus']);
 
 Route::get('/donasi/payment/{donasi_id}', [CampaignPaymentController::class, 'payment'])->name('donasi.payment');
 Route::get('/payment/success/{donasi_id}', [CampaignPaymentController::class, 'payment_success'])->name('payment.success');

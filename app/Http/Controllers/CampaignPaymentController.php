@@ -365,6 +365,49 @@ class CampaignPaymentController extends Controller
         }
     }
 
+
+
+    public function updateDonationStatus(Request $request)
+    {
+        $orderId = $request->query('order_id');
+        $statusCode = $request->query('status_code');
+        $transactionStatus = $request->query('transaction_status');
+
+        $donasi = Donasi::where('order_id', $orderId)->first();
+        $campaign = Campaign::findOrFail($donasi->campaign_id);
+
+        if (!$donasi) {
+            return response()->json(['message' => 'Donation not found'], 404);
+        }
+
+        if ($statusCode == '200' && $transactionStatus == 'settlement') {
+            $donasi->status = 'success';
+            $donasi->save();
+
+            $request->session()->forget('can_access_payment');
+            return view('index.campaign.payment-success', compact('donasi', 'campaign'));
+
+        } elseif ($statusCode == '201' && $transactionStatus == 'pending') {
+            $donasi->status = 'pending';
+            $donasi->save();
+
+            $request->session()->forget('can_access_payment');
+            return view('index.campaign.payment-pending', compact('donasi', 'campaign'));
+
+        } elseif ($statusCode == '202' || in_array($transactionStatus, ['deny', 'cancel', 'expire'])) {
+            $donasi->status = 'error';
+            $donasi->save();
+
+            $request->session()->forget('can_access_payment');
+            return view('index.campaign.payment-pending', compact('donasi', 'campaign'));
+            
+        } else {
+            // Jika status tidak dikenali
+            return response()->json(['message' => 'Invalid transaction status'], 400);
+        }
+    }
+
+
     public function payment_success($encryptedId, Request $request)
     {
         if (!$request->session()->has('can_access_payment')) {
@@ -417,6 +460,7 @@ class CampaignPaymentController extends Controller
         try {
             $decryptedId = Crypt::decrypt($encryptedId);
             $donasi = Donasi::findOrFail($decryptedId);
+            $campaign = Campaign::findOrFail($donasi->campaign_id);
 
             \Midtrans\Config::$serverKey = $donasi->campaign->server_key;
             \Midtrans\Config::$isProduction = false;
@@ -430,7 +474,7 @@ class CampaignPaymentController extends Controller
                         $donasi->save();
 
                         $request->session()->forget('can_access_payment');
-                        return view('index.campaign.payment-pending');
+                        return view('index.campaign.payment-pending', compact('donasi', 'campaign'));
                     } else {
                         $request->session()->forget('can_access_payment');
                         return redirect('/')->with('error', 'Pembayaran belum selesai atau gagal.');
@@ -459,6 +503,7 @@ class CampaignPaymentController extends Controller
         try {
             $decryptedId = Crypt::decrypt($encryptedId);
             $donasi = Donasi::findOrFail($decryptedId);
+            $campaign = Campaign::findOrFail($donasi->campaign_id);
 
             \Midtrans\Config::$serverKey = $donasi->campaign->server_key;
             \Midtrans\Config::$isProduction = false;
@@ -471,7 +516,7 @@ class CampaignPaymentController extends Controller
                         $donasi->status = 'error';
                         $donasi->save();
 
-                        $request->session()->forget('can_access_payment');
+                        $request->session()->forget('can_access_payment', compact('donasi', 'campaign'));
                         return view('index.campaign.payment-error');
                     } else {
                         $request->session()->forget('can_access_payment');

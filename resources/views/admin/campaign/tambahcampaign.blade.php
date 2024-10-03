@@ -36,7 +36,8 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-2">Campaign Thumbnail</label>
                                                     <div class="col-sm-10">
-                                                        <input type="file" name="foto" id="foto" class="file-upload-default">
+                                                        <input type="file" name="foto" id="foto" value="{{ old('foto') }}" class="file-upload-default @error('foto') is-invalid @enderror">
+                                                        
                                                         <div class="input-group col-xs-12">
                                                             <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
                                                             <span class="input-group-append">
@@ -44,6 +45,9 @@
                                                             </span>
                                                         </div>
                                                     </div>
+                                                    @error('foto')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -51,7 +55,10 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 ">ID Campaign</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" name="campaign_id" id="campaign_id" class="form-control" required/>
+                                                            <input type="text" name="campaign_id" id="campaign_id" value="{{ old('campaign_id') }}" class="form-control @error('campaign_id') is-invalid @enderror" required/>
+                                                            @error('campaign_id')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -59,7 +66,10 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 ">Nama Campaign</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" name="nama" id="nama" class="form-control" required/>
+                                                            <input type="text" name="nama" id="nama" value="{{ old('nama') }}" class="form-control @error('nama') is-invalid @enderror" required/>
+                                                            @error('nama')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -69,7 +79,10 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 ">Info</label>
                                                         <div class="col-sm-9">
-                                                            <textarea name="info" id="info"placeholder="Info Tentang Campaign"></textarea>
+                                                            <textarea name="info" id="info" placeholder="Info Tentang Campaign">{{ old('info') }}</textarea>
+                                                            @error('info')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -79,7 +92,10 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 ">Client Key</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" name="client_key" id="client_key" class="form-control" placeholder="Client Key Midtrans" required>
+                                                            <input type="text" name="client_key" id="client_key" value="{{ old('client_key') }}" class="form-control @error('client_key') is-invalid @enderror" placeholder="Client Key Midtrans" required>
+                                                            @error('client_key')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -87,7 +103,10 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 ">Server Key</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" name="server_key" id="server_key" class="form-control" placeholder="Server Key Midtrans" required/>
+                                                            <input type="text" name="server_key" id="server_key" value="{{ old('server_key') }}" class="form-control @error('server_key') is-invalid @enderror" placeholder="Server Key Midtrans" required/>
+                                                            @error('server_key')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -105,7 +124,10 @@
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text bg-primary text-white">Rp.</span>
                                                                     </div>
-                                                                    <input type="text" name="target" id="target" class="form-control" aria-label="Rupiah" required>
+                                                                    <input type="text" name="target" id="target" value="{{ old('target') }}" class="form-control @error('target') is-invalid @enderror" aria-label="Rupiah" required>
+                                                                    @error('target')
+                                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                         </div>

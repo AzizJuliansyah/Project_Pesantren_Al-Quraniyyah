@@ -50,9 +50,12 @@ class AuthController extends Controller
         });
 
         $totalDonasiPerCampaign = Donasi::select('campaign_id', DB::raw('SUM(nominal2) as total_nominal'))
-                        ->groupBy('campaign_id')
-                        ->with('campaign')
-                        ->get();
+            ->where('campaign_id', '!=', 1)
+            ->groupBy('campaign_id')
+            ->orderBy('campaign_id', 'DESC')
+            ->with('campaign')
+            ->get();
+
 
 
         $selectedCampaign = 1;
@@ -154,6 +157,7 @@ class AuthController extends Controller
 
         $background1 = Administrator::where('item_id', 4)->first();
         $text1 = Administrator::where('item_id', 5)->first();
+        $illustrator1 = Administrator::where('item_id', 6)->first();
 
         return view('index.index', compact(
             'totalUangKasPerAngkatan',
@@ -169,6 +173,7 @@ class AuthController extends Controller
             'saldoAkhirUangKas',
             'background1',
             'text1',
+            'illustrator1',
         ));
     }
 

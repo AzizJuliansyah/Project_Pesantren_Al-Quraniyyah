@@ -50,6 +50,13 @@ class AdministratorSeeder extends Seeder
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ],
+            [
+                'item_id' => '6',
+                'item' => 'Edit ini dengan foto illustrasi ',
+                'info' => 'Foto illustrasi Untuk di Halaman Landing Page',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ],
         ]);
     }
 }

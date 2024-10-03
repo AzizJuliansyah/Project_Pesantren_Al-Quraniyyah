@@ -746,10 +746,28 @@ class UangKasController extends Controller
 
 
 
-    public function pengeluaran()
+    public function pengeluaran(Request $request)
     {
-        $pengeluaran = Pengeluaran::all();
-        return view('admin.uangkas.pengeluaran', compact('pengeluaran'));
+        $query = Pengeluaran::query();
+        
+        $dari = $request->input('dari');
+        $hingga = $request->input('hingga');
+        $dari = $dari ? \Carbon\Carbon::parse($dari)->startOfDay() : null;
+        $hingga = $hingga ? \Carbon\Carbon::parse($hingga)->endOfDay() : null;
+        $hasFilters = false;
+
+        if ($request->has('dari') && $dari) {
+            $query->whereDate('created_at', '>=', $dari);
+            $hasFilters = true;
+        }
+        if ($request->has('hingga') && $hingga) {
+            $query->whereDate('created_at', '<=', $hingga);
+            $hasFilters = true;
+        }
+
+        $pengeluaran = $query->get();
+
+        return view('admin.uangkas.pengeluaran', compact('pengeluaran', 'hasFilters'));
     }
 
     public function tambahpengeluaran(Request $request)

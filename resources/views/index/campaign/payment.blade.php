@@ -14,7 +14,19 @@
                         </div>
                         <div class="card-body p-0">
                             <div class="brand-logo text-center mt-2">
-                                <img src="{{ asset('assets/images/logo-alquraniyyah.png') }}" alt="logo" style="width: 50px;">
+                                @php
+                                    $item = \App\Models\Administrator::where('item_id', 1)->first();
+                                @endphp
+
+                                @if($item->item)
+                                    @if(Storage::exists('public/' . $item->item))
+                                    <img src="{{ asset('storage/' . $item->item) }}" alt="logo" />
+                                    @else
+                                    {{ $item->item }}
+                                    @endif
+                                @else
+                                    <p>No image available</p>
+                                @endif
                             </div>
                             <h6 class="">Pembayaran Donasi ke Campaign {{ $campaign->nama }}</h6>
                             <!-- Payment Amount -->

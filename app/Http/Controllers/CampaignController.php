@@ -62,8 +62,8 @@ class CampaignController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'campaign_id' => 'required|numeric',
+        $request->validate([
+            'campaign_id' => 'required|numeric|unique:campaign,campaign_id',
             'nama' => 'required|string|max:255',
             'info' => 'required|string',
             'server_key' => 'required|string',

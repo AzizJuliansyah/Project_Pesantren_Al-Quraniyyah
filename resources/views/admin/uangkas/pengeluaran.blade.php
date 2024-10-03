@@ -8,6 +8,48 @@
 
         <div class="main-panel">
             <div class="content-wrapper">
+                <div class="card mb-5 shadow">
+                    <div class="card-body">
+                        <a id="toggleFilterButton" class="text-dark normal-link">
+                            <div class="d-flex align-items-center ">
+                            <h4 class="me-2">Filter Data Berdasarkan</h4>
+                            @if ($hasFilters)
+                                <i class="fa fa-chevron-up"></i>
+                            @else
+                                <i class="fa fa-chevron-down mb-2"></i>
+                            @endif
+                            </div>
+                        </a>
+                        <form action="{{ route('pengeluaran.uangkas') }}" method="get" id="filterForm" class="{{ !$hasFilters ? 'd-none' : '' }}">
+                            <div class="row">
+                                <div class="col-md-8">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label>Tanggal Pengeluaran, Dari</label>
+                                        <div class="form-group">
+                                            <input type="date" class="form-control" name="dari" id="dari" value="{{ request('dari') }}">
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <label>Tanggal Pengeluaran, Hingga</label>
+                                        <div class="form-group">
+                                            <input type="date" class="form-control" name="hingga" id="hingga" value="{{ request('hingga') }}">
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary me-2" id="filterButton" disabled>Filter / Cari</button>
+                            @if ($hasFilters)
+                                <a href="/pengeluaran" class="btn btn-primary">Kembali</a>
+                            @endif
+                        </form>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-12 grid-margin stretch-card">
                         <div class="card shadow">
@@ -79,7 +121,7 @@
                                                     <th>Untuk</th>
                                                     <th>Nomninal</th>
                                                     <th>Yang Bertanggung Jawab</th>
-                                                    <th>Dibuat</th>
+                                                    <th>Tanggal Pengeluaran</th>
                                                     <th>Terakhir Diubah</th>
                                                     <th>Aksi</th>
                                                 </tr>
@@ -200,6 +242,47 @@
     <!-- page-body-wrapper ends -->
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const filterForm = document.getElementById('filterForm');
+            const toggleFilterButton = document.getElementById('toggleFilterButton');
+            const filterButton = document.getElementById('filterButton');
+
+            toggleFilterButton.addEventListener('click', function () {
+                if (filterForm.classList.contains('d-none')) {
+                    filterForm.classList.remove('d-none');
+                    toggleFilterButton.innerHTML = `
+                    <div class="d-flex align-items-center ">
+                        <h4 class="me-2">Filter Data Berdasarkan</h4>
+                        <i class="fa fa-chevron-up mb-2"></i>
+                    </div>
+                    `;
+                } else {
+                    filterForm.classList.add('d-none');
+                    toggleFilterButton.innerHTML = `
+                    <div class="d-flex align-items-center ">
+                        <h4 class="me-2">Filter Data Berdasarkan</h4>
+                        <i class="fa fa-chevron-down mb-2"></i>
+                    </div>
+                    `;
+                }
+                validateForm();
+            });
+
+            function validateForm() {
+                const dari = document.getElementById('dari').value;
+                const hingga = document.getElementById('hingga').value;
+                
+                if ((dari && hingga)) {
+                    filterButton.disabled = false;
+                } else {
+                    filterButton.disabled = true;
+                }
+            }
+
+            document.getElementById('dari').addEventListener('input', validateForm);
+            document.getElementById('hingga').addEventListener('input', validateForm);
+        });
+
         new DataTable('#pengeluaranTable', {
             pageLength: 25,
             lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]],

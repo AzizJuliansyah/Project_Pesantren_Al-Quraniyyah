@@ -14,8 +14,8 @@ return new class extends Migration
          Schema::create('donasi', function (Blueprint $table) {
             $table->id();
             $table->integer('campaign_id');
-            $table->string('order_id')->nullable();
-            $table->integer('alumni_id');
+            $table->string('order_id');
+            $table->integer('alumni_id')->nullable();
             $table->string('nama')->nullable();
             $table->decimal('nominal', 15, 2);
             $table->decimal('nominal2', 15, 2);

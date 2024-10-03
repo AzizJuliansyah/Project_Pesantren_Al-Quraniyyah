@@ -8,7 +8,19 @@
             <div class="col-lg-4 mx-auto">
               <div class="auth-form-light text-left py-5 px-4 px-sm-5 shadow mt-5">
                 <div class="brand-logo text-center">
-                  <img src="{{ asset('assets/images/logo-alquraniyyah.png') }}" alt="logo" style="width: 50px;">
+                  @php
+                    $item = \App\Models\Administrator::where('item_id', 1)->first();
+                  @endphp
+
+                  @if($item->item)
+                    @if(Storage::exists('public/' . $item->item))
+                      <img src="{{ asset('storage/' . $item->item) }}" alt="logo" />
+                    @else
+                      {{ $item->item }}
+                    @endif
+                  @else
+                    <p>No image available</p>
+                  @endif
                 </div>
                 <h6 class="fw-light text-center">Donasi {{ $campaign->nama }}.</h6>
                 <p class="text-center">Sedikit uang yang anda keluarkan sangat berharga bagi kami</p>
@@ -109,74 +121,74 @@
           });
 
 
-          // function formatNumber(number) {
-          //   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-          // }
+          function formatNumber(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+          }
 
-          //   function formatInput(selector) {
-          //       $(selector).on('input', function() {
-          //           let input = $(this).val();
-          //           let numericValue = input.replace(/[^0-9]/g, '');
-          //           let formattedValue = formatNumber(numericValue);
-          //           $(this).val(formattedValue);
-          //       });
-          //   }
+            function formatInput(selector) {
+                $(selector).on('input', function() {
+                    let input = $(this).val();
+                    let numericValue = input.replace(/[^0-9]/g, '');
+                    let formattedValue = formatNumber(numericValue);
+                    $(this).val(formattedValue);
+                });
+            }
 
-          //   formatInput('#nominal');
+            formatInput('#nominal');
 
-          //   $('form').on('submit', function() {
-          //       $('#nominal').val(function(index, value) {
-          //           return value.replace(/\./g, '');
-          //       });
-          //   });
+            $('form').on('submit', function() {
+                $('#nominal').val(function(index, value) {
+                    return value.replace(/\./g, '');
+                });
+            });
 
 
 
           function validateForm() {
-    const BayarButton = document.getElementById('BayarButton');
-    const campaignId = {{ $campaign->id }};
-    const campaignNominal = @json($campaign->nominal);
+            const BayarButton = document.getElementById('BayarButton');
+            const campaignId = {{ $campaign->id }};
+            const campaignNominal = @json($campaign->nominal);
 
-    let nominal;
-    if (campaignNominal === null || campaignNominal === undefined) {
-        // Use input field if no predefined nominal
-        nominal = document.getElementById('nominal').value;
-    } else {
-        // Use select if predefined nominal exists
-        const nominal_valid = document.getElementById('nominalSelect').value;
+            let nominal;
+            if (campaignNominal === null || campaignNominal === undefined) {
+                // Use input field if no predefined nominal
+                nominal = document.getElementById('nominal').value;
+            } else {
+                // Use select if predefined nominal exists
+                const nominal_valid = document.getElementById('nominalSelect').value;
 
-        nominal = nominal_valid !== "default";
+                nominal = nominal_valid !== "default";
 
-    }
+            }
 
-    // Check conditions based on campaign ID
-    if (campaignId == 1) {
-        const alumni_id = document.getElementById('alumni_id').value;
-        const angkatan = document.getElementById('angkatan_id').value;
-        const alumni_idValid = alumni_id !== "default";
+            // Check conditions based on campaign ID
+            if (campaignId == 1) {
+                const alumni_id = document.getElementById('alumni_id').value;
+                const angkatan = document.getElementById('angkatan_id').value;
+                const alumni_idValid = alumni_id !== "default";
 
-        if (nominal && angkatan && alumni_idValid) {
-            BayarButton.disabled = false;
-        } else {
-            BayarButton.disabled = true;
-        }
-    } else {
-        const nama = document.getElementById('nama').value;
+                if (nominal && angkatan && alumni_idValid) {
+                    BayarButton.disabled = false;
+                } else {
+                    BayarButton.disabled = true;
+                }
+            } else {
+                const nama = document.getElementById('nama').value;
 
-        if (nominal && nama) {
-            BayarButton.disabled = false;
-        } else {
-            BayarButton.disabled = true;
-        }
-    }
-}
+                if (nominal && nama) {
+                    BayarButton.disabled = false;
+                } else {
+                    BayarButton.disabled = true;
+                }
+            }
+          }
 
-// Add event listeners
-document.getElementById('angkatan_id')?.addEventListener('input', validateForm);
-document.getElementById('alumni_id')?.addEventListener('change', validateForm);
-document.getElementById('nominal')?.addEventListener('input', validateForm);
-document.getElementById('nominalSelect')?.addEventListener('change', validateForm);
-document.getElementById('nama')?.addEventListener('input', validateForm);
+          // Add event listeners
+          document.getElementById('angkatan_id')?.addEventListener('input', validateForm);
+          document.getElementById('alumni_id')?.addEventListener('change', validateForm);
+          document.getElementById('nominal')?.addEventListener('input', validateForm);
+          document.getElementById('nominalSelect')?.addEventListener('change', validateForm);
+          document.getElementById('nama')?.addEventListener('input', validateForm);
 
 
         });

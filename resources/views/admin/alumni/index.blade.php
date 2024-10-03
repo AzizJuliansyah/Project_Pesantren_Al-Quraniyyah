@@ -267,7 +267,7 @@
     </div>
     <!-- page-body-wrapper ends -->
      <script>
-    document.addEventListener('DOMContentLoaded', function () {
+      document.addEventListener('DOMContentLoaded', function () {
         const filterForm = document.getElementById('filterForm');
         const toggleFilterButton = document.getElementById('toggleFilterButton');
         const filterButton = document.getElementById('filterButton');
@@ -316,12 +316,12 @@
         document.getElementById('dari').addEventListener('input', validateForm);
         document.getElementById('hingga').addEventListener('input', validateForm);
         document.getElementById('search').addEventListener('input', validateForm);
-    });
+      });
 
-    new DataTable('#AlumniTable', {
-      pageLength: 25,
-      lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]],
-    });
-</script>
+      new DataTable('#AlumniTable', {
+        pageLength: 25,
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Semua"]],
+      });
+    </script>
 </div>
 @include('template.footer')

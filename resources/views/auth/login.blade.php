@@ -6,7 +6,19 @@
             <div class="col-lg-4 mx-auto">
               <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                 <div class="brand-logo text-center">
-                  <img src="{{ asset('assets/images/logo-alquraniyyah.png') }}" alt="logo" style="width: 100px;">
+                  @php
+                    $item = \App\Models\Administrator::where('item_id', 1)->first();
+                  @endphp
+
+                  @if($item->item)
+                    @if(Storage::exists('public/' . $item->item))
+                      <img src="{{ asset('storage/' . $item->item) }}" alt="logo" />
+                    @else
+                      {{ $item->item }}
+                    @endif
+                  @else
+                    <p>No image available</p>
+                  @endif
                 </div>
                 <h4 class="text-center">Hello! Selamat Datang!!</h4>
                 <h6 class="fw-light text-center">Log In Untuk Melanjutkan.</h6>
