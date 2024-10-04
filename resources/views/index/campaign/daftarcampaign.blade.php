@@ -48,10 +48,10 @@
                     </div>
                 </div>
             </div>
+            @include('template.copyright')
         </div>
         <!-- main-panel ends -->
     </div>
-    @include('template.copyright')
     <!-- page-body-wrapper ends -->
 </div>
 @include('template.footer')

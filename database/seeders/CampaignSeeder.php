@@ -17,8 +17,8 @@ class CampaignSeeder extends Seeder
             'campaign_id' => 501,
             'nama' => 'Uang Kas',
             'info' => 'campaign pembayaran uang kas alumni',
-            'server_key' => 'a',
-            'client_key' => 'a',
+            'client_key' => 'Ganti Ini Dengan Client Key Midtrans',
+            'server_key' => 'Ganti Ini Dengan Server Key Midtrans',
             'target' => '5000000',
         ]);
     }

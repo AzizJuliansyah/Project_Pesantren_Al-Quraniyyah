@@ -234,8 +234,8 @@
                         </div>
                     </div>
                 </div>
-                @include('template.copyright')
             </div>
+            @include('template.copyright')
         </div>
         <!-- main-panel ends -->
     </div>

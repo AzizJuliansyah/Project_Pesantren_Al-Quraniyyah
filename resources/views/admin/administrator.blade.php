@@ -145,10 +145,10 @@
                     </div>
                 </div>
             </div>
+            @include('template.copyright')
         </div>
         <!-- main-panel ends -->
     </div>
-    @include('template.copyright')
     <script>
         new DataTable('#AdministratorTable', {
             pageLength: 25,

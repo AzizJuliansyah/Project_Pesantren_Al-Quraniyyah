@@ -260,8 +260,8 @@
                         </div>
                     </div>
                 </div>
-                @include('template.copyright')
-            </div>
+              </div>
+              @include('template.copyright')
         </div>
         <!-- main-panel ends -->
     </div>

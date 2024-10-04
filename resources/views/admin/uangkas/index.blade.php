@@ -205,10 +205,10 @@
                     </div>
                 </div>
             </div>
+            @include('template.copyright')
         </div>
         <!-- main-panel ends -->
     </div>
-    @include('template.copyright')
     <!-- page-body-wrapper ends -->
     <script>
         function hasMonthInUrl() {
@@ -235,8 +235,7 @@
                 const monthlyChartData = @json($chartData['monthlyTotals']);
                 const weeklyChartData = @json($chartData['weeklyTotals']);
 
-                // Cek ukuran layar
-                const isSmallScreen = window.innerWidth < 768; // Misalnya, untuk layar di bawah 768px
+                const isSmallScreen = window.innerWidth < 768;
 
                 @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
                 // Chart Bulanan
@@ -256,8 +255,8 @@
                     }]
                     },
                     options: {
-                    responsive: !isSmallScreen, // Non-responsif di layar kecil
-                    maintainAspectRatio: isSmallScreen, // Hanya pertahankan aspect ratio di layar kecil
+                    responsive: !isSmallScreen,
+                    maintainAspectRatio: isSmallScreen,
                     scales: {
                         y: {
                         beginAtZero: true
@@ -283,8 +282,8 @@
                     }]
                     },
                     options: {
-                    responsive: !isSmallScreen, // Non-responsif di layar kecil
-                    maintainAspectRatio: isSmallScreen, // Pertahankan rasio aspek di layar kecil
+                    responsive: !isSmallScreen,
+                    maintainAspectRatio: isSmallScreen,
                     scales: {
                         y: {
                         beginAtZero: true

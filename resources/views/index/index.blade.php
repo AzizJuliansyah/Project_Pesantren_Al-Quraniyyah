@@ -362,7 +362,7 @@
                       <div class="card shadow" style="background-image: url('assets/assets_landingpage/images/campaign_background{{ ($index % 5) + 1 }}.png'); background-size: cover; background-position: center;">
                         <div class="card-body" >
                           <section class="text-center text-white">
-                            <h2 class="mb-3">{{ $item->campaign->nama }}</h2>
+                            <h2 class="mb-3" style="white-space: normal;">{{ $item->campaign->nama }}</h2>
                             <div class="row mb-2">
                               <small class="">Donasi Terkumpul</small>
                               <h4 class="">Rp {{ number_format($item->total_nominal, 0, ',', '.') }}</h4>
@@ -406,6 +406,7 @@
             document.getElementById('toggleIcon').classList.add('rotate-icon');
         }
     </script>
+    
     <script>
         (function($) {
         'use strict';
@@ -472,7 +473,7 @@
         })(jQuery);
     </script>
     <!-- page-body-wrapper ends -->
+    @include('template.copyright')
 </div>
-@include('template.copyright')
 
 @include('template.footer')
