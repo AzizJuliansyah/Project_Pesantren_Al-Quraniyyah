@@ -120,225 +120,227 @@
                     </div>
                   </div> --}}
 
-          <div id="services" class="services section">
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-8 offset-lg-2">
-                  <div class="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
-                    <h4>Detail Uangkas <em>Keseluruhan</em> &amp; Perangkatan</h4>
-                    <img src="assets/assets_landingpage/images/heading-line-dec.png" alt="">
-                    <p>Detail Total Dana Uang Kas Yang Sudah di Dapat.</p>
+          @if ($campaign->publish == 1)
+            <div id="services" class="services section">
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg-8 offset-lg-2">
+                    <div class="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
+                      <h4>Detail Uangkas <em>Keseluruhan</em> &amp; Perangkatan</h4>
+                      <img src="assets/assets_landingpage/images/heading-line-dec.png" alt="">
+                      <p>Detail Total Dana Uang Kas Yang Sudah di Dapat.</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="container">
-              <div class="row">
-                <div class="col-lg-8 mb-3">
-                  <div class="card shadow">
-                      <div class="card-body">
-                          <div class="col-12" id="toogleTargetDonasi" style="cursor: pointer">
-                              <div class="d-flex align-items-center">
-                                  <p class="card-description">Filter Data By Tahun, Default adalah untuk <strong>semua tahun</strong></p>
-                                  <i class="fa fa-chevron-down ms-2 mb-3" id="toggleIcon"></i>
-                              </div>
-                          </div>
-                          <div class="form-group d-none" id="chartDonasi">
-                              <div class="" style="max-height: 100%">
-                                  <div class="form-group">
-                                      <form action="/" method="get">
-                                          <div class="row">
-                                              <div class="col-lg-4 col-sm-12 mb-3">
-                                                  <select name="month" id="month" class="form-control text-dark">
-                                                      <optgroup label="Filter Data By">
-                                                        <option value="" selected>Semua Bulan</option>
-                                                      </optgroup>
-                                                      <optgroup label="Bulan">
-                                                        <option value="1" @if(request('month')  == 1) selected @endif>Januari</option>
-                                                        <option value="2" @if(request('month')  == 2) selected @endif>Februari</option>
-                                                        <option value="3" @if(request('month')  == 3) selected @endif>Maret</option>
-                                                        <option value="4" @if(request('month')  == 4) selected @endif>April</option>
-                                                        <option value="5" @if(request('month')  == 5) selected @endif>Mei</option>
-                                                        <option value="6" @if(request('month')  == 6) selected @endif>Juni</option>
-                                                        <option value="7" @if(request('month')  == 7) selected @endif>Juli</option>
-                                                        <option value="8" @if(request('month')  == 8) selected @endif>Agustus</option>
-                                                        <option value="9" @if(request('month')  == 9) selected @endif>September</option>
-                                                        <option value="10" @if(request('month')  == 10) selected @endif>Oktober</option>
-                                                        <option value="11" @if(request('month')  == 11) selected @endif>November</option>
-                                                        <option value="12" @if(request('month')  == 12) selected @endif>Desember</option>
-                                                      </optgroup>
-                                                  </select>
-                                              </div>
-                                              <div class="col-lg-4 col-sm-12">
-                                                <div class="form-group">
-                                                  <input type="number" name="year" id="year" value="{{ request('year') }}" class="form-control" min="2023" max="2100" step="1" placeholder="Tahun">
-                                                </div>
-                                              </div>
-                                              <div class="col-lg-4 col-sm-12">
-                                                  <button type="submit" class="btn btn-md btn-primary text-light">Filter <i class="fa fa-filter"></i></button>
-                                              </div>
-                                          </div>
-                                      </form>
-                                  </div>
-                              </div>
-                              @if(request()->has('month') || request()->has('year'))
-                                <div class="float-end me-3">
-                                    <a href="/"><i class="fa fa-arrow-left me-1"></i>Kembali</a>
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg-8 mb-3">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="col-12" id="toogleTargetDonasi" style="cursor: pointer">
+                                <div class="d-flex align-items-center">
+                                    <p class="card-description">Filter Data By Tahun, Default adalah untuk <strong>semua tahun</strong></p>
+                                    <i class="fa fa-chevron-down ms-2 mb-3" id="toggleIcon"></i>
                                 </div>
-                              @endif      
-                          </div>
-                      </div>
+                            </div>
+                            <div class="form-group d-none" id="chartDonasi">
+                                <div class="" style="max-height: 100%">
+                                    <div class="form-group">
+                                        <form action="/" method="get">
+                                            <div class="row">
+                                                <div class="col-lg-4 col-sm-12 mb-3">
+                                                    <select name="month" id="month" class="form-control text-dark">
+                                                        <optgroup label="Filter Data By">
+                                                          <option value="" selected>Semua Bulan</option>
+                                                        </optgroup>
+                                                        <optgroup label="Bulan">
+                                                          <option value="1" @if(request('month')  == 1) selected @endif>Januari</option>
+                                                          <option value="2" @if(request('month')  == 2) selected @endif>Februari</option>
+                                                          <option value="3" @if(request('month')  == 3) selected @endif>Maret</option>
+                                                          <option value="4" @if(request('month')  == 4) selected @endif>April</option>
+                                                          <option value="5" @if(request('month')  == 5) selected @endif>Mei</option>
+                                                          <option value="6" @if(request('month')  == 6) selected @endif>Juni</option>
+                                                          <option value="7" @if(request('month')  == 7) selected @endif>Juli</option>
+                                                          <option value="8" @if(request('month')  == 8) selected @endif>Agustus</option>
+                                                          <option value="9" @if(request('month')  == 9) selected @endif>September</option>
+                                                          <option value="10" @if(request('month')  == 10) selected @endif>Oktober</option>
+                                                          <option value="11" @if(request('month')  == 11) selected @endif>November</option>
+                                                          <option value="12" @if(request('month')  == 12) selected @endif>Desember</option>
+                                                        </optgroup>
+                                                    </select>
+                                                </div>
+                                                <div class="col-lg-4 col-sm-12">
+                                                  <div class="form-group">
+                                                    <input type="number" name="year" id="year" value="{{ request('year') }}" class="form-control" min="2023" max="2100" step="1" placeholder="Tahun">
+                                                  </div>
+                                                </div>
+                                                <div class="col-lg-4 col-sm-12">
+                                                    <button type="submit" class="btn btn-md btn-primary text-light">Filter <i class="fa fa-filter"></i></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                @if(request()->has('month') || request()->has('year'))
+                                  <div class="float-end me-3">
+                                      <a href="/"><i class="fa fa-arrow-left me-1"></i>Kembali</a>
+                                  </div>
+                                @endif      
+                            </div>
+                        </div>
+                    </div>
                   </div>
-                </div>
-                <div class="col-lg-12">
-                  <div class="service-item">
-                    <div class="col-12">
-                      <div class="row">
-                          <div class="col-md-4 d-flex flex-column">
-                              <div class="row flex-grow">
-                                  <div class="col-12">
-                                      <div class="">
-                                        <div class="form-group mb-4">
-                                          <h6 class="text-primary text-start mb-2">Total Uang Kas Yang Masuk</h6>
-                                          <div class="d-flex align-items-center">
-                                              <h4 class="me-2 fw-bold">Rp{{ number_format($saldoAwalUangKas, 2, ',', '.') }}</h4>
-                                              <h6 class="me-4 text-muted mb-2">IDR</h6>
+                  <div class="col-lg-12">
+                    <div class="service-item">
+                      <div class="col-12">
+                        <div class="row">
+                            <div class="col-md-4 d-flex flex-column">
+                                <div class="row flex-grow">
+                                    <div class="col-12">
+                                        <div class="">
+                                          <div class="form-group mb-4">
+                                            <h6 class="text-primary text-start mb-2">Total Uang Kas Yang Masuk</h6>
+                                            <div class="d-flex align-items-center">
+                                                <h4 class="me-2 fw-bold">Rp{{ number_format($saldoAwalUangKas, 2, ',', '.') }}</h4>
+                                                <h6 class="me-4 text-muted mb-2">IDR</h6>
+                                            </div>
+                                          </div>
+                                                                          
+                                          <div class="form-group mb-4">
+                                              <h6 class="text-danger text-start mb-2">Total Pengeluaran Uang Kas</h6>
+                                              <div class="d-flex align-items-center">
+                                                  <h4 class="me-2 fw-bold">Rp{{ number_format($pengeluaranTotalUangKas, 2, ',', '.') }}</h4>
+                                                  <h6 class="me-4 text-muted mb-2">IDR</h6>
+                                              </div>
+                                          </div>
+                                                                          
+                                          <div class="form-group mb-4">
+                                              <h6 class="text-success text-start mb-2">Total Saldo Uang Kas Sekarang</h6>
+                                              <div class="d-flex align-items-center">
+                                                  <h4 class="me-2 fw-bold">Rp{{ number_format($saldoAkhirUangKas, 2, ',', '.') }}</h4>
+                                                  <h6 class="me-4 text-muted mb-2">IDR</h6>
+                                              </div>
                                           </div>
                                         </div>
-                                                                        
-                                        <div class="form-group mb-4">
-                                            <h6 class="text-danger text-start mb-2">Total Pengeluaran Uang Kas</h6>
-                                            <div class="d-flex align-items-center">
-                                                <h4 class="me-2 fw-bold">Rp{{ number_format($pengeluaranTotalUangKas, 2, ',', '.') }}</h4>
-                                                <h6 class="me-4 text-muted mb-2">IDR</h6>
-                                            </div>
+                                        <div class="form-group mt-3">
+                                          <a href="{{ route('campaignpayment.show', $campaign->slug) }}" class="btn btn-info btn-lg text-white text-center d-flex align-items-center">Bayar Uang Kas Sekarang <i class="fa fa-arrow-right ms-1"></i></a>
                                         </div>
-                                                                        
-                                        <div class="form-group mb-4">
-                                            <h6 class="text-success text-start mb-2">Total Saldo Uang Kas Sekarang</h6>
-                                            <div class="d-flex align-items-center">
-                                                <h4 class="me-2 fw-bold">Rp{{ number_format($saldoAkhirUangKas, 2, ',', '.') }}</h4>
-                                                <h6 class="me-4 text-muted mb-2">IDR</h6>
-                                            </div>
-                                        </div>
-                                      </div>
-                                      <div class="form-group mt-3">
-                                        <a href="/daftarcampaign" class="btn btn-info btn-lg text-white d-flex align-items-center"><i class="fa fa-arrow-left me-1"></i> Lihat Daftar Campaign</a>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-lg-8 d-flex flex-column">
-                              <div class="row flex-grow">
-                                  <div class="col-12">
-                                      <div class="">
-                                          <div class="" style="overflow-x: auto;">
-                                              <div class="d-flex justify-content-between" style="max-height: 60px; white-space: nowrap;">
-                                                  <div class="form-group">
-                                                      <h3>Visual chart dari {{ $campaign['nama'] }}</h3>
-                                                  </div>
-                                              </div>
-                                              <div class="row">
-                                                @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
-                                                  @if ($chartData['chartType'] == 'all')
-                                                    <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk <strong>Semua Bulan</strong></p>
-                                                  @elseif ($chartData['chartType'] == 'yearly')
-                                                    <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk <strong>Tahun {{ $selectedYear }}</strong></p>
-                                                  @endif
-                                                  <div class="d-flex align-items-center">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 d-flex flex-column">
+                                <div class="row flex-grow">
+                                    <div class="col-12">
+                                        <div class="">
+                                            <div class="" style="overflow-x: auto;">
+                                                <div class="d-flex justify-content-between" style="max-height: 60px; white-space: nowrap;">
+                                                    <div class="form-group">
+                                                        <h3>Visual chart dari {{ $campaign['nama'] }}</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                  @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
+                                                    @if ($chartData['chartType'] == 'all')
+                                                      <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk <strong>Semua Bulan</strong></p>
+                                                    @elseif ($chartData['chartType'] == 'yearly')
+                                                      <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk <strong>Tahun {{ $selectedYear }}</strong></p>
+                                                    @endif
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="form-group">
+                                                            <div class="d-flex align-items-center">
+                                                              <h2 class="me-2 fw-bold mb-3">Rp{{ number_format($chartData['total'], 2, ',', '.') }}</h2>
+                                                              <h4 class="me-4">IDR</h4>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="row">
+                                                                @if ($chartData['persentaseKenaikanBulanan'] > 0)
+                                                                    <h4 class="text-success">
+                                                                      (+{{ number_format($chartData['persentaseKenaikanBulanan'], 2) }}%)
+                                                                    </h4>
+                                                                @else
+                                                                    <h4 class="text-danger">
+                                                                      ({{ number_format($chartData['persentaseKenaikanBulanan'], 2) }}%)
+                                                                    </h4>
+                                                                @endif
+                                                                <p>Dari Bulan sebelumnya</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                  @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
+                                                    @if ($chartData['chartType'] == 'monthInYear')
+                                                      <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk <strong>Bulan {{ $selectedMonthName }}</strong> di <strong>Tahun {{ $selectedYear }}</strong></p>
+                                                    @elseif ($chartData['chartType'] == 'weekly')
+                                                      <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk <strong>Bulan {{ $selectedMonthName }}</strong></p>
+                                                    @endif
+                                                    <div class="d-flex align-items-center">
                                                       <div class="form-group">
                                                           <div class="d-flex align-items-center">
-                                                            <h2 class="me-2 fw-bold mb-3">Rp{{ number_format($chartData['total'], 2, ',', '.') }}</h2>
-                                                            <h4 class="me-4">IDR</h4>
+                                                              <h2 class="me-2 fw-bold mb-3">Rp{{ number_format($chartData['totalWeekly'], 2, ',', '.') }}</h2>
+                                                              <h4 class="me-4">IDR</h4>
                                                           </div>
                                                       </div>
                                                       <div class="form-group">
                                                           <div class="row">
-                                                              @if ($chartData['persentaseKenaikanBulanan'] > 0)
-                                                                  <h4 class="text-success">
-                                                                    (+{{ number_format($chartData['persentaseKenaikanBulanan'], 2) }}%)
-                                                                  </h4>
-                                                              @else
-                                                                  <h4 class="text-danger">
-                                                                    ({{ number_format($chartData['persentaseKenaikanBulanan'], 2) }}%)
-                                                                  </h4>
-                                                              @endif
-                                                              <p>Dari Bulan sebelumnya</p>
+                                                            @if ($chartData['persentaseKenaikanMingguan'] > 0)
+                                                              <h4 class="text-success">
+                                                                (+{{ number_format($chartData['persentaseKenaikanMingguan'], 2) }}%)
+                                                              </h4>
+                                                            @else
+                                                              <h4 class="text-danger">
+                                                                ({{ number_format($chartData['persentaseKenaikanMingguan'], 2) }}%)
+                                                              </h4>
+                                                            @endif
+                                                              <p>Dari Minggu sebelumnya</p>
                                                           </div>
                                                       </div>
-                                                  </div>
-                                                @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
-                                                  @if ($chartData['chartType'] == 'monthInYear')
-                                                    <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk <strong>Bulan {{ $selectedMonthName }}</strong> di <strong>Tahun {{ $selectedYear }}</strong></p>
-                                                  @elseif ($chartData['chartType'] == 'weekly')
-                                                    <p class="card-subtitle card-subtitle-dash">Rincian Dana Uang Kas Untuk <strong>Bulan {{ $selectedMonthName }}</strong></p>
+                                                    </div>
                                                   @endif
-                                                  <div class="d-flex align-items-center">
-                                                    <div class="form-group">
-                                                        <div class="d-flex align-items-center">
-                                                            <h2 class="me-2 fw-bold mb-3">Rp{{ number_format($chartData['totalWeekly'], 2, ',', '.') }}</h2>
-                                                            <h4 class="me-4">IDR</h4>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="row">
-                                                          @if ($chartData['persentaseKenaikanMingguan'] > 0)
-                                                            <h4 class="text-success">
-                                                              (+{{ number_format($chartData['persentaseKenaikanMingguan'], 2) }}%)
-                                                            </h4>
-                                                          @else
-                                                            <h4 class="text-danger">
-                                                              ({{ number_format($chartData['persentaseKenaikanMingguan'], 2) }}%)
-                                                            </h4>
-                                                          @endif
-                                                            <p>Dari Minggu sebelumnya</p>
-                                                        </div>
-                                                    </div>
-                                                  </div>
-                                                @endif
-                                              </div>
+                                                </div>
 
-                                              <!-- Tampilkan chart bulanan atau mingguan sesuai dengan campaign yang dipilih -->
-                                              <div class="chartjs-bar-wrapper mt-3">
-                                                @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
-                                                  <canvas id="campaignChartMonthly"></canvas>
-                                                @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
-                                                  <canvas id="campaignChartWeekly"></canvas>
-                                                @endif
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
+                                                <!-- Tampilkan chart bulanan atau mingguan sesuai dengan campaign yang dipilih -->
+                                                <div class="chartjs-bar-wrapper mt-3">
+                                                  @if ($chartData['chartType'] == 'yearly' || $chartData['chartType'] == 'all')
+                                                    <canvas id="campaignChartMonthly"></canvas>
+                                                  @elseif ($chartData['chartType'] == 'monthInYear' || $chartData['chartType'] == 'weekly')
+                                                    <canvas id="campaignChartWeekly"></canvas>
+                                                  @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="row mt-2">
-                      <div class="col-lg-12" id="totalUangKasPerAngkatan">
-                          <div class="d-flex align-items-center" style="overflow-x: auto;">
-                            @foreach ($totalUangKasPerAngkatan  as $indexx => $item)
-                              <div class="col-lg-4 col-md-6 col-sm-12 mt-3 mb-3  me-3" style="  white-space: nowrap;">
-                                  <div class="card card-rounded table-darkBGImg">
-                                      <div class="card-body">
-                                          <div class="col-sm-12">
-                                              <h3 class="text-white upgrade-info mb-0"><span class="fw-bold">Angkatan Ke-</span>{{ $item['angkatan'] }}</h3>
-                                              <h5 class="outlined-text upgrade-info mb-0 mt-2"><span class="fw-bold outlined-text">Rp </span>{{ number_format($item['totalUangKas'], 2, ',', '.') }}</h5>
-                                              <div class="gradient-button mt-3">
-                                                <a href="{{ route('pembayaran.uangkas.angkatan', $item['angkatan_id']) }}">Detail <i class="fa fa-arrow-right ms-1"></i></a>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                            @endforeach
-                          </div>
+                      <div class="row mt-2">
+                        <div class="col-lg-12" id="totalUangKasPerAngkatan">
+                            <div class="d-flex align-items-center" style="overflow-x: auto;">
+                              @foreach ($totalUangKasPerAngkatan  as $indexx => $item)
+                                <div class="col-lg-4 col-md-6 col-sm-12 mt-3 mb-3  me-3" style="  white-space: nowrap;">
+                                    <div class="card card-rounded table-darkBGImg">
+                                        <div class="card-body">
+                                            <div class="col-sm-12">
+                                                <h3 class="text-white upgrade-info mb-0"><span class="fw-bold">Angkatan Ke-</span>{{ $item['angkatan'] }}</h3>
+                                                <h5 class="outlined-text upgrade-info mb-0 mt-2"><span class="fw-bold outlined-text">Rp </span>{{ number_format($item['totalUangKas'], 2, ',', '.') }}</h5>
+                                                <div class="gradient-button mt-3">
+                                                  <a href="{{ route('pembayaran.uangkas.angkatan', $item['angkatan_id']) }}">Detail <i class="fa fa-arrow-right ms-1"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              @endforeach
+                            </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          @endif
 
                   
 
@@ -351,7 +353,7 @@
                   <div class="section-heading  wow fadeInDown" data-wow-duration="1s" data-wow-delay="0.5s">
                     <h4>Donasi - Donasi Yang di Dapatkan Per <em>Campaign</em></h4>
                     <img src="assets/images/heading-line-dec.png" alt="">
-                    <p>Detail Dana Donasi Yang di Dapat Dari Masing - Masing Campaign.</p>
+                    <p>Detail Dana Donasi Yang di Dapat Dari Masing - Masing Campaign, <a href="/daftarcampaign">Lihat Semua Daftar Campaign </a></p>
                   </div>
                 </div>
                 <div class="d-flex align-items-center" style="overflow-x: auto;">
@@ -369,7 +371,7 @@
                               <small>Dari Target:</small>
                               <h4>Rp {{ number_format($item->campaign->target, 0, ',', '.') }}</h4>
                             </div>
-                            <div class="border-button">
+                            <div class="gradient-button">
                               <a href="{{ route('campaignpayment.detail', $item->campaign->slug) }}" class="shadow">Donasi Ke Campaign Ini Sekarang</a>
                             </div>
                           </section>

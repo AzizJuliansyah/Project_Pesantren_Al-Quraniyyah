@@ -6,11 +6,17 @@
                 <span class="menu-title">Dashboard</span>
               </a>
             </li>
-            <li class="nav-item nav-category">Admin</li>
+            <li class="nav-item nav-category">Administrator</li>
             <li class="nav-item {{ request()->routeIs('administrator') ? 'active' : '' }}">
               <a class="nav-link" href="/settings">
                 <i class="menu-icon mdi mdi-application-cog-outline"></i>
-                <span class="menu-title">Administrator</span>
+                <span class="menu-title">Settings</span>
+              </a>
+            </li>
+            <li class="nav-item {{ request()->routeIs('cariorder_id') ? 'active' : '' }}">
+              <a class="nav-link" href="/cariorder_id">
+                <i class="menu-icon mdi mdi-format-list-numbered"></i>
+                <span class="menu-title">Cari Order ID</span>
               </a>
             </li>
             <li class="divider"></li>
@@ -47,7 +53,7 @@
                 <span class="menu-title">Daftar Campaign</span>
               </a>
             </li>
-            <li class="nav-item {{ request()->routeIs('campaign.data') ? 'active' : '' }}">
+            <li class="nav-item {{ request()->routeIs('campaign.data', 'campaign.detaildatacampaign') ? 'active' : '' }}">
               <a class="nav-link" href="/pembukuan">
                 <i class="menu-icon mdi mdi-notebook-edit-outline"></i>
                 <span class="menu-title">Pembukuan Campaign</span>

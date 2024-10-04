@@ -32,6 +32,11 @@ class CampaignPaymentController extends Controller
     {
         $campaign = Campaign::where('slug', $slug)->first();
         $alumni = Alumni::all();
+
+        if ($campaign->publish == 0) {
+            return redirect()->route('home')->with('error', 'Maaf, Campaign Sedang Tidak Bisa Diakses');
+        }
+
         return view('index.campaign.show', compact('campaign', 'alumni'));
     }
 
@@ -148,6 +153,10 @@ class CampaignPaymentController extends Controller
     public function detail(Request $request, string $slug)
     {
         $campaign = Campaign::where('slug', $slug)->firstOrFail();
+        if ($campaign->publish == 0) {
+            return redirect()->route('home')->with('error', 'Maaf, Campaign Sedang Tidak Bisa Diakses');
+        }
+        
         $campaign_id = $campaign->id;
 
         $totalDonasi = Donasi::where('campaign_id', $campaign_id)

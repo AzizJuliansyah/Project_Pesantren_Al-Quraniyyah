@@ -474,6 +474,10 @@ class UangKasController extends Controller
         $selectedCampaign = 1;
         $campaign = Campaign::findOrFail($selectedCampaign);
 
+        if ($campaign->publish == 0) {
+            return redirect()->route('home')->with('error', 'Maaf, Campaign Sedang Tidak Bisa Diakses');
+        }
+
         $uangkasQuery = Donasi::with('campaign')
         ->where('status', 'success')
         ->where('campaign_id', $selectedCampaign);

@@ -122,7 +122,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @forelse ($donasi as $index => $item)
+                                                @foreach ($donasi as $index => $item)
                                                     <tr>
                                                         <td>{{ $index + 1 }}</td>
                                                         <td>
@@ -152,13 +152,7 @@
                                                         <td>{{ $item->created_at->format('H:i, d-F-Y') }}</td>
                                                         
                                                     </tr>
-                                                @empty
-                                                  <tr>
-                                                    <td colspan="6">
-                                                        <p class="d-flex justify-content-center">Tidak ada data yang ditemukan.</p>
-                                                    </td>
-                                                  </tr>
-                                                @endforelse
+                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>

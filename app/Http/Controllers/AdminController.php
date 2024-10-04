@@ -211,7 +211,38 @@ class AdminController extends Controller
     }
 
 
-    
+    public function cariorder_id(Request $request)
+    {
+        $order_id = $request->input('order_id');
+
+        if ($order_id) {
+            $donasi = Donasi::where('order_id', 'like', "%{$order_id}%")->get();
+        } else {
+            $donasi = collect();
+        }
+
+        return view('admin.cariorder_id', compact('donasi', 'order_id'))->render();
+    }
+
+    public function ubahstatustransaksi(Request $request, $order_id)
+    {
+        $status = $request->input('status');
+
+        if ($order_id) {
+            $donasi = Donasi::where('order_id', $order_id)->first();
+
+            if ($donasi) {
+                $donasi->status = $status;
+                $donasi->save();
+
+                return redirect()->route('cariorder_id', ['order_id' => $order_id])->with('success', 'Status berhasil diubah.');
+            } else {
+                return redirect()->back()->with('error', 'Order ID tidak ditemukan.');
+            }
+        } else {
+            return redirect()->back()->with('error', 'Tidak Ada Order ID.');
+        }
+    }
 
 
     public function profile()
