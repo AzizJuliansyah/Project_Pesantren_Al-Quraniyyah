@@ -18,7 +18,7 @@
                             <div class="col-lg-4 col-md-6 mb-4">
                                 <div class="card shadow h-100">
                                     @if($item->foto)
-                                        <img src="{{ asset('storage/' . $item->foto) }}" class="card-img-top img-fluid" alt="{{ $item->nama }}">
+                                        <img src="{{ asset($item->foto) }}" class="card-img-top img-fluid" alt="{{ $item->nama }}">
                                     @else
                                         <img src="https://via.placeholder.com/150" class="card-img-top img-fluid" alt="No Image Available">
                                     @endif

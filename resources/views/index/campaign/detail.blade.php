@@ -15,7 +15,9 @@
                             </div>
                             <div class="d-flex justify-content-center mb-2">
                                 @if($campaign->foto)
-                                    <img src="{{ asset('storage/' . $campaign->foto) }}" alt="{{ $campaign->nama }}" class="img-fluid" width="600">
+                                    <img src="{{ asset($campaign->foto) }}" alt="{{ $campaign->nama }}" class="img-fluid" width="600">
+                                @else
+                                    <p>Image not available</p>
                                 @endif
                             </div>
                         </div>

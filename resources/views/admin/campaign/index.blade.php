@@ -139,7 +139,7 @@
                                                                           <td colspan="3">
                                                                             <div class="d-flex justify-content-center">
                                                                               @if($item->foto)
-                                                                                <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama }}" class="img-fluid" width="500">
+                                                                                <img src="{{ asset($item->foto) }}" alt="{{ $item->nama }}" class="img-fluid" width="500">
                                                                               @endif
                                                                             </div>
                                                                           </td>

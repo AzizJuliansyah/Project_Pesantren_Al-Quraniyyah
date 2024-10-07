@@ -17,12 +17,12 @@
             @endphp
 
             @if($item->item)
-              @if(Storage::exists('public/' . $item->item))
+              @if(file_exists($item->item))
                 <a class="navbar-brand brand-logo" href="/login">
-                  <img src="{{ asset('storage/' . $item->item) }}" alt="logo" />
+                  <img src="{{ asset($item->item) }}" alt="logo" />
                 </a>
                 <a class="navbar-brand brand-logo-mini ms-2 mb-2" href="/login">
-                  <img src="{{ asset('storage/' . $item->item) }}" alt="logo" />
+                  <img src="{{ asset($item->item) }}" alt="logo" />
                 </a>
               @else
                 <a href="/login">

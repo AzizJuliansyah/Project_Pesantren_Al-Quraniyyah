@@ -7,8 +7,8 @@
       <div class="row w-100 mx-0">
         <div class="col-lg-12 mx-auto">
           @if($background1->item)
-            @if(Storage::exists('public/' . $background1->item))
-              <img src="{{ asset('storage/' . $background1->item) }}" alt="Landing Page Background" class="bg-image" />
+            @if(file_exists($background1->item))
+              <img src="{{ asset($background1->item) }}" alt="Landing Page Background" class="bg-image" />
             @else
               {{ $background1->item }}
             @endif
@@ -69,8 +69,8 @@
                   <div class="col-lg-6">
                     <div class="right-image">
                       @if($illustrator1->item)
-                        @if(Storage::exists('public/' . $illustrator1->item))
-                          <img src="{{ asset('storage/' . $illustrator1->item) }}" alt="Landing Page illustrator" />
+                        @if(file_exists($illustrator1->item))
+                          <img src="{{ asset($illustrator1->item) }}" alt="Landing Page illustrator" />
                         @else
                           {{ $illustrator1->item }}
                         @endif

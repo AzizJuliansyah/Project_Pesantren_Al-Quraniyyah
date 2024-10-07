@@ -39,8 +39,8 @@
       $item = \App\Models\Administrator::where('item_id', 1)->first();
     @endphp
     @if($item->item)
-      @if(Storage::exists('public/' . $item->item))
-        <link rel="shortcut icon" href="{{ asset('storage/' . $item->item) }}" />
+      @if(file_exists($item->item))
+        <link rel="shortcut icon" href="{{ asset($item->item) }}" />
       @endif
     @endif
 

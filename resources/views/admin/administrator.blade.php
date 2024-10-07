@@ -75,8 +75,8 @@
                                                     <td>
                                                         
                                                         @if (in_array($item->item_id, [1, 4, 6]))
-                                                            @if(Storage::exists('public/' . $item->item))
-                                                                <img src="{{ asset('storage/' . $item->item) }}" alt="{{ $item->info }}" class="img-fluid" width="800">
+                                                            @if(file_exists($item->item))
+                                                                <img src="{{ asset($item->item) }}" alt="{{ $item->info }}" class="img-fluid" width="800">
                                                             @else
                                                                 <p class="text-danger">{{ $item->item }}</p>
                                                             @endif
@@ -107,9 +107,9 @@
                                                                             <div class="mb-3">
                                                                                 <label for="item" class="form-label">item</label>
                                                                                 @if (in_array($item->item_id, [1, 4, 6]))
-                                                                                    @if(Storage::exists('public/' . $item->item))
+                                                                                    @if(file_exists($item->item))
                                                                                         <div class="form-group">
-                                                                                            <img src="{{ asset('storage/' . $item->item) }}" alt="{{ $item->info }}" class="img-fluid" width="800">
+                                                                                            <img src="{{ asset($item->item) }}" alt="{{ $item->info }}" class="img-fluid" width="800">
                                                                                         </div>
                                                                                         <input type="file" class="form-control @error('item') is-invalid @enderror" name="item" id="item">
                                                                                     @else

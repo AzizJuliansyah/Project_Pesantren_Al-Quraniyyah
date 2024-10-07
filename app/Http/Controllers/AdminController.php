@@ -159,9 +159,10 @@ class AdminController extends Controller
         ];
 
         if ($request->hasFile('item')) {
-            $item = $request->file('item');
-            $itemPath = $item->store('item', 'public');
-            $data['item'] = $itemPath;
+            $foto = $request->file('item');
+            $fotoName = time() . '_' . $foto->getClientOriginalName();
+            $fotoPath = $foto->move('images/item', $fotoName);
+            $data['item'] = 'images/item/' . $fotoName;
         } else {
             $data['item'] = $validatedData['item'];
         }
@@ -186,13 +187,14 @@ class AdminController extends Controller
         } else {
             if ($request->hasFile('item')) {
                 $item = Administrator::where('item_id', $item_id)->first();
-                if ($item->item && Storage::disk('public')->exists($item->item)) {
-                    Storage::disk('public')->delete($item->item);
+                if ($item->item && file_exists($item->item)) {
+                    unlink(public_path($item->item));
                 }
 
                 $foto = $request->file('item');
-                $fotoPath = $foto->store('item', 'public');
-                $data['item'] = $fotoPath;
+                $fotoName = time() . '_' . $foto->getClientOriginalName();
+                $fotoPath = $foto->move('images/item', $fotoName);
+                $data['item'] = 'images/item/' . $fotoName;
             }
         }
 

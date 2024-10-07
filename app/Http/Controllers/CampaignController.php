@@ -86,9 +86,11 @@ class CampaignController extends Controller
 
         if ($request->hasFile('foto')) {
             $foto = $request->file('foto');
-            $fotoPath = $foto->store('campaign_thumbnail', 'public');
-            $data['foto'] = $fotoPath;
+            $fotoName = time() . '_' . $foto->getClientOriginalName();
+            $fotoPath = $foto->move('images/campaign_thumbnail', $fotoName);
+            $data['foto'] = 'images/campaign_thumbnail/' . $fotoName;
         }
+
 
         Campaign::create($data);
 
@@ -306,14 +308,16 @@ class CampaignController extends Controller
         ];
 
         if ($request->hasFile('foto')) {
-            if ($campaign->foto && Storage::disk('public')->exists($campaign->foto)) {
-                Storage::disk('public')->delete($campaign->foto);
+            if ($campaign->foto && file_exists($campaign->foto)) {
+                unlink($campaign->foto);
             }
 
             $foto = $request->file('foto');
-            $fotoPath = $foto->store('campaign_thumbnail', 'public');
-            $data['foto'] = $fotoPath;
+            $fotoName = time() . '_' . $foto->getClientOriginalName();
+            $fotoPath = $foto->move('images/campaign_thumbnail', $fotoName);
+            $data['foto'] = 'images/campaign_thumbnail/' . $fotoName;
         }
+
 
         $campaign->update($data);
 
@@ -344,8 +348,8 @@ class CampaignController extends Controller
                 return redirect()->route('campaign.index')->with('error', 'Uangkas Tidak Bisa di Hapus!');
             }
 
-            if ($campaign->foto && Storage::disk('public')->exists($campaign->foto)) {
-                Storage::disk('public')->delete($campaign->foto);
+            if ($campaign->foto && file_exists($campaign->foto)) {
+                unlink($campaign->foto);
             }
 
             Donasi::where('campaign_id', $campaign->id)->delete();

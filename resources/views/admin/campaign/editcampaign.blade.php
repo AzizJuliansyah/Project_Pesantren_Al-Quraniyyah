@@ -34,7 +34,7 @@
                                                     <label class="col-sm-2">Campaign Thumbnail</label>
                                                     <div class="col-sm-10">
                                                         @if($campaign->foto)
-                                                            <img src="{{ asset('storage/' . $campaign->foto) }}" alt="{{ $campaign->nama }}" class="img-fluid mb-2" width="140">
+                                                            <img src="{{ asset($campaign->foto) }}" alt="{{ $campaign->nama }}" class="img-fluid mb-2" width="140">
                                                         @endif
                                                         <input type="file" name="foto" id="foto" class="file-upload-default">
                                                         <div class="input-group col-xs-12">
