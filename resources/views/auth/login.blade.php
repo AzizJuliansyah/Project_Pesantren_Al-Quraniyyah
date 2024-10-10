@@ -11,8 +11,8 @@
                   @endphp
 
                   @if($item->item)
-                    @if(Storage::exists('public/' . $item->item))
-                      <img src="{{ asset('storage/' . $item->item) }}" alt="logo" />
+                    @if(file_exists($item->item))
+                      <img src="{{ asset($item->item) }}" alt="logo" />
                     @else
                       {{ $item->item }}
                     @endif
