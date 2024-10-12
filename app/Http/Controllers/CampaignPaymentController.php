@@ -281,7 +281,7 @@ class CampaignPaymentController extends Controller
         if ($campaign_id == 1) {
             $request->validate([
                 'alumni_id' => 'required|exists:alumni,id',
-                'angkatan_id' => 'required|exists:angkatan,id',
+                'angkatan_id' => 'required',
                 'nominal' => 'required|numeric',
             ], [
                 'alumni_id.required' => 'Data Alumni Harus Diisi!',
@@ -339,7 +339,7 @@ class CampaignPaymentController extends Controller
         ];
 
         \Midtrans\Config::$serverKey = $campaign->server_key;
-        \Midtrans\Config::$isProduction = false;
+        \Midtrans\Config::$isProduction = true;
         \Midtrans\Config::$isSanitized = true;
         \Midtrans\Config::$is3ds = true;
 
