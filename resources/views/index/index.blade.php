@@ -317,24 +317,25 @@
                       <div class="row mt-2">
                         <div class="col-lg-12" id="totalUangKasPerAngkatan">
                             <div class="d-flex align-items-center" style="overflow-x: auto;">
-                              @foreach ($totalUangKasPerAngkatan  as $indexx => $item)
-                                <div class="col-lg-4 col-md-6 col-sm-12 mt-3 mb-3  me-3" style="  white-space: nowrap;">
-                                    <div class="card card-rounded table-darkBGImg">
-                                        <div class="card-body">
-                                            <div class="col-sm-12">
-                                                <h3 class="text-white upgrade-info mb-0"><span class="fw-bold">Angkatan Ke-</span>{{ $item['angkatan'] }}</h3>
-                                                <h5 class="outlined-text upgrade-info mb-0 mt-2"><span class="fw-bold outlined-text">Rp </span>{{ number_format($item['totalUangKas'], 2, ',', '.') }}</h5>
-                                                <div class="gradient-button mt-3">
-                                                  <a href="{{ route('pembayaran.uangkas.angkatan', $item['angkatan_id']) }}">Detail <i class="fa fa-arrow-right ms-1"></i></a>
+                                @foreach ($totalUangKasPerAngkatan as $indexx => $item)
+                                    <div class="col-lg-4 col-md-6 col-sm-12 mt-3 mb-3 me-3" style="min-width: 400px;">
+                                        <div class="card card-rounded" style="background-image: url('../assets/images/background_angkatan.jpeg'); background-size: cover; background-position: center;">
+                                            <div class="card-body">
+                                                <div class="float-start">
+                                                    <h3 class="text-dark mb-0"><span class="fw-bold">Angkatan Ke-</span>{{ $item['angkatan'] }}</h3>
+                                                    <h5 class="text-dark mb-0 mt-2"><span class="fw-bold">Rp </span>{{ number_format($item['totalUangKas'], 2, ',', '.') }}</h5>
+                                                    <div class="gradient-button mt-3">
+                                                        <a href="{{ route('pembayaran.uangkas.angkatan', $item['angkatan_id']) }}">Detail <i class="fa fa-arrow-right ms-1"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                              @endforeach
+                                @endforeach
                             </div>
                         </div>
                       </div>
+
                     </div>
                   </div>
                 </div>

@@ -234,7 +234,7 @@
 
 
         ClassicEditor
-            .create(document.querySelector('#info'), {
+            .create(document.querySelector('#info2'), {
                 toolbar: [
                     'heading', '|',
                     'bold', 'italic', 'underline', 'strikethrough', 'code', '|',
@@ -257,6 +257,75 @@
             .catch(error => {
                 console.error('There was an error initializing the editor', error);
             });
+
+            ClassicEditor
+                .create(document.querySelector('#info'), {
+                    ckfinder: {
+                        uploadUrl: '{{ route('ckeditorimageupload') }}?_token={{ csrf_token() }}'
+                    }
+                })
+                .then(editor => {
+                    console.log(`Editor initialized for #info`);
+                    let previousData = editor.getData();
+
+                    editor.model.document.on('change:data', () => {
+                        const currentData = editor.getData();
+                        detectImageDeletion(previousData, currentData);
+                        previousData = currentData;
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            function detectImageDeletion(previousData, currentData) {
+                const previousImages = extractImageSources(previousData);
+                const currentImages = extractImageSources(currentData);
+
+                previousImages.forEach(imageSrc => {
+                    if (!currentImages.includes(imageSrc)) {
+                        const filename = getFilenameFromUrl(imageSrc);
+                        console.log(`Image deleted: ${filename}`);
+                        fetch('{{ route('ckeditorimagedelete') }}?_token={{ csrf_token() }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    filename: filename
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    console.log(`Image ${filename} deleted successfully`);
+                                } else {
+                                    console.error(`Failed to delete image ${filename}:`, data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error(`Error while deleting image ${filename}`, error);
+                            });
+                    }
+                });
+            }
+
+            function getFilenameFromUrl(url) {
+                const parts = url.split('/');
+                return parts.pop();
+            }
+
+
+
+            function extractImageSources(data) {
+                const imgTags = data.match(/<img[^>]+src="([^">]+)"/g) || [];
+                const sources = imgTags.map(tag => {
+                    const match = tag.match(/src="([^">]+)"/);
+                    return match ? match[1] : null;
+                }).filter(src => src);
+
+                return sources;
+            }
     </script>
 </div>
 @include('template.footer')

@@ -51,6 +51,7 @@ class AuthController extends Controller
 
         $totalDonasiPerCampaign = Donasi::select('campaign_id', DB::raw('SUM(nominal2) as total_nominal'))
             ->where('campaign_id', '!=', 1)
+            ->where('status', 'success')
             ->whereHas('campaign', function ($query) {
                 $query->where('publish', 1);
             })

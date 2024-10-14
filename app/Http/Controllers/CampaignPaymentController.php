@@ -8,6 +8,7 @@ use Midtrans\Snap;
 use App\Models\Alumni;
 use App\Models\Donasi;
 use App\Models\Campaign;
+use Dotenv\Util\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -163,6 +164,40 @@ class CampaignPaymentController extends Controller
             ->where('status', 'success')
             ->sum('nominal2');
 
+        $yangDonasi = Donasi::with('campaign')
+            ->where('status', 'success')
+            ->where('campaign_id', $campaign_id)
+            ->orderBy('id', 'DESC')
+            ->take(3)
+            ->get();
+
+        foreach ($yangDonasi as $donation) {
+            $created_at = Carbon::parse($donation->created_at);
+            $now = Carbon::now();
+
+            $diffInMinutes = round($created_at->diffInMinutes($now));
+            $diffInHours = round($created_at->diffInHours($now));    
+            $diffInDays = round($created_at->diffInDays($now));      
+            $diffInWeeks = round($created_at->diffInWeeks($now));
+
+            if ($diffInMinutes < 60) {
+                $donation->time_difference = $diffInMinutes . ' menit yang lalu';
+            } elseif ($diffInHours < 24) {
+                $donation->time_difference = $diffInHours . ' jam yang lalu';
+            } elseif ($diffInDays < 7) {
+                $donation->time_difference = $diffInDays . ' hari yang lalu';
+            } elseif ($diffInWeeks < 4) {
+                $donation->time_difference = $diffInWeeks . ' minggu yang lalu';
+            } else {
+                $donation->time_difference = $created_at->format('d F Y');
+            }
+        }
+
+        $totalyangDonasi = Donasi::where('status', 'success')
+            ->where('campaign_id', $campaign_id)
+            ->count('id');
+
+
         $percentage = ($campaign->target > 0) ? ($totalDonasi / $campaign->target) * 100 : 0;
 
         $selectedMonth = $request->input('month', null);
@@ -256,10 +291,67 @@ class CampaignPaymentController extends Controller
             'campaign_id',
             'campaign',
             'totalDonasi',
+            'yangDonasi',
+            'totalyangDonasi',
             'percentage',
             'campaign_id',
             'slug'
         ));
+    }
+
+    public function yangdonasi(Request $request, string $slug)
+    {
+        $campaign = Campaign::where('slug', $slug)->firstOrFail();
+        if ($campaign->publish == 0) {
+            return redirect()->route('home')->with('error', 'Maaf, Campaign Sedang Tidak Bisa Diakses');
+        }
+
+        $campaign_id = $campaign->id;
+
+        $totalDonasi = Donasi::where('campaign_id', $campaign_id)
+            ->where('status', 'success')
+            ->sum('nominal2');
+
+        $yangDonasi = Donasi::with('campaign')
+        ->where('status', 'success')
+        ->where('campaign_id', $campaign_id)
+            ->orderBy('id', 'DESC')
+            ->take(3)
+            ->get();
+
+        foreach ($yangDonasi as $donation) {
+            $created_at = Carbon::parse($donation->created_at);
+            $now = Carbon::now();
+
+            $diffInMinutes = round($created_at->diffInMinutes($now));
+            $diffInHours = round($created_at->diffInHours($now));
+            $diffInDays = round($created_at->diffInDays($now));
+            $diffInWeeks = round($created_at->diffInWeeks($now));
+
+            if ($diffInMinutes < 60) {
+                $donation->time_difference = $diffInMinutes . ' menit yang lalu';
+            } elseif ($diffInHours < 24) {
+                $donation->time_difference = $diffInHours . ' jam yang lalu';
+            } elseif ($diffInDays < 7) {
+                $donation->time_difference = $diffInDays . ' hari yang lalu';
+            } elseif ($diffInWeeks < 4) {
+                $donation->time_difference = $diffInWeeks . ' minggu yang lalu';
+            } else {
+                $donation->time_difference = $created_at->format('d F Y');
+            }
+        }
+
+        $totalyangDonasi = Donasi::where('status', 'success')
+        ->where('campaign_id', $campaign_id)
+            ->count('id');
+
+        return view('index.campaign.yangdonasi', compact(
+            'campaign',
+            'totalDonasi',
+            'yangDonasi',
+            'totalyangDonasi',
+        ));
+
     }
 
 
@@ -339,7 +431,7 @@ class CampaignPaymentController extends Controller
         ];
 
         \Midtrans\Config::$serverKey = $campaign->server_key;
-        \Midtrans\Config::$isProduction = true;
+        \Midtrans\Config::$isProduction = false;
         \Midtrans\Config::$isSanitized = true;
         \Midtrans\Config::$is3ds = true;
 

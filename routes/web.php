@@ -9,7 +9,7 @@ use App\Http\Controllers\UangKasController;
 use App\Http\Controllers\AngkatanController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\CampaignPaymentController;
-
+use App\Http\Controllers\CkeditorController;
 
 Route::get('/', [AuthController::class, 'home'])->name('home');
 Route::fallback(function () {
@@ -25,8 +25,14 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware(['notauthenticated', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'dashboard'])->name('admin.index');
-    Route::get('/cariorder_id', [AdminController::class, 'cariorder_id'])->name('cariorder_id');
+    Route::get('/caritransaksi', [AdminController::class, 'caritransaksi'])->name('caritransaksi');
     Route::post('/ubahstatustransaksi/{order_id}', [AdminController::class, 'ubahstatustransaksi'])->name('ubahstatustransaksi');
+    Route::post('/hapustransaksi/{order_id}', [AdminController::class, 'hapustransaksi'])->name('hapustransaksi');
+
+    Route::post('/bulkUpdateStatusOrDelete', [AdminController::class, 'bulkUpdateStatusOrDelete'])->name('bulkUpdateStatusOrDelete');
+    
+    Route::post('/hapustransaksi', [AdminController::class, 'hapusTransaksi'])->name('hapustransaksi');
+    Route::post('/ubahstatustransaksi', [AdminController::class, 'ubahStatusTransaksi'])->name('ubahstatustransaksi');
 
     Route::get('/settings', [AdminController::class, 'administrator'])->name('administrator');
     Route::post('/administrator/store', [AdminController::class, 'administrator_store'])->name('administrator.store');
@@ -76,6 +82,7 @@ Route::get('/pembayaran/uangkas', [UangKasController::class, 'pembayaranuangkas'
 Route::get('/pembayaran/uangkas/angkatan/{angkatan_id}', [UangKasController::class, 'detailuangkas'])->name('pembayaran.uangkas.angkatan');
 
 Route::get('/donasi/detail/{slug}', [CampaignPaymentController::class, 'detail'])->name('campaignpayment.detail');
+Route::get('/donasi/yangdonasi/{slug}', [CampaignPaymentController::class, 'yangdonasi'])->name('campaignpayment.yangdonasi');
 Route::post('donasi', [CampaignPaymentController::class, 'donasi'])->name('campaignpayment.donasi');
 
 Route::get('/payment', [CampaignPaymentController::class, 'updateDonationStatus']);
@@ -97,5 +104,7 @@ Route::get('/get-alumni-details/{id}', [AdminController::class, 'getDetails']);
 Route::get('/get-alumni-data', [AdminController::class, 'getAlumniData']);
 Route::get('/alumni-statistics', [AdminController::class, 'getAlumniStatistics']);
 
+Route::post('/ckeditorimageupload', [CkeditorController::class, 'ckeditorImageUpload'])->name('ckeditorimageupload');
+Route::post('/ckeditorimagedelete', [CkeditorController::class, 'ckeditorImageDelete'])->name('ckeditorimagedelete');
 
 

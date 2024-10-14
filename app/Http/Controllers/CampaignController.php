@@ -352,10 +352,28 @@ class CampaignController extends Controller
                 unlink($campaign->foto);
             }
 
+            $info = $campaign->info; 
+
+            $imageNames = [];
+            $deskDom = new \DOMDocument();
+            @$deskDom->loadHTML($info);
+            $deskImgTags = $deskDom->getElementsByTagName('img');
+            foreach ($deskImgTags as $imgTag) {
+                $imgSrc = $imgTag->getAttribute('src');
+                $imgName = basename($imgSrc);
+                $imageNames[] = $imgName;
+            }
+
+            $imageDirectory = 'images/ckeditorimage/';
+            foreach ($imageNames as $imageName) {
+                $imagePath = $imageDirectory . $imageName;
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+
             Donasi::where('campaign_id', $campaign->id)->delete();
-
             $campaign->delete();
-
             DB::commit();
 
             return redirect()->route('campaign.index')->with('success', 'Campaign dan donasi terkait berhasil dihapus!');
@@ -365,6 +383,7 @@ class CampaignController extends Controller
             return redirect()->route('campaign.index')->with('error', 'Gagal menghapus campaign, donasi tidak dihapus.');
         }
     }
+
 
 
 }

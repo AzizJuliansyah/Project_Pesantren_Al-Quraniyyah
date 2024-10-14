@@ -289,8 +289,12 @@
                                                             <td>{{ $item->nama }}</td>
                                                             <td>
                                                                 @if ($item->donasi->isNotEmpty())
-                                                                    <button type="button" class="btn btn-{{ $hasSuccess ? 'success' : 'danger' }} btn-md toggle-donasi" data-target="donasi-{{ $index }}">
-                                                                        Lihat Detail Uang Kas <i class="fa fa-chevron-down"></i>
+                                                                    @php
+                                                                        $hasPaidCurrentYear = $donasiTahunIni->contains('alumni_id', $item->id);
+                                                                    @endphp
+
+                                                                    <button type="button" class="btn btn-{{ $hasPaidCurrentYear ? 'success' : 'danger' }} btn-md toggle-donasi" data-target="donasi-{{ $index }}">
+                                                                        {{ $hasPaidCurrentYear ? 'Sudah Bayar Uang Kas di ' : 'Belum Bayar Uang Kas di ' }} {{ date('Y') }} <i class="fa fa-chevron-down"></i>
                                                                     </button>
                                                                 @else
                                                                     <button type="button" class="btn btn-danger btn-md">Belum Bayar Uang Kas</button>

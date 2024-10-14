@@ -43,7 +43,7 @@
             <li class="nav-item">
               <div class="d-flex align-items-center">
                 @if (Auth::user())
-                  @if (request()->routeIs('campaignpayment.daftarcampaign', 'campaignpayment.show', 'campaignpayment.detail', 'donasi.payment', 'payment.success', 'payment.pending', 'payment.error', 'pembayaran.uangkas'))
+                  @if (request()->routeIs('campaignpayment.daftarcampaign', 'campaignpayment.show', 'campaignpayment.detail', 'donasi.payment', 'payment.success', 'payment.pending', 'payment.error', 'pembayaran.uangkas', 'campaignpayment.yangdonasi'))
                     <a href="/admin" class="btn btn-sm btn-inverse-info me-3 {{ request()->routeIs('home') ? 'text-white' : '' }}" >Dashboard</a>
                     <a href="/" class="btn btn-sm btn-inverse-info d-none d-lg-block d-md-block {{ request()->routeIs('home') ? 'text-white' : '' }}" >Home</a>
                   @elseif (request()->routeIs('home'))
@@ -68,10 +68,10 @@
             @if (Auth::user())
               <li class="nav-item dropdown  d-lg-block user-dropdown ps-0">
                 <a class="nav-link" id="UserDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img class="img-xs rounded-circle" src="{{ asset('assets/images/faces/face8.jpg') }}" alt="Profile image"> </a>
+                  <img class="img-xs rounded-circle" src="{{ asset('assets/images/profile.jpeg') }}" alt="Profile image"> </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                   <div class="dropdown-header text-center">
-                    <img class="img-md rounded-circle" src="{{ asset('assets/images/faces/face8.jpg') }}" alt="Profile image">
+                    <img class="img-sm rounded-circle" src="{{ asset('assets/images/profile.jpeg') }}" alt="Profile image">
                     <p class="mb-1 mt-3 fw-semibold">{{ Auth::user()->name }}</p>
                     <p class="fw-light text-muted mb-0">{{ Auth::user()->email }}</p>
                   </div>

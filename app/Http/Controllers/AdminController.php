@@ -12,9 +12,11 @@ use App\Models\Campaign;
 use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
 use App\Models\Administrator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -143,12 +145,10 @@ class AdminController extends Controller
     {
         $data = Administrator::all();
         return view('admin.administrator', compact('data'));
-
     }
 
     public function administrator_store(Request $request)
     {
-        // Validate the input
         $validatedData = $request->validate([
             'info' => 'nullable|string',
             'item' => 'required',
@@ -168,7 +168,6 @@ class AdminController extends Controller
         }
 
         Administrator::create($data);
-
         return redirect()->back()->with('success', 'Item created successfully.');
     }
 
@@ -213,18 +212,88 @@ class AdminController extends Controller
     }
 
 
-    public function cariorder_id(Request $request)
+    public function caritransaksi(Request $request)
     {
-        $order_id = $request->input('order_id');
+        $campaign = Campaign::all();
+        $status = $request->input('status');
 
+        $order_id = $request->input('order_id');
         if ($order_id) {
             $donasi = Donasi::where('order_id', 'like', "%{$order_id}%")->get();
         } else {
             $donasi = collect();
         }
 
-        return view('admin.cariorder_id', compact('donasi', 'order_id'))->render();
+
+        $tahunUangKas = $request->input('tahun');
+        if ($tahunUangKas) {
+            $selectedCampaign = 1;
+            $uangkasQuery = Donasi::where('campaign_id', $selectedCampaign)
+                               ->whereYear('created_at', $tahunUangKas);
+
+            if ($status) {
+                $uangkasQuery->where('status', $status);
+            }
+
+            $uangkas = $uangkasQuery->orderBy('id', 'DESC')->get();
+        } else {
+            $uangkas = collect();
+        }
+
+
+        $campaign_id = $request->input('campaign_id');
+        $namacampaign = "";
+        if ($campaign_id) {
+            $donasicampaignQuery = Donasi::where('campaign_id', $campaign_id);
+
+            if ($status) {
+                $donasicampaignQuery->where('status', $status);
+            }
+
+            $donasicampaign = $donasicampaignQuery->orderBy('id', 'DESC')->get();
+
+            $namacampaign = Campaign::where('id', $campaign_id)->first();
+        } else {
+            $donasicampaign = collect();
+        }
+
+        return view('admin.caritransaksi', compact('donasi', 'campaign', 'uangkas', 'donasicampaign', 'namacampaign'))->render();
     }
+
+    public function bulkUpdateStatusOrDelete(Request $request)
+    {
+        $selectedIds = $request->input('selected_ids', []);
+
+        if (empty($selectedIds)) {
+            return redirect()->back()->with('error', 'Tidak ada transaksi yang dipilih.');
+        }
+
+        DB::beginTransaction();
+
+        try {
+            if ($request->action == 'update_status') {
+                $status = $request->input('status');
+                if ($status) {
+                    foreach ($selectedIds as $id) {
+                        Donasi::where('id', $id)->update(['status' => $status]);
+                    }
+                }
+            } elseif ($request->action == 'delete') {
+                Donasi::whereIn('id', $selectedIds)->delete();
+            }
+
+            DB::commit(); 
+            return redirect()->back()->with('success', 'Aksi berhasil dilakukan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat melakukan aksi: ' . $e->getMessage());
+        }
+    }
+
+
+
+
+    
 
     public function ubahstatustransaksi(Request $request, $order_id)
     {
@@ -237,10 +306,21 @@ class AdminController extends Controller
                 $donasi->status = $status;
                 $donasi->save();
 
-                return redirect()->route('cariorder_id', ['order_id' => $order_id])->with('success', 'Status berhasil diubah.');
+                return redirect()->route('caritransaksi', ['order_id' => $order_id])->with('success', 'Status berhasil diubah.');
             } else {
                 return redirect()->back()->with('error', 'Order ID tidak ditemukan.');
             }
+        } else {
+            return redirect()->back()->with('error', 'Tidak Ada Order ID.');
+        }
+    }
+
+    public function hapustransaksi($order_id)
+    {
+        if ($order_id) {
+            Donasi::where('order_id', $order_id)->delete();
+
+            return redirect()->route('caritransaksi', ['order_id' => $order_id])->with('success', 'Berhasil Menghapus Transaksi.');
         } else {
             return redirect()->back()->with('error', 'Tidak Ada Order ID.');
         }

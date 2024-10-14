@@ -13,10 +13,10 @@
                 <span class="menu-title">Settings</span>
               </a>
             </li>
-            <li class="nav-item {{ request()->routeIs('cariorder_id') ? 'active' : '' }}">
-              <a class="nav-link" href="/cariorder_id">
+            <li class="nav-item {{ request()->routeIs('caritransaksi', 'cariorder_id') ? 'active' : '' }}">
+              <a class="nav-link" href="/caritransaksi">
                 <i class="menu-icon mdi mdi-format-list-numbered"></i>
-                <span class="menu-title">Cari Order ID</span>
+                <span class="menu-title">Cari Transaksi</span>
               </a>
             </li>
             <li class="divider"></li>

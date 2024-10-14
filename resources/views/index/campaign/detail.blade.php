@@ -5,10 +5,10 @@
 
 <div class="container-scroller mt-5">
     <div class="container-fluid page-body-wrapper full-page-wrapper">
-        <div class="content-wrapper d-flex align-items-center auth px-0 mt-3">
+        <div class="content-wrapper d-flex align-items-center auth px-0 mt-5">
             <div class="row w-100 mx-0">
                 <div class="col-lg-5 mx-auto">
-                    <div class="card  py-5 px-4 px-sm-5 shadow">
+                    <div class="card py-5 px-4 px-sm-5 shadow" style="border-radius: 5px">
                         <div class="card-header border-0 bg-transparent p-0 mb-2 mt-2">
                             <div class="form-group">
                                 <a href="/daftarcampaign"><i class="fa fa-arrow-left me-2"></i>Kembali</a>
@@ -21,7 +21,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="card-body p-0 mt-2 mb-2">
+                        <div class="card-body p-0 mt-2 mb-2" >
                             <div class="form-group">
                                 <div class="card-title">
                                     <h2 class="font-weight-bold"><strong>{{ $campaign->nama }}</strong></h2>
@@ -153,10 +153,44 @@
 
                             <div class="divider"></div>
                             
-                            <div class="form-group">
+                            <div class="form-group ckeditor-content">
                                 {!! $campaign->info !!}
                             </div>
+
+                            <div class="divider"></div>
+
+                            
                         </div>
+                    </div>
+
+                    <div class="card shadow mt-1" style="border-radius: 5px">
+                        <div class="card-body">
+                            <div class="row">
+                                <a href="{{ route('campaignpayment.yangdonasi', $campaign->slug) }}" class="text-dark mb-3">
+                                    <div class="float-start">
+                                        Donasi <span class="btn btn-sm btn-inverse-info ms-3">{{ number_format($totalyangDonasi, 0, '.') }}</span>
+                                    </div>
+                                    <div class="float-end">
+                                        <i class="fa fa-chevron-right"></i>
+                                    </div>
+                                </a>
+                            </div>
+                            @forelse ($yangDonasi as $index => $item)
+                                <div class="donation-box">
+                                    <img src="{{ asset('assets/images/default_profile.png') }}" alt="Avatar">
+                                    <div class="donation-content">
+                                        <div class="name">{{ $item->nama }}</div>
+                                        <div class="amount">Berdonasi sebesar <strong>Rp {{ number_format($item->nominal2, 2, ',', '.') }}</strong></div>
+                                        <div class="time">{{ $item->time_difference  }}</div>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="text-center">Belum ada donasi.</div>
+                            @endforelse
+                        </div>
+                    </div>
+
+                    <div class="card shadow mt-1" style="border-radius: 5px">
                         <div class="card-footer">
                             <div class="sticky-button">
                                 <a href="{{ route('campaignpayment.show', $campaign->slug) }}" class="btn btn-primary donasi-button">Donasi Sekarang</a>
