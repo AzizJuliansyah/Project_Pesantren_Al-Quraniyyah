@@ -475,7 +475,15 @@ class CampaignPaymentController extends Controller
         $transactionStatus = $request->query('transaction_status');
 
         $donasi = Donasi::where('order_id', $orderId)->first();
+        if (!$donasi) {
+            return redirect('/')->with('error', 'Donation not found.');
+        }
+
         $campaign = Campaign::findOrFail($donasi->campaign_id);
+
+        if (!$campaign) {
+            return redirect('/')->with('error', 'Donation not found.');
+        }
 
         if (!$donasi) {
             return response()->json(['message' => 'Donation not found'], 404);
