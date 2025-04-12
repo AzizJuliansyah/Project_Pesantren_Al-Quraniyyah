@@ -73,5 +73,10 @@
               </li>
             @endif
           </ul>
+          @if (Auth::user())
+            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-bs-toggle="offcanvas">
+              <span class="mdi mdi-menu"></span>
+            </button>
+          @endif
         </div>
       </nav>
