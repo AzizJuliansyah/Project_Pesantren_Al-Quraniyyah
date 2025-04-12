@@ -195,11 +195,11 @@
                             <div class="row d-flex">
                                 @foreach ($totalUangKasPerAngkatan  as $indexx => $item)
                                     <div class="col-lg-4 col-md-6 mt-3">
-                                        <div class="card card-rounded table-darkBGImg">
+                                        <div class="card card-rounded" style="background-image: url('../assets/images/background_angkatan.jpeg'); background-size: cover; background-position: center;">
                                             <div class="card-body">
                                                 <div class="col-sm-9">
-                                                    <h3 class="text-white upgrade-info mb-0"><span class="fw-bold">Angkatan Ke-</span>{{ $item['angkatan'] }}</h3>
-                                                    <h5 class="text-white upgrade-info mb-0 mt-2"><span class="fw-bold">Rp</span>{{ number_format($item['totalUangKas'], 2, ',', '.') }}</h5>
+                                                    <h3 class="text-dark upgrade-info mb-0"><span class="fw-bold">Angkatan Ke-</span>{{ $item['angkatan'] }}</h3>
+                                                    <h5 class="text-dark upgrade-info mb-0 mt-2"><span class="fw-bold">Rp</span>{{ number_format($item['totalUangKas'], 2, ',', '.') }}</h5>
                                                     <a href="{{ route('pembayaran.uangkas.angkatan', $item['angkatan_id']) }}" class="btn btn-info upgrade-btn mt-3">Detail Keseluruhan <i class="fa fa-arrow-right ms-1"></i></a>
                                                 </div>
                                             </div>

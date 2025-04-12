@@ -627,6 +627,12 @@ class UangKasController extends Controller
         }
         $donasi = $donasiQuery->get();
 
+        $donasiTahunIni = Donasi::where('campaign_id', 1)
+        ->where('status', 'success')
+        ->whereIn('alumni_id', $alumni->pluck('id'))
+        ->whereYear('created_at', date('Y'))
+        ->get();
+
         $donasiByOrderId = collect();
 
         if ($order_id) {
@@ -740,6 +746,7 @@ class UangKasController extends Controller
             'pengeluaranTotalUangKas',
             'saldoAkhirUangKas',
             'donasi',
+            'donasiTahunIni',
             'alumni',
             'hasFilters',
             'angkatan',

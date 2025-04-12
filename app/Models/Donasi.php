@@ -22,6 +22,10 @@ class Donasi extends Model
         'status',
         'snap_token',
         'transaction_result',
+        'sapaan',
+        'no_hp',
+        'email',
+        'doa',
     ];
 
     public function campaign()

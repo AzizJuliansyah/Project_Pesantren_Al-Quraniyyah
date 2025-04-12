@@ -57,37 +57,61 @@ class AuthController extends Controller
             ->where('campaign_id', '!=', 1)
             ->count();
 
-        $totalCampaign = Donasi::where('campaign_id', '!=', 1)
-            ->distinct('campaign_id')
-            ->count('campaign_id');
+        $totalCampaign = Campaign::where('id', '!=', 1)
+            ->count();
 
         $campaignPilihan = Campaign::where('pilihan', 1)
             ->where('publish', 1)
+            ->with('donasi')
+            ->orderBy('urutan_pilihan')
             ->get();
 
         $campaignPilihan->transform(function ($campaign) {
-            $totalDonasi = Donasi::where('campaign_id', $campaign->id)
+            $totalDonasi = $campaign->donasi()
                 ->where('status', 'success')
                 ->sum('nominal2');
 
             $campaign->total_donasi = $totalDonasi;
+            $campaign->donatur = $campaign->donasi()
+                ->where('status', 'success')
+                ->pluck('nama')
+                ->unique() 
+                ->take(3);
+
+            $campaign->total_donatur = $campaign->donasi()
+                ->where('status', 'success')
+                ->pluck('nama')
+                ->unique()
+                ->count();
+
             return $campaign;
         });
 
-        $totalDonasiCampaignPilihan = $campaignPilihan->sum('total_donasi');
-
-        $campaignPilihan->transform(function ($campaign) use ($totalDonasiCampaignPilihan) {
-            $campaign->persen_donasi = ($totalDonasiCampaignPilihan > 0) 
-                ? round(($campaign->total_donasi / $totalDonasiCampaignPilihan) * 100, 2)
-                : 0;
-            return $campaign;
-        });
 
         $campaignSelainPilihan = Campaign::where('pilihan', 0)
             ->where('publish', 1)
             ->limit(12)
             ->get();
+        $campaignSelainPilihan->transform(function ($campaign) {
+            $totalDonasi = $campaign->donasi()
+                ->where('status', 'success')
+                ->sum('nominal2');
 
+            $campaign->total_donasi = $totalDonasi;
+            $campaign->donatur = $campaign->donasi()
+                ->where('status', 'success')
+                ->pluck('nama')
+                ->unique() 
+                ->take(3);
+
+            $campaign->total_donatur = $campaign->donasi()
+                ->where('status', 'success')
+                ->pluck('nama')
+                ->unique()
+                ->count();
+
+            return $campaign;
+        });
         
 
 
@@ -263,6 +287,6 @@ class AuthController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/login')->with('success', 'Anda telah logout.');
+        return redirect('/')->with('success', 'Anda telah logout.');
     }
 }

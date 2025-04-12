@@ -36,7 +36,7 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-2">Campaign Thumbnail</label>
                                                     <div class="col-sm-10">
-                                                        <input type="file" name="foto" id="foto" value="{{ old('foto') }}" class="file-upload-default @error('foto') is-invalid @enderror">
+                                                        <input type="file" name="foto" id="foto" value="{{ old('foto') }}" class="file-upload-default @error('foto') is-invalid @enderror" accept="image/*">
                                                         
                                                         <div class="input-group col-xs-12">
                                                             <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
@@ -46,8 +46,32 @@
                                                         </div>
                                                     </div>
                                                     @error('foto')
-                                                            <div class="invalid-feedback">{{ $message }}</div>
-                                                        @enderror
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2">Campaign Video</label>
+                                                    <div class="col-sm-10">
+                                                        <label class="form-check-label" for="toggleSwitch">Tampilkan Video</label>
+                                                        <label class="switch">
+                                                            <input type="checkbox" name="tampilkan_video" id="tampilkan_video">
+                                                            <span class="slider"></span>
+                                                        </label>
+
+                                                        <input type="file" name="video" id="video" value="{{ old('video') }}" class="file-upload-default @error('video') is-invalid @enderror" accept="video/*">
+                                                        
+                                                        <div class="input-group col-xs-12">
+                                                            <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Video">
+                                                            <span class="input-group-append">
+                                                                <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    @error('video')
+                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                    @enderror
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -234,7 +258,7 @@
 
 
         ClassicEditor
-            .create(document.querySelector('#info'), {
+            .create(document.querySelector('#info2'), {
                 toolbar: [
                     'heading', '|',
                     'bold', 'italic', 'underline', 'strikethrough', 'code', '|',
@@ -257,6 +281,75 @@
             .catch(error => {
                 console.error('There was an error initializing the editor', error);
             });
+
+            ClassicEditor
+                .create(document.querySelector('#info'), {
+                    ckfinder: {
+                        uploadUrl: '{{ route('ckeditorimageupload') }}?_token={{ csrf_token() }}'
+                    }
+                })
+                .then(editor => {
+                    console.log(`Editor initialized for #info`);
+                    let previousData = editor.getData();
+
+                    editor.model.document.on('change:data', () => {
+                        const currentData = editor.getData();
+                        detectImageDeletion(previousData, currentData);
+                        previousData = currentData;
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            function detectImageDeletion(previousData, currentData) {
+                const previousImages = extractImageSources(previousData);
+                const currentImages = extractImageSources(currentData);
+
+                previousImages.forEach(imageSrc => {
+                    if (!currentImages.includes(imageSrc)) {
+                        const filename = getFilenameFromUrl(imageSrc);
+                        console.log(`Image deleted: ${filename}`);
+                        fetch('{{ route('ckeditorimagedelete') }}?_token={{ csrf_token() }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    filename: filename
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    console.log(`Image ${filename} deleted successfully`);
+                                } else {
+                                    console.error(`Failed to delete image ${filename}:`, data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error(`Error while deleting image ${filename}`, error);
+                            });
+                    }
+                });
+            }
+
+            function getFilenameFromUrl(url) {
+                const parts = url.split('/');
+                return parts.pop();
+            }
+
+
+
+            function extractImageSources(data) {
+                const imgTags = data.match(/<img[^>]+src="([^">]+)"/g) || [];
+                const sources = imgTags.map(tag => {
+                    const match = tag.match(/src="([^">]+)"/);
+                    return match ? match[1] : null;
+                }).filter(src => src);
+
+                return sources;
+            }
     </script>
 </div>
 @include('template.footer')

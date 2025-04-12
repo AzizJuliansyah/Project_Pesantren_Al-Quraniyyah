@@ -71,7 +71,8 @@ class CampaignController extends Controller
             'target' => 'required|numeric',
             'nominal' => 'nullable|array',
             'nominal.*' => 'nullable|numeric',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // Validate the foto input
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate the foto input
+            'video' => 'nullable|mimes:mp4,avi,mov,mkv|max:20480', // 20MB = 20480 KB
         ]);
 
         $data = [
@@ -82,13 +83,23 @@ class CampaignController extends Controller
             'client_key' => $request->input('client_key'),
             'target' => $request->input('target'),
             'nominal' => $request->input('nominal') ? json_encode($request->input('nominal')) : null,
+            'tampilkan_video' => $request->has('tampilkan_video') ? 1 : 0,
         ];
 
         if ($request->hasFile('foto')) {
             $foto = $request->file('foto');
-            $fotoPath = $foto->store('campaign_thumbnail', 'public');
-            $data['foto'] = $fotoPath;
+            $fotoName = time() . '_' . $foto->getClientOriginalName();
+            $fotoPath = $foto->move('images/campaign_thumbnail', $fotoName);
+            $data['foto'] = 'images/campaign_thumbnail/' . $fotoName;
         }
+
+        if ($request->hasFile('video')) {
+            $video = $request->file('video');
+            $videoName = time() . '_' . $video->getClientOriginalName();
+            $videoPath = $video->move('video/campaign_video', $videoName);
+            $data['video'] = 'video/campaign_video/' . $videoName;
+        }
+
 
         Campaign::create($data);
 
@@ -290,7 +301,8 @@ class CampaignController extends Controller
             'target' => 'required|numeric',
             'nominal' => 'nullable|array',
             'nominal.*' => 'nullable|numeric',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'video' => 'nullable|mimes:mp4,avi,mov,mkv|max:20480',
         ]);
 
         $campaign = Campaign::findOrFail($id);
@@ -303,17 +315,31 @@ class CampaignController extends Controller
             'client_key' => $request->input('client_key'),
             'target' => $request->input('target'),
             'nominal' => $request->input('nominal') ? json_encode($request->input('nominal')) : null,
+            'tampilkan_video' => $request->has('tampilkan_video') ? 1 : 0,
         ];
 
         if ($request->hasFile('foto')) {
-            if ($campaign->foto && Storage::disk('public')->exists($campaign->foto)) {
-                Storage::disk('public')->delete($campaign->foto);
+            if ($campaign->foto && file_exists($campaign->foto)) {
+                unlink($campaign->foto);
             }
 
             $foto = $request->file('foto');
-            $fotoPath = $foto->store('campaign_thumbnail', 'public');
-            $data['foto'] = $fotoPath;
+            $fotoName = time() . '_' . $foto->getClientOriginalName();
+            $fotoPath = $foto->move('images/campaign_thumbnail', $fotoName);
+            $data['foto'] = 'images/campaign_thumbnail/' . $fotoName;
         }
+
+        if ($request->hasFile('video')) {
+            if ($campaign->video && file_exists($campaign->video)) {
+                unlink($campaign->video);
+            }
+
+            $video = $request->file('video');
+            $videoName = time() . '_' . $video->getClientOriginalName();
+            $videoPath = $video->move('images/campaign_video', $videoName);
+            $data['video'] = 'images/campaign_video/' . $videoName;
+        }
+
 
         $campaign->update($data);
 
@@ -344,11 +370,30 @@ class CampaignController extends Controller
             ->where('id', '!=', $id)
             ->count();
 
-        if ($totalPilihan >= 10 && $request->input('pilihan') == 1) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Maksimal hanya bisa 10 campaign yang bisa di pilih'
-            ], 400);
+        // Jika ingin menambahkan campaign ke pilihan
+        if ($request->input('pilihan') == 1) {
+            if ($totalPilihan >= 10) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Maksimal hanya bisa 10 campaign yang bisa dipilih'
+                ], 400);
+            }
+
+            $usedUrutans = Campaign::whereNotNull('urutan_pilihan')->pluck('urutan_pilihan')->toArray();
+            $availableUrutans = array_diff(range(1, 10), $usedUrutans); // Urutan yang masih tersedia
+
+            if (empty($availableUrutans)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tidak ada urutan yang tersedia'
+                ], 400);
+            }
+
+            $randomUrutan = $availableUrutans[array_rand($availableUrutans)]; // Ambil satu urutan secara acak
+            $item->urutan_pilihan = $randomUrutan; // Set urutan yang dipilih
+        } else {
+            // Jika menghapus dari pilihan, hapus urutan
+            $item->urutan_pilihan = null;
         }
 
         $item->pilihan = $request->input('pilihan');
@@ -356,6 +401,35 @@ class CampaignController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Status pilihan berhasil diperbarui']);
     }
+
+
+    public function updateUrutanPilihanStatus(Request $request, $id)
+    {
+        $request->validate([
+            'urutan_pilihan' => ['required', 'integer', 'min:1', 'max:10', function ($attribute, $value, $fail) use ($id) {
+                if (Campaign::where('urutan_pilihan', $value)->where('id', '!=', $id)->exists()) {
+                    $fail('Urutan pilihan ini sudah digunakan oleh campaign lain.');
+                }
+            }],
+        ]);
+
+
+        $campaign = Campaign::findOrFail($id);
+        $campaign->urutan_pilihan = $request->urutan_pilihan;
+        $campaign->save();
+
+        return response()->json(['success' => true, 'message' => 'Urutan berhasil diperbarui.']);
+    }
+
+    public function getUsedUrutan()
+    {
+        $usedNumbers = Campaign::pluck('urutan_pilihan')->toArray();
+        
+        return response()->json(['used_numbers' => $usedNumbers]);
+    }
+
+
+
 
 
 
@@ -373,14 +447,35 @@ class CampaignController extends Controller
                 return redirect()->route('campaign.index')->with('error', 'Uangkas Tidak Bisa di Hapus!');
             }
 
-            if ($campaign->foto && Storage::disk('public')->exists($campaign->foto)) {
-                Storage::disk('public')->delete($campaign->foto);
+            if ($campaign->foto && file_exists($campaign->foto)) {
+                unlink($campaign->foto);
+            }
+            if ($campaign->video && file_exists($campaign->video)) {
+                unlink($campaign->video);
+            }
+
+            $info = $campaign->info; 
+
+            $imageNames = [];
+            $deskDom = new \DOMDocument();
+            @$deskDom->loadHTML($info);
+            $deskImgTags = $deskDom->getElementsByTagName('img');
+            foreach ($deskImgTags as $imgTag) {
+                $imgSrc = $imgTag->getAttribute('src');
+                $imgName = basename($imgSrc);
+                $imageNames[] = $imgName;
+            }
+
+            $imageDirectory = 'images/ckeditorimage/';
+            foreach ($imageNames as $imageName) {
+                $imagePath = $imageDirectory . $imageName;
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
             }
 
             Donasi::where('campaign_id', $campaign->id)->delete();
-
             $campaign->delete();
-
             DB::commit();
 
             return redirect()->route('campaign.index')->with('success', 'Campaign dan donasi terkait berhasil dihapus!');
@@ -390,6 +485,7 @@ class CampaignController extends Controller
             return redirect()->route('campaign.index')->with('error', 'Gagal menghapus campaign, donasi tidak dihapus.');
         }
     }
+
 
 
 }

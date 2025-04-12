@@ -32,7 +32,7 @@
     <script src="{{ asset('assets/js/jquery.cookie.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/dashboard.js') }}"></script>
 
-    @if (request()->routeIs('home'))
+    @if (request()->routeIs('home', 'campaignpayment.daftarcampaign'))
       <script src="{{ asset('assets/assets_landingpage/js/owl-carousel.js') }}"></script>
       <script src="{{ asset('assets/assets_landingpage/js/animation.js') }}"></script>
       <script src="{{ asset('assets/assets_landingpage/js/imagesloaded.js') }}"></script>
@@ -42,5 +42,21 @@
     <!-- endinject -->
     <!-- Custom js for this page-->
     <!-- End custom js for this page-->
+
+    <script>
+      function handleSearch(event) {
+          if (event.key === "Enter") {
+              redirectToSearch();
+          }
+      }
+
+      function redirectToSearch() {
+    let query = document.getElementById("searchInput").value;
+
+    // Jika kosong, tetap arahkan ke /search
+    window.location.href = `/daftarcampaign?search=${encodeURIComponent(query)}`;
+}
+
+  </script>
   </body>
 </html>

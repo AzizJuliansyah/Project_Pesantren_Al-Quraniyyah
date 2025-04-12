@@ -59,24 +59,58 @@
                                         </div>
                                 </div> --}}
                                 <div class="table-responsive">
-                                    <table id="AdministratorTable" class="table table-hover table-striped">
+                                    <table class="table table-hover table-striped">
                                         <thead>
                                             <tr>
-                                                <th>#</th>
+                                                <th>No</th>
                                                 <th>Item</th>
                                                 <th>Info</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php
+                                                $subheadings = [
+                                                    'Logo Al - Quraniyyah' => [1,],
+                                                    'Daftar Campaign' => [2, 3],
+                                                    'Landing Page' => [4, 5, 6],
+                                                    'Landing Page (Data Pimpinan)' => [7, 8, 9]
+                                                ];
+                                                $lastGroup = null;
+                                            @endphp
+                                            
                                             @foreach ($data as $index => $item)
+                                                @php
+                                                    // Tentukan subheading berdasarkan ID
+                                                    $currentGroup = collect($subheadings)->first(function ($ids) use ($item) {
+                                                        return in_array($item['item_id'], $ids);
+                                                    }, 'Unknown');
+                                                @endphp
+
+                                                @if ($lastGroup !== $currentGroup)
+                                                    <tr>
+                                                        <td colspan="5" class="text-start"><strong>{{ array_search($currentGroup, $subheadings) }}</strong></td>
+                                                    </tr>
+                                                    @php
+                                                        $lastGroup = $currentGroup;
+                                                    @endphp
+                                                @endif
+
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>
-                                                        
-                                                        @if (in_array($item->item_id, [1, 4, 6]))
-                                                            @if(Storage::exists('public/' . $item->item))
-                                                                <img src="{{ asset('storage/' . $item->item) }}" alt="{{ $item->info }}" class="img-fluid" width="800">
+                                                        @if (in_array($item->item_id, [1, 6, 7]))
+                                                            @if(file_exists($item->item))
+                                                                <img src="{{ asset($item->item) }}" alt="{{ $item->info }}" class="img-fluid" width="800">
+                                                            @else
+                                                                <p class="text-danger">{{ $item->item }}</p>
+                                                            @endif
+                                                        @elseif (in_array($item->item_id, [4]))
+                                                            @if(file_exists($item->item))
+                                                                <audio controls style="max-width: 400px; width: 100%;">
+                                                                    <source src="{{ asset($item->item) }}" type="audio/mpeg">
+                                                                    Browser Anda tidak mendukung pemutar audio.
+                                                                </audio>
                                                             @else
                                                                 <p class="text-danger">{{ $item->item }}</p>
                                                             @endif
@@ -106,15 +140,28 @@
                                                                             @csrf
                                                                             <div class="mb-3">
                                                                                 <label for="item" class="form-label">item</label>
-                                                                                @if (in_array($item->item_id, [1, 4, 6]))
-                                                                                    @if(Storage::exists('public/' . $item->item))
+                                                                                @if (in_array($item->item_id, [1, 6, 7]))
+                                                                                    @if(file_exists($item->item))
                                                                                         <div class="form-group">
-                                                                                            <img src="{{ asset('storage/' . $item->item) }}" alt="{{ $item->info }}" class="img-fluid" width="800">
+                                                                                            <img src="{{ asset($item->item) }}" alt="{{ $item->info }}" class="img-fluid" width="800">
                                                                                         </div>
-                                                                                        <input type="file" class="form-control @error('item') is-invalid @enderror" name="item" id="item">
+                                                                                        <input type="file" class="form-control @error('item') is-invalid @enderror" name="item" id="item" accept="image/*">
                                                                                     @else
                                                                                         <p class="text-danger">{{ $item->item }}</p>
-                                                                                        <input type="file" class="form-control @error('item') is-invalid @enderror" name="item" id="item">
+                                                                                        <input type="file" class="form-control @error('item') is-invalid @enderror" name="item" id="item" accept="image/*">
+                                                                                    @endif
+                                                                                @elseif (in_array($item->item_id, [4]))
+                                                                                    @if(file_exists($item->item))
+                                                                                        <div class="form-group">
+                                                                                            <audio controls style="max-width: 400px; width: 100%;">
+                                                                                                <source src="{{ asset($item->item) }}" type="audio/mpeg">
+                                                                                                Browser Anda tidak mendukung pemutar audio.
+                                                                                            </audio>
+                                                                                        </div>
+                                                                                        <input type="file" class="form-control @error('item') is-invalid @enderror" name="item" id="item" accept="audio/*">
+                                                                                    @else
+                                                                                        <p class="text-danger">{{ $item->item }}</p>
+                                                                                        <input type="file" class="form-control @error('item') is-invalid @enderror" name="item" id="item" accept="audio/*">
                                                                                     @endif
                                                                                 @else
                                                                                     <textarea type="text" name="item" class="textarea-control @error('item') is-invalid @enderror" id="item" rows="10">{{ $item->item }}</textarea>
@@ -138,6 +185,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+
                                 </div>
                             </div>
                         </div>

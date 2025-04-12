@@ -8,23 +8,52 @@ use Midtrans\Snap;
 use App\Models\Alumni;
 use App\Models\Donasi;
 use App\Models\Campaign;
+use Dotenv\Util\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 
+
 class CampaignPaymentController extends Controller
 {
-    public function daftarcampaign()
+    public function daftarcampaign(Request $request)
     {
-        $campaign = Campaign::where('publish', 1)
-            ->orderByRaw('id = 1 DESC, id DESC')
-            ->get();
+        $query = $request->input('search');
+        $limit = $request->input('limit', 5);
 
         $heading = Administrator::where('item_id', 2)->first();
         $subheading = Administrator::where('item_id', 3)->first();
 
-        return view('index.campaign.daftarcampaign', compact('campaign', 'heading', 'subheading'));
+        $campaignQuery = Campaign::where('publish', 1);
+
+        if ($query) {
+            $campaignQuery->where('nama', 'LIKE', "%{$query}%");
+        }
+
+        $totalCampaign = $campaignQuery->count();
+        $campaign = $campaignQuery->with('donasi')->orderByRaw('id = 1 DESC, id DESC')->limit($limit)->get();
+
+
+        $campaignRekomendasi = [];
+        if ($campaign->isEmpty() && $query) {
+            $campaignRekomendasi = Campaign::where('publish', 1)
+                ->inRandomOrder()
+                ->limit($limit)
+                ->get();
+        }
+
+        if ($request->ajax()) {
+            return response()->json([
+                'campaigns' => view('index.campaign.partials.campaign-list', compact('campaign'))->render(),
+                'campaignRekomendasi' => view('index.campaign.partials.campaign-rekomendasi', compact('campaignRekomendasi'))->render(),
+                'hasMore' => $totalCampaign > $limit
+            ]);
+        }
+
+        return view('index.campaign.daftarcampaign', compact('campaign', 'campaignRekomendasi', 'query', 'heading', 'subheading'));
     }
+
+
 
 
 
@@ -163,6 +192,40 @@ class CampaignPaymentController extends Controller
             ->where('status', 'success')
             ->sum('nominal2');
 
+        $yangDonasi = Donasi::with('campaign')
+            ->where('status', 'success')
+            ->where('campaign_id', $campaign_id)
+            ->orderBy('id', 'DESC')
+            ->take(3)
+            ->get();
+
+        foreach ($yangDonasi as $donation) {
+            $created_at = Carbon::parse($donation->created_at);
+            $now = Carbon::now();
+
+            $diffInMinutes = round($created_at->diffInMinutes($now));
+            $diffInHours = round($created_at->diffInHours($now));    
+            $diffInDays = round($created_at->diffInDays($now));      
+            $diffInWeeks = round($created_at->diffInWeeks($now));
+
+            if ($diffInMinutes < 60) {
+                $donation->time_difference = $diffInMinutes . ' menit yang lalu';
+            } elseif ($diffInHours < 24) {
+                $donation->time_difference = $diffInHours . ' jam yang lalu';
+            } elseif ($diffInDays < 7) {
+                $donation->time_difference = $diffInDays . ' hari yang lalu';
+            } elseif ($diffInWeeks < 4) {
+                $donation->time_difference = $diffInWeeks . ' minggu yang lalu';
+            } else {
+                $donation->time_difference = $created_at->format('d F Y');
+            }
+        }
+
+        $totalyangDonasi = Donasi::where('status', 'success')
+            ->where('campaign_id', $campaign_id)
+            ->count('id');
+
+
         $percentage = ($campaign->target > 0) ? ($totalDonasi / $campaign->target) * 100 : 0;
 
         $selectedMonth = $request->input('month', null);
@@ -256,10 +319,66 @@ class CampaignPaymentController extends Controller
             'campaign_id',
             'campaign',
             'totalDonasi',
+            'yangDonasi',
+            'totalyangDonasi',
             'percentage',
             'campaign_id',
             'slug'
         ));
+    }
+
+    public function yangdonasi(Request $request, string $slug)
+    {
+        $campaign = Campaign::where('slug', $slug)->firstOrFail();
+        if ($campaign->publish == 0) {
+            return redirect()->route('home')->with('error', 'Maaf, Campaign Sedang Tidak Bisa Diakses');
+        }
+
+        $campaign_id = $campaign->id;
+
+        $totalDonasi = Donasi::where('campaign_id', $campaign_id)
+            ->where('status', 'success')
+            ->sum('nominal2');
+
+        $yangDonasi = Donasi::with('campaign')
+        ->where('status', 'success')
+        ->where('campaign_id', $campaign_id)
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        foreach ($yangDonasi as $donation) {
+            $created_at = Carbon::parse($donation->created_at);
+            $now = Carbon::now();
+
+            $diffInMinutes = round($created_at->diffInMinutes($now));
+            $diffInHours = round($created_at->diffInHours($now));
+            $diffInDays = round($created_at->diffInDays($now));
+            $diffInWeeks = round($created_at->diffInWeeks($now));
+
+            if ($diffInMinutes < 60) {
+                $donation->time_difference = $diffInMinutes . ' menit yang lalu';
+            } elseif ($diffInHours < 24) {
+                $donation->time_difference = $diffInHours . ' jam yang lalu';
+            } elseif ($diffInDays < 7) {
+                $donation->time_difference = $diffInDays . ' hari yang lalu';
+            } elseif ($diffInWeeks < 4) {
+                $donation->time_difference = $diffInWeeks . ' minggu yang lalu';
+            } else {
+                $donation->time_difference = $created_at->format('d F Y');
+            }
+        }
+
+        $totalyangDonasi = Donasi::where('status', 'success')
+        ->where('campaign_id', $campaign_id)
+            ->count('id');
+
+        return view('index.campaign.yangdonasi', compact(
+            'campaign',
+            'totalDonasi',
+            'yangDonasi',
+            'totalyangDonasi',
+        ));
+
     }
 
 
@@ -296,12 +415,19 @@ class CampaignPaymentController extends Controller
             }
         } else {
             $request->validate([
+                'sapaan' => 'required|string',
                 'nama' => 'required|string',
-                'nominal' => 'required|numeric',
+                'no_hp' => 'required|numeric',
+                'nominal' => 'required|numeric|min:1000',
+                'doa' => 'max:150',
             ], [
+                'sapaan.required' => 'Sapaan Harus Diisi!',
                 'nama.required' => 'Nama Harus Diisi!',
+                'no_hp.required' => 'No Whatsapp Harus Diisi!',
                 'nominal.required' => 'Nominal Harus Diisi!',
                 'nominal.numeric' => 'Nominal Harus Diisi dengan format angka!',
+                'nominal.min' => 'Nominal tidak boleh kurang dari Rp. 1.000!',
+                'doa.max' => 'Doa tidak bisa lebih dari 150 huruf!',
             ]);
 
             $alumni = Alumni::where('nama', $request->nama)->first();
@@ -321,7 +447,11 @@ class CampaignPaymentController extends Controller
         $donasi = Donasi::create([
             'alumni_id' => $alumni->id ?? null,
             'campaign_id' => $campaign->id,
+            'sapaan' => $request->input('sapaan'),
             'nama' => $alumni->nama,
+            'no_hp' => $request->input('no_hp'),
+            'email' => $request->input('email'),
+            'doa' => $request->input('doa'),
             'nominal' => $nominal,
             'nominal2' => $finalNominal,
             'status' => 'pending',
@@ -383,7 +513,15 @@ class CampaignPaymentController extends Controller
         $transactionStatus = $request->query('transaction_status');
 
         $donasi = Donasi::where('order_id', $orderId)->first();
+        if (!$donasi) {
+            return redirect('/')->with('error', 'Donation not found.');
+        }
+
         $campaign = Campaign::findOrFail($donasi->campaign_id);
+
+        if (!$campaign) {
+            return redirect('/')->with('error', 'Donation not found.');
+        }
 
         if (!$donasi) {
             return response()->json(['message' => 'Donation not found'], 404);
@@ -525,8 +663,8 @@ class CampaignPaymentController extends Controller
                         $donasi->status = 'error';
                         $donasi->save();
 
-                        $request->session()->forget('can_access_payment', compact('donasi', 'campaign'));
-                        return view('index.campaign.payment-error');
+                        $request->session()->forget('can_access_payment');
+                        return view('index.campaign.payment-error', compact('donasi', 'campaign'));
                     } else {
                         $request->session()->forget('can_access_payment');
                         return redirect('/')->with('error', 'Pembayaran belum selesai atau gagal.');

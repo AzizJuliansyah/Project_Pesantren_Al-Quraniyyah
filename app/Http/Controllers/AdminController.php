@@ -12,9 +12,11 @@ use App\Models\Campaign;
 use App\Models\Pengeluaran;
 use Illuminate\Http\Request;
 use App\Models\Administrator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -143,12 +145,10 @@ class AdminController extends Controller
     {
         $data = Administrator::all();
         return view('admin.administrator', compact('data'));
-
     }
 
     public function administrator_store(Request $request)
     {
-        // Validate the input
         $validatedData = $request->validate([
             'info' => 'nullable|string',
             'item' => 'required',
@@ -159,41 +159,47 @@ class AdminController extends Controller
         ];
 
         if ($request->hasFile('item')) {
-            $item = $request->file('item');
-            $itemPath = $item->store('item', 'public');
-            $data['item'] = $itemPath;
+            $foto = $request->file('item');
+            $fotoName = time() . '_' . $foto->getClientOriginalName();
+            $fotoPath = $foto->move('images/item', $fotoName);
+            $data['item'] = 'images/item/' . $fotoName;
         } else {
             $data['item'] = $validatedData['item'];
         }
 
         Administrator::create($data);
-
         return redirect()->back()->with('success', 'Item created successfully.');
     }
 
     public function administrator_edit(Request $request, $item_id)
     {
         $isText = $this->isTextItem($item_id);
-        
+        $isAudio = $item_id == 4;
+
         $validatedData = $request->validate([
-            'item' => $isText ? 'required|string' : 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'item' => $isText 
+                ? 'required|string' 
+                : ($isAudio 
+                    ? 'required|mimetypes:audio/mpeg,audio/wav,audio/ogg|max:10240' // Audio max 5MB
+                    : 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048' // Gambar max 2MB
+                ),
         ]);
 
         $data = [];
 
         if ($isText) {
             $data['item'] = $validatedData['item'];
-        } else {
-            if ($request->hasFile('item')) {
-                $item = Administrator::where('item_id', $item_id)->first();
-                if ($item->item && Storage::disk('public')->exists($item->item)) {
-                    Storage::disk('public')->delete($item->item);
-                }
-
-                $foto = $request->file('item');
-                $fotoPath = $foto->store('item', 'public');
-                $data['item'] = $fotoPath;
+        } elseif ($isAudio || $request->hasFile('item')) {
+            // Jika item berupa file (audio atau gambar)
+            $item = Administrator::where('item_id', $item_id)->first();
+            if ($item && $item->item && file_exists(public_path($item->item))) {
+                unlink(public_path($item->item));
             }
+
+            $file = $request->file('item');
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $filePath = $file->move($isAudio ? 'audio/item' : 'images/item', $fileName);
+            $data['item'] = ($isAudio ? 'audio/item/' : 'images/item/') . $fileName;
         }
 
         Administrator::where('item_id', $item_id)->update($data);
@@ -201,28 +207,97 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Item updated successfully.');
     }
 
-    /**
-     * Determines if the item should be treated as text or a photo based on item_id.
-     */
+    
     private function isTextItem($item_id)
     {
-        $textItemIds = [2, 3, 5]; // Example: IDs that should be treated as text
+        $textItemIds = [2, 3, 5, 8, 9]; // ID yang harus berupa teks
         return in_array($item_id, $textItemIds);
     }
 
 
-    public function cariorder_id(Request $request)
-    {
-        $order_id = $request->input('order_id');
 
+    public function caritransaksi(Request $request)
+    {
+        $campaign = Campaign::all();
+        $status = $request->input('status');
+
+        $order_id = $request->input('order_id');
         if ($order_id) {
             $donasi = Donasi::where('order_id', 'like', "%{$order_id}%")->get();
         } else {
             $donasi = collect();
         }
 
-        return view('admin.cariorder_id', compact('donasi', 'order_id'))->render();
+
+        $tahunUangKas = $request->input('tahun');
+        if ($tahunUangKas) {
+            $selectedCampaign = 1;
+            $uangkasQuery = Donasi::where('campaign_id', $selectedCampaign)
+                               ->whereYear('created_at', $tahunUangKas);
+
+            if ($status) {
+                $uangkasQuery->where('status', $status);
+            }
+
+            $uangkas = $uangkasQuery->orderBy('id', 'DESC')->get();
+        } else {
+            $uangkas = collect();
+        }
+
+
+        $campaign_id = $request->input('campaign_id');
+        $namacampaign = "";
+        if ($campaign_id) {
+            $donasicampaignQuery = Donasi::where('campaign_id', $campaign_id);
+
+            if ($status) {
+                $donasicampaignQuery->where('status', $status);
+            }
+
+            $donasicampaign = $donasicampaignQuery->orderBy('id', 'DESC')->get();
+
+            $namacampaign = Campaign::where('id', $campaign_id)->first();
+        } else {
+            $donasicampaign = collect();
+        }
+
+        return view('admin.caritransaksi', compact('donasi', 'campaign', 'uangkas', 'donasicampaign', 'namacampaign'))->render();
     }
+
+    public function bulkUpdateStatusOrDelete(Request $request)
+    {
+        $selectedIds = $request->input('selected_ids', []);
+
+        if (empty($selectedIds)) {
+            return redirect()->back()->with('error', 'Tidak ada transaksi yang dipilih.');
+        }
+
+        DB::beginTransaction();
+
+        try {
+            if ($request->action == 'update_status') {
+                $status = $request->input('status');
+                if ($status) {
+                    foreach ($selectedIds as $id) {
+                        Donasi::where('id', $id)->update(['status' => $status]);
+                    }
+                }
+            } elseif ($request->action == 'delete') {
+                Donasi::whereIn('id', $selectedIds)->delete();
+            }
+
+            DB::commit(); 
+            return redirect()->back()->with('success', 'Aksi berhasil dilakukan.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat melakukan aksi: ' . $e->getMessage());
+        }
+    }
+
+
+
+
+    
 
     public function ubahstatustransaksi(Request $request, $order_id)
     {
@@ -235,10 +310,21 @@ class AdminController extends Controller
                 $donasi->status = $status;
                 $donasi->save();
 
-                return redirect()->route('cariorder_id', ['order_id' => $order_id])->with('success', 'Status berhasil diubah.');
+                return redirect()->route('caritransaksi', ['order_id' => $order_id])->with('success', 'Status berhasil diubah.');
             } else {
                 return redirect()->back()->with('error', 'Order ID tidak ditemukan.');
             }
+        } else {
+            return redirect()->back()->with('error', 'Tidak Ada Order ID.');
+        }
+    }
+
+    public function hapustransaksi($order_id)
+    {
+        if ($order_id) {
+            Donasi::where('order_id', $order_id)->delete();
+
+            return redirect()->route('caritransaksi', ['order_id' => $order_id])->with('success', 'Berhasil Menghapus Transaksi.');
         } else {
             return redirect()->back()->with('error', 'Tidak Ada Order ID.');
         }

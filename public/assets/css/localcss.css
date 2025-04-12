@@ -30,14 +30,26 @@
     color: white;
 }
 
+.custom-col {
+    max-width: 500px;
+}
 
+.home-custom-col {
+    max-width: 490px;
+    width: 100%;
+}
+
+
+.donation-card {
+    width: 100%;
+}
 
 .textarea-control {
     display: block;
     width: 100%;
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
-    line-height: 1.5;
+    line-height: 3;
     color: #495057;
     background-color: #fff;
     background-clip: padding-box;
@@ -47,6 +59,14 @@
 }
 
 .textarea-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-control:focus {
     color: #495057;
     background-color: #fff;
     border-color: #80bdff;
@@ -103,11 +123,27 @@
         background-color: #218838;
     } */
     
+.order-id-payment {
+    width: fit-content;
+    display: block;
+    padding: 10px;
+    background-color: #F8ECCC;
+    border-radius: 5px;
+}
+
 .total-bayar {
     width: 100%;
     display: block;
     padding: 10px;
     background-color: #F8ECCC;
+    border-radius: 5px;
+}
+
+.order-id-payment-success {
+    width: fit-content;
+    display: block;
+    padding: 10px;
+    background-color: #d4efee;
     border-radius: 5px;
 }
 
@@ -124,6 +160,14 @@
     display: block;
     padding: 10px;
     background-color: #F8ECCC;
+    border-radius: 5px;
+}
+
+.order-id-payment-error {
+    width: fit-content;
+    display: block;
+    padding: 10px;
+    background-color: #f8dddb;
     border-radius: 5px;
 }
 
@@ -180,7 +224,7 @@
 
 .divider {
     border-bottom: 1px solid #ccc;
-    margin: 20px 0;
+    margin: 10px 0;
     width: 100%;
 }
 
@@ -229,7 +273,9 @@
     position: relative;
 }
 
-
+small {
+        font-size: 12px;
+    }
 
 @media (max-width: 768px) {
     .content h1 {
@@ -238,6 +284,14 @@
     
     .content h3 {
         font-size: 5vw; /* Teks h3 lebih kecil di layar yang lebih kecil */
+    }
+
+    small {
+        font-size: 10px;
+    }
+
+    .section-heading {
+        font-size: medium;
     }
 }
 
@@ -249,65 +303,602 @@
     .content h3 {
         font-size: 6vw;
     }
+
+    small {
+        font-size: 10px;
+    }
+
+    .section-heading {
+        font-size: xx-small !important;
+    }
+}
+
+.img-shadow {
+  border-radius: 15px; /* Radius rounded */
+  box-shadow: 0 8px 20px 4px rgba(0, 0, 0, 0.5); /* Lebih lebar dan jelas */
+  transition: box-shadow 0.3s ease;
+}
+
+.img-shadow:hover {
+  box-shadow: 0 12px 24px 6px rgba(0, 0, 0, 0.6); /* Bayangan lebih besar saat hover */
 }
 
 
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
+
+.carousel-indicators {
+    position: relative; /* Ubah dari absolute ke relative */
+    margin-top: 10px; /* Beri jarak dari gambar */
+    margin-bottom: -10px;
+}
+
+.carousel-indicators button {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50% !important;
+    background-color: #888 !important; /* Warna default */
+    border: none !important;
+    transition: background-color 0.3s !important;
+}
+
+
+.carousel-indicators .active {
+    background-color: #007bff; /* Warna aktif (biru) */
+}
+
+.search-container {
+    position: relative;
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 1);
-    /* Warna hitam dengan 50% transparansi */
-    z-index: 0;
-    /* Memastikan overlay berada di atas gambar tapi di bawah konten */
+    max-width: 350px; /* Sesuaikan ukuran */
 }
 
-/* Posisikan dots di bawah gambar */
-    .carousel-indicators {
-        position: relative; /* Ubah dari absolute ke relative */
-        margin-top: 10px; /* Beri jarak dari gambar */
-        margin-bottom: -10px;
+.search-input {
+    width: 100%;
+    padding: 10px 40px 10px 15px; /* Padding kiri lebih besar agar teks tidak menempel */
+    border: 1px solid #ccc;
+    border-radius: 25px; /* Membuat bentuk rounded */
+    outline: none;
+    transition: all 0.3s ease;
+    height: 35px;
+    margin-top: 3px;
+}
+
+.search-input::placeholder {
+    font-family: 'Arial', sans-serif; /* Ganti dengan font yang diinginkan */
+    font-size: 13px; /* Sesuaikan ukuran font */
+    font-style: italic; /* Tambahkan gaya jika diperlukan */
+    color: #888; /* Sesuaikan warna */
+    margin-bottom: 2px;
+}
+
+
+.search-input:focus {
+    border-color: #007bff; /* Warna biru saat fokus */
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    right: 15px; /* Geser ikon ke dalam */
+    transform: translateY(-50%);
+    color: #777; /* Warna ikon */
+    cursor: pointer;
+}
+    
+.donation-box {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    /* allows content to wrap on smaller screens */
+}
+
+.donation-box img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.donation-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.donation-content .name {
+    font-weight: bold;
+    font-size: 1rem;
+    /* Responsive base font size */
+    margin-bottom: 5px;
+}
+
+.donation-content .amount {
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.donation-content .time {
+    font-size: 0.7rem;
+    color: #888;
+}
+
+/* Responsive Text for smaller screens */
+@media (max-width: 768px) {
+    .donation-content .name {
+        font-size: 0.9rem;
     }
 
-    .carousel-indicators button {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background-color: #888; /* Warna default */
-        border: none;
-        transition: background-color 0.3s;
+    .donation-content .amount {
+        font-size: 0.8rem;
     }
 
-    .carousel-indicators .active {
-        background-color: #007bff; /* Warna aktif (biru) */
+    .donation-content .time {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .donation-content .name {
+        font-size: 0.9rem;
     }
 
-    .search-container {
-        position: relative;
+    .donation-content .amount {
+        font-size: 0.8rem;
+    }
+
+    .donation-content .time {
+        font-size: 0.7rem;
+    }
+}
+
+.ckeditor-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+.vertical-divider {
+    border-left: 1px solid #000;
+    height: 100%;
+    margin: 0 10px;
+}
+
+.selected-count {
+    text-decoration: i;
+}
+
+.donatur-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: -40px;
+}
+
+.donatur-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 3px solid white;
+    background-color: rgb(53, 143, 213);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 9px;
+    margin-right: -7px;
+    overflow: hidden;
+}
+
+.donatur-more {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 3px solid white;
+    background-color: rgb(53, 143, 213);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 9px;
+    margin-right: -7px;
+    overflow: hidden;
+}
+
+.donation-container {
+    text-align: center;
+}
+.donation-options {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+.donation-option {
+    padding: 18px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+    min-width: 120px;
+}
+@media (max-width: 600px) {
+    .donation-option {
+        padding: 16px 20px;
+        font-size: 14px;
+        min-width: 110px;
+    }
+}
+.donation-option.selected {
+    border: 2px solid #ccc;
+    border-color: green;
+}
+.custom-amount-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+.currency-symbol {
+    font-size: 16px;
+    background: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-right: none;
+    border-radius: 8px 0 0 8px;
+}
+.custom-amount {
+    font-size: 16px;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    outline: none;
+    width: 150px;
+}
+#nominal {
+    font-weight: bold;
+    text-align: right;
+}
+
+.sapaan-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.sapaan-options {
+    display: flex;
+    width: 80%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.sapaan-option {
+    flex: 1;
+    padding: 10px;
+    cursor: pointer;
+    border-right: 1px solid #ccc;
+    background: #f9f9f9;
+    text-align: center;
+    font-size: 16px;
+}
+.sapaan-option:last-child {
+    border-right: none;
+}
+.sapaan-option.selected {
+    background: #006400;
+    color: white;
+    font-weight: bold;
+}
+@media (max-width: 600px) {
+    .sapaan-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .sapaan-options {
+        flex-wrap: wrap;
+        display: flex;
         width: 100%;
-        max-width: 350px; /* Sesuaikan ukuran */
+    }
+    .sapaan-option {
+        flex: 1 1 33%;
+        border-right: 1px solid #ccc;
+    }
+    .sapaan-option:last-child {
+        border-right: none;
+        border-bottom: none;   
+    }
+}
+
+.truncate-text {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/* Jika lebar layar kurang dari 768px (HP), batasi teks */
+@media (max-width: 768px) {
+    .truncate-text {
+        max-width: 200px;  /* Atur lebar teks di HP */
+    }
+}
+
+/* Jika di layar besar, tampilkan full */
+@media (min-width: 769px) {
+    .truncate-text {
+        max-width: none;
+    }
+}
+
+.card-fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: rgba(51, 51, 51, 0.3);
+    backdrop-filter: blur(5px);
+    transition: background-color 0.3s ease-in-out;
+    z-index: 999;
+}
+
+.card-footer-fixed {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.4s ease-in-out;
+}
+
+.card-footer-fixed.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.footer-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(51, 51, 51, 0.3);
+    backdrop-filter: blur(5px);
+    transition: background-color 0.3s ease-in-out;
+    z-index: 999;
+}
+.footer-nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 14px;
+    flex: 1;
+}
+.footer-nav a.active {
+    color: #0056b3;
+    font-weight: bold;
+}
+.footer-nav a i {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.custom-button {
+    background-color: #007bff; /* Biru terang */
+    color: #ffffff; /* Putih */
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 25px; 
+    cursor: pointer;
+    transition: 0.3s ease-out;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+}
+
+.custom-button:hover {
+    background-color: #0056b3; /* Biru gelap */
+}
+
+.custom-button:focus,
+.custom-button:active {
+    outline: none; 
+    border: 2px solid #004080; /* Biru lebih tua */
+}
+
+
+.share-button {
+    background: #EAF4FF;
+    color: #007bff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.share-options {
+    display: none;
+    background: #EAF4FF;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 265px;
+}
+
+.share-options button {
+    background: white;
+    border: 1px solid #007bff;
+    padding: 8px;
+    margin: 5px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.close-btn {
+    color: #007bff;
+    cursor: pointer;
+    float: right;
+}
+
+.tooltip-icon {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    text-align: center;
+    padding: 6px 10px;
+    border-radius: 5px;
+    position: absolute;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    z-index: 999;
+}
+
+/* Tooltip di layar besar */
+@media (min-width: 769px) {
+    .tooltip-text {
+        white-space: nowrap;
+        top: 130%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
-    .search-input {
-        width: 100%;
-        padding: 10px 40px 10px 15px; /* Padding kiri lebih besar agar teks tidak menempel */
-        border: 2px solid #ccc;
-        border-radius: 25px; /* Membuat bentuk rounded */
-        outline: none;
-        transition: all 0.3s ease;
+    .tooltip-text::after {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent;
     }
+}
 
-    .search-input:focus {
-        border-color: #007bff; /* Warna biru saat fokus */
+/* Tooltip di layar kecil */
+@media (max-width: 768px) {
+    .tooltip-text {
+        max-width: 250px; /* Batasi lebar tooltip */
+        white-space: normal;
+        word-wrap: break-word;
+        text-align: left;
+        top: 50%;
+        left: 120%;
+        transform: translateY(-50%);
     }
-
-    .search-icon {
+    .tooltip-text::after {
+        content: "";
         position: absolute;
         top: 50%;
-        right: 15px; /* Geser ikon ke dalam */
+        left: -6px;
         transform: translateY(-50%);
-        color: #777; /* Warna ikon */
-        cursor: pointer;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent rgba(0, 0, 0, 0.8) transparent transparent;
     }
+}
+
+.tooltip-icon:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: .4s;
+        border-radius: 24px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: #007bff;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(26px);
+    }
+
+
+.home-audio-autoplay {
+    display: none;
+}
+
+.audio-container {
+    position: fixed;
+    top: 80px;
+    left: 10px;
+    z-index: 999;
+}
+
+.audio-button {
+    width: 35px;
+    height: 35px;
+    background-color: rgba(51, 51, 51, 0.3);
+    backdrop-filter: blur(5px);
+    transition: background-color 0.3s ease-in-out;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.audio-button i {
+    font-size: 15px;
+    color: white;
+}
+    

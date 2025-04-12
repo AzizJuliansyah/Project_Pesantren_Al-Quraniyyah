@@ -125,8 +125,24 @@
                                                                         data-id="{{ $item->id }}" 
                                                                         @if($item->pilihan == 1) checked @endif 
                                                                         onchange="togglePilihan(this)">
+                                                                  @if ($item->pilihan == 0)
+                                                                    Pilihan
+                                                                  @endif
                                                               </label>
                                                             </div>
+                                                            @if ($item->pilihan == 1)
+                                                            <div class="">
+                                                                <select name="urutan_pilihan" class="form-control text-dark select-urutan" data-id="{{ $item->id }}">
+                                                                    <option value="default" disabled selected>Pilih urutan</option>
+                                                                    @for ($i = 1; $i <= 10; $i++)
+                                                                        <option value="{{ $i }}" data-used="false" 
+                                                                            @if($item->urutan_pilihan == $i) selected @endif>
+                                                                            Ke-{{ $i }}
+                                                                        </option>
+                                                                    @endfor
+                                                                </select>
+                                                            </div>
+                                                            @endif
                                                           </div>
                                                         </td>
                                                         
@@ -156,7 +172,7 @@
                                                                           <td colspan="3">
                                                                             <div class="d-flex justify-content-center">
                                                                               @if($item->foto)
-                                                                                <img src="{{ asset('storage/' . $item->foto) }}" alt="{{ $item->nama }}" class="img-fluid" width="500">
+                                                                                <img src="{{ asset($item->foto) }}" alt="{{ $item->nama }}" class="img-fluid" width="500">
                                                                               @endif
                                                                             </div>
                                                                           </td>
@@ -393,21 +409,56 @@
 
 
         function togglePilihan(checkbox) {
-    const itemId = checkbox.getAttribute('data-id');
-    const pilihanStatus = checkbox.checked ? 1 : 0;
+          const itemId = checkbox.getAttribute('data-id');
+          const pilihanStatus = checkbox.checked ? 1 : 0;
 
-    fetch(`/update-pilihan-status-campaign/${itemId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ pilihan: pilihanStatus })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-                  const Toast = Swal.mixin({
+          fetch(`/update-pilihan-status-campaign/${itemId}`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+              },
+              body: JSON.stringify({ pilihan: pilihanStatus })
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  sessionStorage.setItem('notif_success', "Berhasil Mengubah Status Campaign");
+
+                  // Refresh halaman
+                  location.reload();
+              } else {
+                  Swal.fire({
+                      icon: 'error',
+                      title: data.message || "Gagal Mengubah Status Campaign",
+                      timer: 2800,
+                      timerProgressBar: true,
+                      showConfirmButton: false
+                  });
+
+                  checkbox.checked = !checkbox.checked; // Kembalikan checkbox ke kondisi sebelumnya
+              }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              Swal.fire({
+                  icon: 'warning',
+                  title: 'Terjadi Kesalahan!',
+                  text: 'Gagal menghubungkan ke server.',
+                  timer: 2800,
+                  timerProgressBar: true,
+                  showConfirmButton: false
+              });
+
+              checkbox.checked = !checkbox.checked; // Kembalikan checkbox ke kondisi sebelumnya
+          });
+      }
+
+      // Tampilkan notifikasi setelah halaman reload
+      document.addEventListener("DOMContentLoaded", function () {
+          const successMessage = sessionStorage.getItem('notif_success');
+          if (successMessage) {
+              const Toast = Swal.mixin({
                     toast: true,
                     position: 'top-right',
                     iconColor: 'white',
@@ -422,47 +473,122 @@
                   ;(async () => {
                     Toast.fire({
                         icon: 'success',
-                        title: "Berhasil Mengubah Status Campaign",
+                        title: successMessage,
                     })
                   })()
-        } else {
-            const Toast = Swal.mixin({
-                    toast: true,
-                    position: 'top-right',
-                    iconColor: 'white',
-                    customClass: {
-                        popup: 'colored-toast',
+
+              sessionStorage.removeItem('notif_success'); // Hapus setelah ditampilkan
+          }
+      });
+
+
+        document.querySelectorAll('.select-urutan').forEach(select => {
+          select.setAttribute('data-old-value', select.value);
+            select.addEventListener('change', function() {
+                let campaignId = this.getAttribute('data-id');
+                let newOrder = this.value;
+                let oldValue = this.getAttribute('data-old-value');
+
+                fetch(`/update-urutan-pilihan-status-campaign/${campaignId}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
                     },
-                    showConfirmButton: false,
-                    timer: 2800,
-                    timerProgressBar: true,
-                  })
+                    body: JSON.stringify({ urutan_pilihan: newOrder })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                      select.setAttribute('data-old-value', newOrder);  
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-right',
+                            iconColor: 'white',
+                            customClass: {
+                                popup: 'colored-toast',
+                            },
+                            showConfirmButton: false,
+                            timer: 2800,
+                            timerProgressBar: true,
+                          })
 
-                  ;(async () => {
-                    Toast.fire({
-                        icon: 'error',
-                        title: data.message || "Gagal Mengubah Status Campaign",
-                    })
-                  })()
+                          ;(async () => {
+                            Toast.fire({
+                                icon: 'success',
+                                title: "Berhasil Mengubah Urutan Pilihan Campaign",
+                            })
+                          })()
+                    } else {
+                      select.value = oldValue;
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-right',
+                            iconColor: 'white',
+                            customClass: {
+                                popup: 'colored-toast',
+                            },
+                            showConfirmButton: false,
+                            timer: 2800,
+                            timerProgressBar: true,
+                          })
 
-            checkbox.checked = !checkbox.checked; // Kembalikan checkbox ke kondisi sebelumnya
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        Swal.fire({
-            icon: 'warning',
-            title: 'Terjadi Kesalahan!',
-            text: 'Gagal menghubungkan ke server.',
-            timer: 2800,
-            timerProgressBar: true,
-            showConfirmButton: false
+                          ;(async () => {
+                            Toast.fire({
+                                icon: 'error',
+                                title: data.message || "Gagal Mengubah Urutan Pilihan Campaign",
+                            })
+                          })()
+                    }
+                })
+                .catch(error => {
+                  select.value = oldValue;
+                    const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-right',
+                            iconColor: 'white',
+                            customClass: {
+                                popup: 'colored-toast',
+                            },
+                            showConfirmButton: false,
+                            timer: 2800,
+                            timerProgressBar: true,
+                          })
+
+                          ;(async () => {
+                            Toast.fire({
+                                icon: 'error',
+                                title: "Urutan pilihan ini sudah digunakan oleh campaign lain.",
+                            })
+                          })()
+                });
+            });
         });
 
-        checkbox.checked = !checkbox.checked; // Kembalikan checkbox ke kondisi sebelumnya
-    });
-}
+        document.addEventListener("DOMContentLoaded", function () {
+          fetch('/get-used-urutan')
+              .then(response => response.json())
+              .then(data => {
+                  let usedNumbers = data.used_numbers;
 
+                  document.querySelectorAll('.select-urutan').forEach(select => {
+                      let selectedValue = select.value;
+
+                      select.querySelectorAll('option').forEach(option => {
+                          let optionValue = option.value;
+
+                          if (optionValue !== "default") {
+                              if (usedNumbers.includes(parseInt(optionValue)) && optionValue !== selectedValue) {
+                                  option.disabled = true;
+                              } else {
+                                  option.disabled = false;
+                              }
+                          }
+                      });
+                  });
+              })
+              .catch(error => console.error('Error fetching used numbers:', error));
+        });
 
     </script>
 

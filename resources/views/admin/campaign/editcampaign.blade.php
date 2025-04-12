@@ -21,7 +21,7 @@
                                             <h4 class="card-title float-start">Edit Data Campaign, {{ $campaign->nama }}</h4>
                                             <div class="float-end">
                                                 <button type="submit" name="action" value="save" class="btn btn-md btn-inverse-success btn-fw">
-                                                    Simpan <i class="fa fa-plus ms-2"></i>
+                                                    Simpan <i class="fa fa-edit ms-2"></i>
                                                 </button>
                                             </div>
                                         </div>
@@ -34,11 +34,42 @@
                                                     <label class="col-sm-2">Campaign Thumbnail</label>
                                                     <div class="col-sm-10">
                                                         @if($campaign->foto)
-                                                            <img src="{{ asset('storage/' . $campaign->foto) }}" alt="{{ $campaign->nama }}" class="img-fluid mb-2" width="140">
+                                                            <img src="{{ asset($campaign->foto) }}" alt="{{ $campaign->nama }}" class="img-fluid mb-2" width="140">
                                                         @endif
-                                                        <input type="file" name="foto" id="foto" class="file-upload-default">
+                                                        <input type="file" name="foto" id="foto" class="file-upload-default" accept="image/*">
                                                         <div class="input-group col-xs-12">
                                                             <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                                                            <span class="input-group-append">
+                                                                <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2">Campaign Video</label>
+                                                    <div class="col-sm-10">
+                                                        @if($campaign->video)
+                                                            <video width="40%" controls>
+                                                                <source src="{{ asset($campaign->video) }}" type="video/mp4">
+                                                                Browser Anda tidak mendukung pemutaran video.
+                                                            </video>
+                                                        @endif
+                                                        <div class="row mt-2">
+                                                            <div class="d-flex align-items-center">
+                                                                <label class="form-check-label me-2" for="toggleSwitch">Tampilkan Video</label>
+                                                                <label class="switch">
+                                                                    <input type="checkbox" name="tampilkan_video" id="tampilkan_video" @if ($campaign->tampilkan_video == 1) checked @endif>
+                                                                    <span class="slider"></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <input type="file" name="video" id="video" class="file-upload-default @error('video') is-invalid @enderror" accept="video/*">
+                                                        
+                                                        <div class="input-group col-xs-12">
+                                                            <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Video">
                                                             <span class="input-group-append">
                                                                 <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                                                             </span>
@@ -241,7 +272,7 @@
         });
 
         ClassicEditor
-            .create(document.querySelector('#info'), {
+            .create(document.querySelector('#info2'), {
                 toolbar: [
                     'heading', '|',
                     'bold', 'italic', 'underline', 'strikethrough', 'code', '|',
@@ -264,6 +295,75 @@
             .catch(error => {
                 console.error('There was an error initializing the editor', error);
             });
+
+        ClassicEditor
+                .create(document.querySelector('#info'), {
+                    ckfinder: {
+                        uploadUrl: '{{ route('ckeditorimageupload') }}?_token={{ csrf_token() }}'
+                    }
+                })
+                .then(editor => {
+                    console.log(`Editor initialized for #info`);
+                    let previousData = editor.getData();
+
+                    editor.model.document.on('change:data', () => {
+                        const currentData = editor.getData();
+                        detectImageDeletion(previousData, currentData);
+                        previousData = currentData;
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            function detectImageDeletion(previousData, currentData) {
+                const previousImages = extractImageSources(previousData);
+                const currentImages = extractImageSources(currentData);
+
+                previousImages.forEach(imageSrc => {
+                    if (!currentImages.includes(imageSrc)) {
+                        const filename = getFilenameFromUrl(imageSrc);
+                        console.log(`Image deleted: ${filename}`);
+                        fetch('{{ route('ckeditorimagedelete') }}?_token={{ csrf_token() }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    filename: filename
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    console.log(`Image ${filename} deleted successfully`);
+                                } else {
+                                    console.error(`Failed to delete image ${filename}:`, data.message);
+                                }
+                            })
+                            .catch(error => {
+                                console.error(`Error while deleting image ${filename}`, error);
+                            });
+                    }
+                });
+            }
+
+            function getFilenameFromUrl(url) {
+                const parts = url.split('/');
+                return parts.pop();
+            }
+
+
+
+            function extractImageSources(data) {
+                const imgTags = data.match(/<img[^>]+src="([^">]+)"/g) || [];
+                const sources = imgTags.map(tag => {
+                    const match = tag.match(/src="([^">]+)"/);
+                    return match ? match[1] : null;
+                }).filter(src => src);
+
+                return sources;
+            }
 
     </script>
 </div>

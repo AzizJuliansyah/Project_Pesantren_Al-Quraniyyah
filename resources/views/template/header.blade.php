@@ -19,7 +19,6 @@
     <link rel="stylesheet" href="{{ asset('assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css') }}">
 
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.bootstrap5.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
@@ -29,7 +28,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/localcss.css') }}">
 
-    @if (request()->routeIs('home'))
+    @if (request()->routeIs('home', 'campaignpayment.daftarcampaign'))
       <link rel="stylesheet" href="{{ asset('assets/assets_landingpage/css/templatemo-chain-app-dev.css') }}">
       <link rel="stylesheet" href="{{ asset('assets/assets_landingpage/css/animated.css') }}">
       <link rel="stylesheet" href="{{ asset('assets/assets_landingpage/css/owl.css') }}">
@@ -39,8 +38,8 @@
       $item = \App\Models\Administrator::where('item_id', 1)->first();
     @endphp
     @if($item->item)
-      @if(Storage::exists('public/' . $item->item))
-        <link rel="shortcut icon" href="{{ asset('storage/' . $item->item) }}" />
+      @if(file_exists($item->item))
+        <link rel="shortcut icon" href="{{ asset($item->item) }}" />
       @endif
     @endif
 

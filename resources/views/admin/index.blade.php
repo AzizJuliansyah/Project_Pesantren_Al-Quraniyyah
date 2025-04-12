@@ -61,7 +61,7 @@
                                   </div>
                               </div>
                               <div class="form-group mt-3">
-                                <a href="/campaign/data" class="btn btn-info btn-lg text-white d-flex align-items-center ms-3"><i class="fa fa-arrow-left"></i> Lihat Semua Data Campaign</a>
+                                <a href="/pembukuan" class="btn btn-info btn-lg text-white d-flex align-items-center ms-3"><i class="fa fa-arrow-left"></i> Lihat Semua Data Campaign</a>
                               </div>
                           </div>
                         </div>
