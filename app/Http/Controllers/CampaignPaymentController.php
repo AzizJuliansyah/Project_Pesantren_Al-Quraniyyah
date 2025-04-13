@@ -620,7 +620,6 @@ class CampaignPaymentController extends Controller
                         $donasi->status = 'pending';
                         $donasi->save();
 
-                        $request->session()->forget('can_access_payment');
                         return view('index.campaign.payment-pending', compact('donasi', 'campaign'));
                     } else {
                         $request->session()->forget('can_access_payment');
