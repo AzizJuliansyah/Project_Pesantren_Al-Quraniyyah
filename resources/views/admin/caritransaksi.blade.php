@@ -268,6 +268,8 @@
                                                     <button class="btn {{ request('status') == 'error' ? 'btn-danger' : 'btn-light' }}" onclick="filterStatus('error')">Error</button>
                                                 </div>
                                             </div>
+                                            <form id="bulkActionsForm" method="POST" action="{{ route('bulkUpdateStatusOrDelete') }}">
+
                                             <div class="d-flex align-items-center" >
                                                     <div class="dropdown" style="  white-space: nowrap;">
                                                         <button class="btn btn-primary dropdown-toggle" id="btn-update-status" type="button" data-bs-toggle="dropdown" aria-expanded="false" disabled>Ubah Status Terpilih </button>
@@ -394,8 +396,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            <form id="bulkActionsForm" method="POST" action="{{ route('bulkUpdateStatusOrDelete') }}">
+                                            </div>
                                                 @csrf
                                                 <input type="hidden" name="status" id="statusInput" value="">
                                                 <table class="table table-bordered" id="DonasiTable">
