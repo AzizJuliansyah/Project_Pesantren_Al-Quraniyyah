@@ -62,8 +62,8 @@ class CampaignController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'campaign_id' => 'required|numeric|unique:campaign,campaign_id',
+        $validated = $request->validate([
+            'campaign_id' => 'required|numeric',
             'nama' => 'required|string|max:255',
             'info' => 'required|string',
             'server_key' => 'required|string',
@@ -71,8 +71,37 @@ class CampaignController extends Controller
             'target' => 'required|numeric',
             'nominal' => 'nullable|array',
             'nominal.*' => 'nullable|numeric',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate the foto input
-            'video' => 'nullable|mimes:mp4,avi,mov,mkv|max:20480', // 20MB = 20480 KB
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'video' => 'nullable|mimes:mp4,avi,mov,mkv|max:30720',
+        ], [
+            'campaign_id.required' => 'ID campaign wajib diisi.',
+            'campaign_id.numeric' => 'ID campaign harus berupa angka.',
+
+            'nama.required' => 'Nama wajib diisi.',
+            'nama.string' => 'Nama harus berupa teks.',
+            'nama.max' => 'Nama maksimal 255 karakter.',
+
+            'info.required' => 'Informasi wajib diisi.',
+            'info.string' => 'Informasi harus berupa teks.',
+
+            'server_key.required' => 'Server key wajib diisi.',
+            'server_key.string' => 'Server key harus berupa teks.',
+
+            'client_key.required' => 'Client key wajib diisi.',
+            'client_key.string' => 'Client key harus berupa teks.',
+
+            'target.required' => 'Target wajib diisi.',
+            'target.numeric' => 'Target harus berupa angka.',
+
+            'nominal.array' => 'Nominal harus berupa daftar.',
+            'nominal.*.numeric' => 'Setiap nilai nominal harus berupa angka.',
+
+            'foto.image' => 'File foto harus berupa gambar.',
+            'foto.mimes' => 'Format foto yang diperbolehkan: jpeg, png, jpg, gif.',
+            'foto.max' => 'Ukuran foto maksimal 2MB.',
+
+            'video.mimes' => 'Format video yang diperbolehkan: mp4, avi, mov, mkv.',
+            'video.max' => 'Ukuran video maksimal 30MB.',
         ]);
 
         $data = [
@@ -302,8 +331,38 @@ class CampaignController extends Controller
             'nominal' => 'nullable|array',
             'nominal.*' => 'nullable|numeric',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video' => 'nullable|mimes:mp4,avi,mov,mkv|max:20480',
+            'video' => 'nullable|mimes:mp4,avi,mov,mkv|max:30720',
+        ], [
+            'campaign_id.required' => 'ID campaign wajib diisi.',
+            'campaign_id.numeric' => 'ID campaign harus berupa angka.',
+
+            'nama.required' => 'Nama wajib diisi.',
+            'nama.string' => 'Nama harus berupa teks.',
+            'nama.max' => 'Nama maksimal 255 karakter.',
+
+            'info.required' => 'Informasi wajib diisi.',
+            'info.string' => 'Informasi harus berupa teks.',
+
+            'server_key.required' => 'Server key wajib diisi.',
+            'server_key.string' => 'Server key harus berupa teks.',
+
+            'client_key.required' => 'Client key wajib diisi.',
+            'client_key.string' => 'Client key harus berupa teks.',
+
+            'target.required' => 'Target wajib diisi.',
+            'target.numeric' => 'Target harus berupa angka.',
+
+            'nominal.array' => 'Nominal harus berupa daftar.',
+            'nominal.*.numeric' => 'Setiap nilai nominal harus berupa angka.',
+
+            'foto.image' => 'File foto harus berupa gambar.',
+            'foto.mimes' => 'Format foto yang diperbolehkan: jpeg, png, jpg, gif.',
+            'foto.max' => 'Ukuran foto maksimal 2MB.',
+
+            'video.mimes' => 'Format video yang diperbolehkan: mp4, avi, mov, mkv.',
+            'video.max' => 'Ukuran video maksimal 30MB.',
         ]);
+
 
         $campaign = Campaign::findOrFail($id);
 

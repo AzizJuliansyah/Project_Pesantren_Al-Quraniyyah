@@ -103,7 +103,7 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 ">Info</label>
                                                         <div class="col-sm-9">
-                                                            <textarea name="info" id="info" placeholder="Info Tentang Campaign">{{ old('info') }}</textarea>
+                                                            <textarea name="info" id="info" class="@error('info') is-invalid @enderror" placeholder="Info Tentang Campaign">{{ old('info') }}</textarea>
                                                             @error('info')
                                                                 <div class="invalid-feedback">{{ $message }}</div>
                                                             @enderror

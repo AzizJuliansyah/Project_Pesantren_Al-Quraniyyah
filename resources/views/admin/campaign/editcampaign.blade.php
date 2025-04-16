@@ -38,11 +38,14 @@
                                                         @endif
                                                         <input type="file" name="foto" id="foto" class="file-upload-default" accept="image/*">
                                                         <div class="input-group col-xs-12">
-                                                            <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
+                                                            <input type="text" class="form-control file-upload-info @error('foto') is-invalid @enderror" disabled placeholder="Upload Image">
                                                             <span class="input-group-append">
                                                                 <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                                                             </span>
                                                         </div>
+                                                        @error('foto')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -69,11 +72,14 @@
                                                         <input type="file" name="video" id="video" class="file-upload-default @error('video') is-invalid @enderror" accept="video/*">
                                                         
                                                         <div class="input-group col-xs-12">
-                                                            <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Video">
+                                                            <input type="text" class="form-control file-upload-info @error('video') is-invalid @enderror" disabled placeholder="Upload Video">
                                                             <span class="input-group-append">
                                                                 <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                                                             </span>
                                                         </div>
+                                                        @error('video')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
@@ -82,7 +88,10 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 ">ID Campaign</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" name="campaign_id" id="campaign_id" value="{{ $campaign->campaign_id }}" class="form-control" required/>
+                                                            <input type="text" name="campaign_id" id="campaign_id" value="{{ $campaign->campaign_id }}" class="form-control @error('campaign_id') is-invalid @enderror" required/>
+                                                            @error('campaign_id')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -90,7 +99,10 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 ">Nama Campaign</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" name="nama" id="nama" value="{{ $campaign->nama }}" class="form-control" required/>
+                                                            <input type="text" name="nama" id="nama" value="{{ $campaign->nama }}" class="form-control @error('nama') is-invalid @enderror" required/>
+                                                            @error('nama')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -100,7 +112,10 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 ">Info</label>
                                                         <div class="col-sm-9">
-                                                            <textarea name="info" id="info" class="textarea-control" cols="50" rows="5" placeholder="Info Tentang Campaign" required>{{ $campaign->info }}</textarea>
+                                                            <textarea name="info" id="info" class="textarea-control @error('info') is-invalid @enderror" cols="50" rows="5" placeholder="Info Tentang Campaign" required>{{ $campaign->info }}</textarea>
+                                                            @error('info')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -110,7 +125,10 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 ">Client Key</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" name="client_key" id="client_key" value="{{ $campaign->client_key }}" class="form-control" placeholder="Client Key Midtrans" required>
+                                                            <input type="text" name="client_key" id="client_key" value="{{ $campaign->client_key }}" class="form-control @error('client_key') is-invalid @enderror" placeholder="Client Key Midtrans" required>
+                                                            @error('client_key')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -118,7 +136,10 @@
                                                     <div class="form-group row">
                                                         <label class="col-sm-3 ">Server Key</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" name="server_key" id="server_key" value="{{ $campaign->server_key }}" class="form-control" placeholder="Server Key Midtrans" required/>
+                                                            <input type="text" name="server_key" id="server_key" value="{{ $campaign->server_key }}" class="form-control @error('server_key') is-invalid @enderror" placeholder="Server Key Midtrans" required/>
+                                                            @error('server_key')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -136,7 +157,10 @@
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text bg-primary text-white">Rp.</span>
                                                                     </div>
-                                                                    <input type="text" name="target" id="target" value="{{ $campaign->target }}" class="form-control" aria-label="Rupiah" required>
+                                                                    <input type="text" name="target" id="target" value="{{ $campaign->target }}" class="form-control @error('target') is-invalid @enderror" aria-label="Rupiah" required>
+                                                                    @error('target')
+                                                                        <div class="invalid-feedback">{{ $message }}</div>
+                                                                    @enderror
                                                                 </div>
                                                             </div>
                                                         </div>
